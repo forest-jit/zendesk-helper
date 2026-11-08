@@ -67,7 +67,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
   const checks = await page.evaluate(() => ['', 'Company - Person', 'Company -  - Issue', 'Company - Person - Issue', 'Company - Person - Issue - detail', 'Company - Person - <img src=x onerror=alert(1)>'].map(globalThis.zdTitleFormat));
   assert.deepEqual(checks, [false, false, false, true, true, true]);
   const duplicate = await page.evaluate(() => globalThis.zdTitleReview('Beluga Sales Inc. - Taylor Baxter - Test company Inc. - Test name - Test error', { organization: 'Beluga Sales Inc.', requester: 'Taylor Baxter' }));
-  assert.deepEqual(duplicate, { valid: false, kind: 'duplicate-identity', suggestion: 'Test company Inc. - Test name - Test error' });
+  assert.deepEqual(duplicate, { valid: false, kind: 'duplicate-identity', suggestion: 'Beluga Sales Inc. - Taylor Baxter - Test error' });
   await page.evaluate(() => {
     globalThis.__zdhEvents={input:0,change:0,submit:0};
     const subject=document.querySelector('#active-subject');
@@ -82,7 +82,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
   assert.equal(await useSuggestion.count(),1);
   await page.evaluate(()=>{globalThis.__zdhEvents={input:0,change:0,submit:0};});
   await useSuggestion.click();
-  assert.equal(await page.locator('#active-subject').inputValue(),'Test company Inc. - Test name - Test error');
+  assert.equal(await page.locator('#active-subject').inputValue(),'Beluga Sales Inc. - Taylor Baxter - Test error');
   assert.deepEqual(await page.evaluate(()=>globalThis.__zdhEvents),{input:1,change:1,submit:0});
   assert.equal(await page.locator('#active-subject + [data-zdh-warning]').count(),0);
   await page.locator('#active-subject').fill('<img src=x onerror=alert(1)>');

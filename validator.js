@@ -10,7 +10,7 @@ globalThis.zdTitleReview = function (value, identity = {}) {
     return {
       valid: false,
       kind: 'duplicate-identity',
-      suggestion: pieces.slice(2).join(' - ')
+      suggestion: [...pieces.slice(0, 2), ...pieces.slice(4)].join(' - ')
     };
   }
 
