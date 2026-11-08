@@ -1,0 +1,23 @@
+# Private Zendesk material and browser state must never enter source control.
+*.mhtml
+*.har
+zendesk-snapshot*.html
+ticket-snapshot*.html
+ticket-export*.json
+ticket-export*.md
+screenshots/private/
+recordings/
+browser-profiles/
+
+# Local secrets and generated dependencies/results.
+.env
+.env.*
+!.env.example
+node_modules/
+test-results/
+playwright-report/
+.hallmark/
+
+# OS/editor noise.
+.DS_Store
+

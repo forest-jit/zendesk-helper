@@ -1,0 +1,17 @@
+{
+  "name": "zendesk-helper",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Local development and synthetic tests for the Zendesk Helper Chrome extension.",
+  "scripts": {
+    "check": "npm run check:syntax && npm run test",
+    "check:syntax": "node --check content.js && node --check popup.js && node --check validator.js && node --check tests/browser.cjs",
+    "test": "node tests/browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Zendesk Helper \u2014 Prototype",
+  "version": "0.3.0",
+  "description": "On-demand title warnings and a reversible conversation-left layout for Jones IT Zendesk.",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Activate title helper"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; connect-src 'none'"
+  }
+}
