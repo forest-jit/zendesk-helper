@@ -122,3 +122,70 @@ body {
     transform: none;
   }
 }
+
+[data-test-id="views_views-pane_content"] {
+  background: var(--zdh-color-canvas) !important;
+  color: var(--zdh-color-ink) !important;
+  font-family: var(--zdh-font-body) !important;
+}
+
+[data-test-id="views_views-pane_content"] [role="region"][aria-label="Now showing tickets"] {
+  overflow: auto;
+  scrollbar-color: var(--zdh-color-field-edge) var(--zdh-color-surface-subtle);
+}
+
+table[data-test-id="generic-table"] {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: var(--zdh-color-surface) !important;
+  color: var(--zdh-color-ink) !important;
+  font-family: var(--zdh-font-body) !important;
+  line-height: 1.5 !important;
+}
+
+table[data-test-id="generic-table"] :is(th, td) {
+  padding: var(--zdh-space-sm) var(--zdh-space-md) !important;
+  border-bottom: 1px solid var(--zdh-color-rule) !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+table[data-test-id="generic-table"] th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--zdh-color-surface-subtle) !important;
+  color: var(--zdh-color-ink) !important;
+  font-size: 0.875rem !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap;
+}
+
+table[data-test-id="generic-table"] td {
+  min-height: 48px;
+  color: var(--zdh-color-ink) !important;
+}
+
+[data-test-id="views_views-pane_content"] :is(a, button, input, [role="button"], [tabindex]):focus-visible {
+  outline: 2px solid var(--zdh-color-focus) !important;
+  outline-offset: 2px !important;
+}
+
+[data-test-id="views_views-pane_content"] :is(button, [role="button"]):active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(1px);
+}
+
+[data-test-id="views_views-pane_content"] :is(button, [role="button"]):disabled,
+[data-test-id="views_views-pane_content"] :is(button, [role="button"])[aria-disabled="true"] {
+  cursor: not-allowed !important;
+  opacity: 0.55 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-test-id="views_views-pane_content"] :is(button, [role="button"]):active {
+    transform: none;
+  }
+}

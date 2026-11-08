@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Synthetic Zendesk ticket list</title>
+<link rel="stylesheet" href="../../content.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--zdh-color-canvas); font: 16px/1.5 var(--zdh-font-body); }
+  .fixture-shell { max-width: 1440px; margin: 0 auto; padding: var(--zdh-space-lg); }
+  .fixture-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--zdh-space-md); }
+  .fixture-heading h1 { margin: 0; font-size: 1.75rem; }
+  .fixture-heading button { min-height: 40px; padding: 0 var(--zdh-space-md); }
+  [role="region"] { margin-top: var(--zdh-space-lg); }
+  a { color: var(--zdh-color-ink); font-weight: 650; text-underline-offset: 0.18em; }
+  .status { white-space: nowrap; }
+</style>
+<body>
+  <main class="fixture-shell" data-test-id="views_views-pane_content">
+    <header class="fixture-heading">
+      <h1>My unsolved tickets</h1>
+      <button type="button">Filter</button>
+    </header>
+    <section role="region" aria-label="Now showing tickets">
+      <table data-test-id="generic-table">
+        <thead><tr><th>Status</th><th>Updated</th><th>ID</th><th>Subject</th><th>Requester</th><th>Organization</th><th>Priority</th></tr></thead>
+        <tbody>
+          <tr><td class="status">Open</td><td>8 minutes ago</td><td>#300101</td><td><a href="zendesk-ticket.html">Cedar &amp; Finch - Maya Chen - Laptop cannot join office Wi-Fi</a></td><td>Maya Chen</td><td>Cedar &amp; Finch</td><td>High</td></tr>
+          <tr><td class="status">Pending</td><td>34 minutes ago</td><td>#300102</td><td>Northline Dental - Omar Haddad - New user needs email access</td><td>Omar Haddad</td><td>Northline Dental</td><td>Normal</td></tr>
+          <tr><td class="status">Open</td><td>1 hour ago</td><td>#300103</td><td>Beacon House - Priya Shah - Printer queue pauses after login</td><td>Priya Shah</td><td>Beacon House</td><td>Normal</td></tr>
+          <tr><td class="status">On-hold</td><td>Yesterday</td><td>#300104</td><td>Meridian Legal - Noah Williams - Shared drive permission review</td><td>Noah Williams</td><td>Meridian Legal</td><td>Low</td></tr>
+          <tr><td class="status">Open</td><td>Yesterday</td><td>#300105</td><td>Juniper Studio - Elena García - Video calls lose microphone input</td><td>Elena García</td><td>Juniper Studio</td><td>High</td></tr>
+          <tr><td class="status">Pending</td><td>2 days ago</td><td>#300106</td><td>Harbor Foods - Daniel Kim - Mobile device enrollment stalled</td><td>Daniel Kim</td><td>Harbor Foods</td><td>Normal</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

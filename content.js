@@ -33,6 +33,11 @@
     return styles.display!=='none'&&styles.visibility!=='hidden'&&styles.opacity!=='0'&&el.getClientRects().length>0;
   }
   function activeTitle(){return [...document.querySelectorAll('input[data-test-id="omni-header-subject"]')].find(visible)||null;}
+  function ticketIdentity(){
+    const requester=document.querySelector('[data-test-id="ticket-system-field-requester-select"] input, input[aria-label="Requester"]')?.value?.trim();
+    const organization=document.querySelector('[data-test-id="organization_id-field-test-id"]')?.textContent?.trim().replace(/^Org\.\s*/i,'');
+    return {requester,organization};
+  }
   function sync(){
     if(!enabled)return;
     if(!armed&&!manualField){const current=activeTitle();if(current!==field){clearWarning();field=current;}}
@@ -46,7 +51,9 @@
   }
   function check(){
     if(!enabled||!field?.isConnected||!visible(field))return;
-    if(globalThis.zdTitleFormat(field.value))clearWarning();
+    const review=globalThis.zdTitleReview?.(field.value,ticketIdentity())||{valid:globalThis.zdTitleFormat(field.value),kind:'format'};
+    if(review.valid)clearWarning();
+    else if(review.kind==='duplicate-identity')message(`This title may contain two company/requester prefixes. Review this suggestion: ${review.suggestion}. Nothing was changed; you can still save.`,field);
     else message('Expected: Company - Requester - Issue. Example: Beluga Sales Inc. - Taylor Baxter - FaceID error. Format only; names are not verified. You can still save.',field);
   }
   function scheduleSync(){if(syncFrame)return;syncFrame=requestAnimationFrame(()=>{syncFrame=0;sync();});}

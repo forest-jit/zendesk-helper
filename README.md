@@ -1,4 +1,10 @@
-# Zendesk Helper · 0.3.0
+# Zendesk Helper · 0.4.0
+
+## Update from 0.3
+
+Version 0.4 extends the restrained CSS treatment to Zendesk ticket-list tables and adds a conservative warning for titles that appear to contain two company/requester prefixes. The helper shows a suggestion but never edits the subject automatically. Development fixtures now include six fictional list tickets and a representative single-ticket workspace; screenshots are written to `test-results/` by `npm run check`.
+
+The complete implementation and testing backlog is in [`FEATURES.md`](FEATURES.md).
 
 ## Update from 0.2
 

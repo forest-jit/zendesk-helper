@@ -6,8 +6,21 @@
   * { box-sizing: border-box; }
   body { margin: 0; font: 16px/1.5 system-ui; }
   [data-test-id$="-standard-layout"] { display: grid; grid-template-columns: 280px minmax(0, 1fr) 260px; min-height: 720px; }
-  [data-test-id^="column-"] { padding: 16px; }
+  [data-test-id^="column-"] { padding: 24px; }
   [hidden] { display: none !important; }
+  .field { display: grid; gap: 4px; margin-bottom: 16px; }
+  .field input, .field select { width: 100%; }
+  #conversation { padding: 32px; }
+  #conversation h1 { margin: 0; font-size: 1.75rem; }
+  .subject-row { display: grid; gap: 4px; margin: 24px 0; }
+  .subject-row input { width: min(100%, 760px); min-height: 44px; padding: 0 12px; font: inherit; }
+  .message { max-width: 72ch; padding: 20px 0; border-top: 1px solid var(--zdh-color-rule); }
+  .message p { margin: 8px 0 0; }
+  .composer { max-width: 760px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--zdh-color-rule); }
+  .composer textarea { display: block; width: 100%; min-height: 140px; margin: 8px 0 12px; padding: 12px; font: inherit; resize: vertical; }
+  .composer button, #properties-action { min-height: 40px; padding: 0 16px; }
+  #context { font-size: 14px; }
+  #context h2 { margin-top: 0; font-size: 1rem; }
 </style>
 <body>
   <section data-test-id="ticket-111-standard-layout" hidden>
@@ -17,24 +30,21 @@
   </section>
   <section data-test-id="ticket-222-standard-layout" id="active-ticket">
     <aside data-test-id="column-1" id="properties">
-      <label for="active-subject">Subject</label>
-      <input id="active-subject" data-test-id="omni-header-subject" value="FaceID error">
-      <label for="requester">Requester</label>
-      <input id="requester" value="Taylor Baxter">
-      <label for="priority">Priority</label>
-      <select id="priority"><option>Normal</option></select>
+      <h2>Ticket fields</h2>
+      <div class="field"><label for="requester">Requester</label><span data-test-id="ticket-system-field-requester-select"><input id="requester" aria-label="Requester" value="Taylor Baxter"></span></div>
+      <div class="field"><span>Organization</span><span data-test-id="organization_id-field-test-id">Org.Beluga Sales Inc.</span></div>
+      <div class="field"><label for="priority">Priority</label><select id="priority"><option>Normal</option></select></div>
       <button id="properties-action" type="button">Update property</button>
     </aside>
     <main data-test-id="column-2" id="conversation">
-      <h1>FaceID error</h1>
-      <p>Fictional conversation content for layout testing.</p>
-      <label for="reply">Internal note</label>
-      <textarea id="reply"></textarea>
-      <button id="save" type="button">Save changes</button>
+      <h1>Laptop cannot join office Wi-Fi</h1>
+      <div class="subject-row"><label for="active-subject">Subject</label><input id="active-subject" data-test-id="omni-header-subject" value="FaceID error"></div>
+      <article class="message"><strong>Taylor Baxter</strong><p>My laptop stopped joining the office Wi-Fi after this morning’s restart. Other devices still connect.</p></article>
+      <article class="message"><strong>Support note</strong><p>Network appears available. Confirm the saved network profile and device certificate before changing access.</p></article>
+      <section class="composer"><label for="reply">Internal note</label><textarea id="reply" placeholder="Add a note for the support team"></textarea><button id="save" type="button">Save changes</button></section>
     </main>
-    <aside data-test-id="column-3" id="context">Fictional customer context</aside>
+    <aside data-test-id="column-3" id="context"><div><h2>Customer context</h2><p>Beluga Sales Inc.</p><p>Fictional fixture data</p></div></aside>
   </section>
-  <label for="manual-title">Manual title fallback</label>
-  <input id="manual-title" value="Manual issue">
+  <div id="manual-fixture"><label for="manual-title">Manual title fallback</label><input id="manual-title" value="Manual issue"></div>
 </body>
 </html>

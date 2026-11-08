@@ -5,6 +5,8 @@ const assert = require('node:assert/strict');
 
 const root = path.join(__dirname, '..');
 const chromePath = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const resultsDir = path.join(root, 'test-results');
+fs.mkdirSync(resultsDir, { recursive: true });
 
 (async () => {
   const launchOptions = { headless: true };
@@ -37,6 +39,11 @@ const chromePath = process.env.CHROME_PATH || '/Applications/Google Chrome.app/C
 
   const checks = await page.evaluate(() => ['', 'Company - Person', 'Company -  - Issue', 'Company - Person - Issue', 'Company - Person - Issue - detail', 'Company - Person - <img src=x onerror=alert(1)>'].map(globalThis.zdTitleFormat));
   assert.deepEqual(checks, [false, false, false, true, true, true]);
+  const duplicate = await page.evaluate(() => globalThis.zdTitleReview('Beluga Sales Inc. - Taylor Baxter - Test company Inc. - Test name - Test error', { organization: 'Beluga Sales Inc.', requester: 'Taylor Baxter' }));
+  assert.deepEqual(duplicate, { valid: false, kind: 'duplicate-identity', suggestion: 'Test company Inc. - Test name - Test error' });
+  await page.locator('#active-subject').fill('Beluga Sales Inc. - Taylor Baxter - Test company Inc. - Test name - Test error');
+  await page.locator('#requester').focus();
+  assert.match(await page.locator('#active-subject + [data-zdh-warning]').getAttribute('aria-label'), /possible duplicate identity|two company\/requester prefixes/i);
   await page.locator('#active-subject').fill('<img src=x onerror=alert(1)>');
   await page.locator('#requester').focus();
   assert.equal(await page.locator('img').count(), 0);
@@ -57,16 +64,20 @@ const chromePath = process.env.CHROME_PATH || '/Applications/Google Chrome.app/C
   }
   await page.evaluate(() => { document.body.style.zoom = '1.25'; });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), true);
-  await page.evaluate(() => { document.body.style.zoom = ''; });
+  await page.evaluate(() => { document.body.style.zoom = ''; globalThis.zdTitleHelper.configure({ layout: true, context: true, manual: false }); });
+  await page.locator('#active-subject').fill('Beluga Sales Inc. - Taylor Baxter - Laptop cannot join office Wi-Fi');
+  await page.locator('#requester').focus();
+  await page.locator('#manual-fixture').evaluate(element => { element.hidden = true; });
+  await page.screenshot({ path: path.join(resultsDir, 'single-ticket.png'), fullPage: false });
 
   await page.evaluate(() => { document.body.tabIndex = -1; document.body.focus(); });
   await page.keyboard.press('Tab');
-  assert.equal(await page.evaluate(() => document.activeElement.id), 'active-subject');
-  assert.equal(await page.locator('#active-subject').evaluate(element => getComputedStyle(element).outlineStyle), 'solid');
-  await page.keyboard.press('Tab');
   assert.equal(await page.evaluate(() => document.activeElement.id), 'requester');
+  assert.equal(await page.locator('#requester').evaluate(element => getComputedStyle(element).outlineStyle), 'solid');
   await page.keyboard.press('Tab');
   await page.keyboard.press('Tab');
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => document.activeElement.id), 'active-subject');
   await page.keyboard.press('Tab');
   assert.equal(await page.evaluate(() => document.activeElement.id), 'reply');
 
@@ -78,8 +89,20 @@ const chromePath = process.env.CHROME_PATH || '/Applications/Google Chrome.app/C
   assert.equal(await page.locator('[data-zdh-layout]').count(), 0);
   assert.equal(await page.locator('[data-zdh-warning]').count(), 0);
   assert.equal(external, 0);
+
+  const listPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  await listPage.goto(`file://${path.join(__dirname, 'fixtures', 'tickets-list.html')}`);
+  assert.equal(await listPage.locator('tbody tr').count(), 6);
+  assert.equal(await listPage.locator('table[data-test-id="generic-table"] th').first().evaluate(element => getComputedStyle(element).position), 'sticky');
+  for (const width of [1000, 1280, 1600]) {
+    await listPage.setViewportSize({ width, height: 800 });
+    assert.equal(await listPage.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), true);
+  }
+  await listPage.locator('a').first().focus();
+  assert.equal(await listPage.locator('a').first().evaluate(element => getComputedStyle(element).outlineStyle), 'solid');
+  await listPage.screenshot({ path: path.join(resultsDir, 'ticket-list.png'), fullPage: true });
   await browser.close();
-  console.log('PASS: synthetic detection, blur warnings, manual selection, active workspace, layout/context placement, narrow fallback, focus, restoration, literal text, and no external requests.');
+  console.log('PASS: synthetic list/single views, duplicate-title suggestion, blur warnings, manual selection, active workspace, responsive placement, focus, restoration, literal text, screenshots, and no external requests.');
 })().catch(error => {
   console.error(error);
   process.exit(1);
