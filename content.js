@@ -2,7 +2,7 @@
   'use strict';
   if (globalThis.zdTitleHelper) return;
   const defaults={enabled:true,layout:true,context:false};
-  let enabled=false, armed=false, manualField=false, field=null, host=null, layout=false, context=false, syncFrame=0;
+  let enabled=false, armed=false, manualField=false, field=null, host=null, layout=false, context=false, syncFrame=0, warningActionPointer=false;
   const marked=new Set();
   function clearWarning(){
     if(field&&host?.id){
@@ -23,7 +23,7 @@
     const panel=document.createElement('section');panel.setAttribute('role','status');panel.setAttribute('aria-live','polite');
     const label=document.createElement('span');label.textContent=text;
     const close=document.createElement('button');close.type='button';close.textContent='Dismiss';close.addEventListener('click',clearWarning);
-    if(action){const apply=document.createElement('button');apply.type='button';apply.textContent=action.label;apply.addEventListener('click',action.run);panel.append(apply);}
+    if(action){const apply=document.createElement('button');apply.type='button';apply.textContent=action.label;apply.addEventListener('pointerdown',()=>{warningActionPointer=true;});apply.addEventListener('pointerup',()=>{warningActionPointer=false;});apply.addEventListener('pointercancel',()=>{warningActionPointer=false;});apply.addEventListener('click',event=>{warningActionPointer=false;action.run(event);});panel.append(apply);}
     if(anchored)panel.append(close);
     panel.append(label);root.append(css,panel);
     if(anchored){anchor.insertAdjacentElement('afterend',host);anchor.setAttribute('aria-describedby',[anchor.getAttribute('aria-describedby'),host.id].filter(Boolean).join(' '));}
@@ -57,9 +57,13 @@
     if(review.valid)clearWarning();
     else if(review.kind==='duplicate-identity')message(`This title may contain two company/requester prefixes. Review this suggestion: ${review.suggestion}. Nothing was changed; you can still save.`,field,{label:'Use suggestion',run:()=>{
       const target=field;
-      const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value')?.set;
-      if(setter)setter.call(target,review.suggestion);else target.value=review.suggestion;
-      target.dispatchEvent(new Event('input',{bubbles:true}));
+      target.focus({preventScroll:true});target.select();
+      const applied=document.execCommand('insertText',false,review.suggestion);
+      if(!applied){
+        const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value')?.set;
+        if(setter)setter.call(target,review.suggestion);else target.value=review.suggestion;
+        target.dispatchEvent(new InputEvent('input',{bubbles:true,composed:true,inputType:'insertReplacementText',data:review.suggestion}));
+      }
       target.dispatchEvent(new Event('change',{bubbles:true}));
       clearWarning();target.focus();
     }});
@@ -69,7 +73,7 @@
   const observer=new MutationObserver(scheduleSync);
   document.addEventListener('focusout',event=>{
     const next=event.relatedTarget;
-    const movingToWarning=Boolean(host&&(next===host||host.shadowRoot?.contains(next)));
+    const movingToWarning=warningActionPointer||Boolean(host&&(next===host||host.shadowRoot?.contains(next)));
     if(event.target===field&&!movingToWarning)check();
   },true);
   document.addEventListener('submit',check,true);
