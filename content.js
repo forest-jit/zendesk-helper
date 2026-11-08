@@ -2,7 +2,7 @@
   'use strict';
   if (globalThis.zdTitleHelper) return;
   const defaults={enabled:true,layout:true,context:false,theme:'system'};
-  let enabled=false, armed=false, manualField=false, field=null, host=null, layout=false, context=false, theme='system', syncFrame=0, warningActionPointer=false, workflowHost=null, workflowGrid=null;
+  let enabled=false, armed=false, manualField=false, field=null, host=null, layout=false, context=false, theme='system', syncFrame=0, warningActionPointer=false, composerHost=null, propertiesHost=null, workflowGrid=null;
   const saveLock=globalThis.zdhWorkflow.createSaveLock();
   const marked=new Set();
   function clearWarning(){
@@ -36,51 +36,59 @@
     return styles.display!=='none'&&styles.visibility!=='hidden'&&styles.opacity!=='0'&&el.getClientRects().length>0;
   }
   function activeTitle(){return [...document.querySelectorAll('input[data-test-id="omni-header-subject"]')].find(visible)||null;}
-  function controlState(grid){
-    const modeButton=grid.querySelector('[data-test-id="omnichannel-channel-switcher-button"],button[aria-label="Public reply"],button[aria-label="Internal note"]');
-    const composer=grid.querySelector('[data-test-id="ticket-rich-text-editor"],textarea,[contenteditable="true"]');
-    const submit=document.querySelector('[data-test-id="submit_button-button"]');
-    const statusMenu=document.querySelector('[data-test-id="submit_button-menu-button"],[aria-label="Displays possible ticket submission types"]');
-    const mode=globalThis.zdhWorkflow.normalizeMode(modeButton?.getAttribute('aria-label')||modeButton?.textContent);
-    const status=(submit?.textContent.match(/Submit as\s+(.+)/i)?.[1]||'open').trim().toLowerCase();
-    return {modeButton,composer,submit,statusMenu,mode,status:status==='on hold'?'on-hold':status,nativeReady:Boolean(modeButton&&submit&&statusMenu)};
-  }
+  function controlState(grid){return globalThis.zdhWorkspace.readState(grid);}
   function clickText(root,text){const wanted=text.toLowerCase();const button=[...root.querySelectorAll('button,[role="menuitem"],[role="menuitemcheckbox"],[role="option"]')].find(node=>{const label=node.textContent.trim().toLowerCase();return visible(node)&&(label===wanted||label.endsWith(` as ${wanted}`));});button?.click();return Boolean(button);}
   async function chooseNativeMode(grid,mode){const state=controlState(grid);if(!state.modeButton)return false;state.modeButton.click();const label=mode==='internal'?'Internal note':'Public reply';for(let i=0;i<8;i++){if(clickText(document,label))return true;await new Promise(resolve=>setTimeout(resolve,75));}return false;}
   async function chooseNativeStatus(state,status){state.statusMenu.click();for(let i=0;i<8;i++){if(clickText(document,status==='on-hold'?'On-hold':status[0].toUpperCase()+status.slice(1)))return true;await new Promise(resolve=>setTimeout(resolve,75));}return false;}
-  function workflowUI(){return workflowHost?.shadowRoot;}
+  function composerUI(){return composerHost?.shadowRoot;}
+  function propertiesUI(){return propertiesHost?.shadowRoot;}
   function refreshWorkflow(){
-    if(!workflowGrid||!workflowHost?.isConnected)return;
-    const state=controlState(workflowGrid),ui=workflowUI(),review=ui.querySelector('[data-public-review]'),status=ui.querySelector('[data-status]');
-    if(workflowHost.dataset.mode&&workflowHost.dataset.mode!==state.mode)review.checked=false;
-    workflowHost.dataset.mode=state.mode;
-    if(!status.dataset.touched)status.value=globalThis.zdhWorkflow.statuses.has(state.status)?state.status:'open';
-    ui.querySelector('[data-mode]').textContent=state.mode==='internal'?'Internal note':state.mode==='public'?'Public reply':'Mode unavailable';
+    if(!workflowGrid||!composerHost?.isConnected||!propertiesHost?.isConnected)return;
+    const state=controlState(workflowGrid),composer=composerUI(),properties=propertiesUI(),review=composer.querySelector('[data-public-review]'),status=properties.querySelector('[data-status]');
+    if(composerHost.dataset.mode&&composerHost.dataset.mode!==state.mode)review.checked=false;
+    composerHost.dataset.mode=state.mode;
+    for(const button of composer.querySelectorAll('[data-mode-choice]'))button.setAttribute('aria-pressed',String(button.dataset.modeChoice===state.mode));
     review.closest('label').hidden=state.mode!=='public';
-    const gate=globalThis.zdhWorkflow.canSave({mode:state.mode,publicReviewed:review.checked,status:status.value,busy:saveLock.busy,nativeReady:state.nativeReady});
-    const save=ui.querySelector('[data-save]');save.disabled=!gate.allowed;ui.querySelector('[data-state]').textContent=gate.reason||`Ready to save as ${status.options[status.selectedIndex].text}.`;
+    if(!status.dataset.touched)status.value=globalThis.zdhWorkflow.statuses.has(state.status)?state.status:'open';
+    const sendGate=globalThis.zdhWorkflow.canSend({mode:state.mode,publicReviewed:review.checked,composerContent:state.composerContent,busy:saveLock.busy,nativeReady:state.nativeReady});
+    const saveGate=globalThis.zdhWorkflow.canSaveProperties({composerContent:state.composerContent,status:status.value,busy:saveLock.busy,nativeReady:state.nativeReady});
+    composer.querySelector('[data-send]').disabled=!sendGate.allowed;composer.querySelector('[data-state]').textContent=sendGate.reason||`Ready to send ${state.mode==='public'?'public reply':'internal note'}.`;
+    properties.querySelector('[data-save]').disabled=!saveGate.allowed;properties.querySelector('[data-state]').textContent=saveGate.reason||`Ready to save as ${status.options[status.selectedIndex].text}.`;
   }
-  async function saveActive(){
+  function releaseAction(){setTimeout(()=>{saveLock.release();refreshWorkflow();},1200);}
+  async function sendActive(){
     if(!workflowGrid||!saveLock.acquire())return false;
-    const ui=workflowUI(),state=controlState(workflowGrid),status=ui.querySelector('[data-status]').value,gate=globalThis.zdhWorkflow.canSave({mode:state.mode,publicReviewed:ui.querySelector('[data-public-review]').checked,status,busy:false,nativeReady:state.nativeReady});
+    const state=controlState(workflowGrid),ui=composerUI(),gate=globalThis.zdhWorkflow.canSend({mode:state.mode,publicReviewed:ui.querySelector('[data-public-review]').checked,composerContent:state.composerContent,busy:false,nativeReady:state.nativeReady});
     if(!gate.allowed){saveLock.release();refreshWorkflow();return false;}
-    ui.querySelector('[data-state]').textContent='Preparing Zendesk save…';
-    const selected=await chooseNativeStatus(state,status);
-    const expected=globalThis.zdhWorkflow.submitLabel(status);
+    state.submit.click();ui.querySelector('[data-public-review]').checked=false;ui.querySelector('[data-state]').textContent='Send requested through Zendesk.';refreshWorkflow();releaseAction();return true;
+  }
+  async function savePropertiesActive(){
+    if(!workflowGrid||!saveLock.acquire())return false;
+    const state=controlState(workflowGrid),ui=propertiesUI(),status=ui.querySelector('[data-status]').value,gate=globalThis.zdhWorkflow.canSaveProperties({composerContent:state.composerContent,status,busy:false,nativeReady:state.nativeReady});
+    if(!gate.allowed){saveLock.release();refreshWorkflow();return false;}
+    ui.querySelector('[data-state]').textContent='Preparing property save…';
+    const selected=await chooseNativeStatus(state,status),expected=globalThis.zdhWorkflow.submitLabel(status);
     if(!selected||!state.submit.textContent.includes(expected.replace('Submit as ',''))){saveLock.release();ui.querySelector('[data-state]').textContent='Zendesk did not confirm the selected status. Nothing was saved.';refreshWorkflow();return false;}
-    state.submit.click();ui.querySelector('[data-public-review]').checked=false;ui.querySelector('[data-state]').textContent=`Save requested as ${status}.`;refreshWorkflow();setTimeout(()=>{saveLock.release();refreshWorkflow();},1200);return true;
+    state.submit.click();ui.querySelector('[data-state]').textContent=`Save requested as ${status}.`;refreshWorkflow();releaseAction();return true;
   }
   function downloadExport(format){const ticket=globalThis.zdhExporter.collect(document,location,workflowGrid);const blob=new Blob([globalThis.zdhExporter.serialize(ticket,format)],{type:format==='json'?'application/json':'text/markdown'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=globalThis.zdhExporter.filename(ticket,format);link.click();setTimeout(()=>URL.revokeObjectURL(url),0);}
+  const controlStyle=`<style>:host{display:block;font:14px/1.4 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#23323a}section{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px;border:1px solid #c6d2d8;border-radius:10px;background:#f7fafb}button,select{font:inherit;min-height:38px;border-radius:8px}button{padding:0 12px;border:1px solid #79929d;background:#fff;color:#174f63;cursor:pointer}button[aria-pressed="true"],button.primary{background:#174f63;color:#fff;border-color:#174f63}button:disabled{cursor:not-allowed;opacity:.5}label{display:grid;gap:4px;font-weight:600}.review{display:flex;align-items:center}output{flex-basis:100%;color:#425b66;font-size:12px}</style>`;
   function mountWorkflow(grid){
-    if(workflowGrid===grid&&workflowHost?.isConnected){refreshWorkflow();return;}
-    workflowHost?.remove();workflowGrid=grid;workflowHost=document.createElement('div');workflowHost.dataset.zdhWorkflow='true';workflowHost.dataset.zdhTheme=theme;
-    const root=workflowHost.attachShadow({mode:'open'});root.innerHTML=`<style>:host{display:block;margin:0 0 16px;font:14px/1.4 system-ui;color:#23323a}section{display:flex;align-items:end;gap:12px;flex-wrap:wrap;padding:12px 16px;border:1px solid #c6d2d8;border-radius:10px;background:#f7fafb}label{display:grid;gap:4px;font-weight:600}label.review{display:flex;align-items:center;min-height:38px}select,button{font:inherit;min-height:38px}button{padding:0 12px}.primary{background:#174f63;color:white;border:1px solid #174f63;border-radius:6px}.secondary{background:white;color:#174f63;border:1px solid #79929d;border-radius:6px}button:disabled{opacity:.55}output{flex-basis:100%;color:#425b66}:host([data-zdh-theme="contrast"]) section{background:#fff;border-color:#263238;color:#111}:host([data-zdh-theme="calm"]) section{background:#eef5f7;border-color:#9eb6c0}</style><section aria-label="Zendesk Helper workflow"><label>Reply mode <strong data-mode>Checking…</strong></label><label>Status after save <select data-status aria-label="Status after save"><option value="open">Open</option><option value="pending">Pending</option><option value="on-hold">On-hold</option><option value="solved">Solved</option></select></label><label class="review"><input data-public-review type="checkbox"> Public reply reviewed</label><button class="primary" data-save type="button">Save changes</button><button class="secondary" data-json type="button">Export JSON</button><button class="secondary" data-md type="button">Export Markdown</button><output data-state aria-live="polite"></output></section>`;
-    root.querySelector('[data-status]').addEventListener('change',event=>{event.target.dataset.touched='true';refreshWorkflow();});root.querySelector('[data-public-review]').addEventListener('change',refreshWorkflow);root.querySelector('[data-save]').addEventListener('click',saveActive);root.querySelector('[data-json]').addEventListener('click',()=>downloadExport('json'));root.querySelector('[data-md]').addEventListener('click',()=>downloadExport('markdown'));
-    const column=grid.querySelector(':scope > [data-test-id="column-2"]')||grid;column.append(workflowHost);
-    const state=controlState(grid);if(state.mode==='public'&&!(state.composer?.value||state.composer?.textContent||'').trim())chooseNativeMode(grid,'internal').then(refreshWorkflow);
-    state.composer?.addEventListener('input',()=>{const review=workflowUI()?.querySelector('[data-public-review]');if(review)review.checked=false;refreshWorkflow();});refreshWorkflow();
+    if(workflowGrid===grid&&composerHost?.isConnected&&propertiesHost?.isConnected){refreshWorkflow();return;}
+    composerHost?.remove();propertiesHost?.remove();workflowGrid=grid;
+    composerHost=document.createElement('div');composerHost.dataset.zdhComposerActions='true';composerHost.dataset.zdhTheme=theme;
+    const composerRoot=composerHost.attachShadow({mode:'open'});composerRoot.innerHTML=`${controlStyle}<section aria-label="Reply actions"><div role="group" aria-label="Reply visibility"><button type="button" data-mode-choice="public" aria-pressed="false">Public reply</button><button type="button" data-mode-choice="internal" aria-pressed="false">Internal note</button></div><label class="review"><input data-public-review type="checkbox"> Public reply reviewed</label><button class="primary" data-send type="button">Send</button><output data-state aria-live="polite"></output></section>`;
+    propertiesHost=document.createElement('div');propertiesHost.dataset.zdhPropertiesActions='true';propertiesHost.dataset.zdhTheme=theme;
+    const propertiesRoot=propertiesHost.attachShadow({mode:'open'});propertiesRoot.innerHTML=`${controlStyle}<section aria-label="Ticket property actions"><label>Status<select data-status aria-label="Status"><option value="open">Open</option><option value="pending">Pending</option><option value="on-hold">On-hold</option><option value="solved">Solved</option></select></label><button class="primary" data-save type="button">Save changes</button><button data-json type="button">Export JSON</button><button data-md type="button">Export Markdown</button><output data-state aria-live="polite"></output></section>`;
+    for(const button of composerRoot.querySelectorAll('[data-mode-choice]'))button.addEventListener('click',()=>chooseNativeMode(grid,button.dataset.modeChoice).then(refreshWorkflow));
+    composerRoot.querySelector('[data-public-review]').addEventListener('change',refreshWorkflow);composerRoot.querySelector('[data-send]').addEventListener('click',sendActive);
+    propertiesRoot.querySelector('[data-status]').addEventListener('change',event=>{event.target.dataset.touched='true';refreshWorkflow();});propertiesRoot.querySelector('[data-save]').addEventListener('click',savePropertiesActive);propertiesRoot.querySelector('[data-json]').addEventListener('click',()=>downloadExport('json'));propertiesRoot.querySelector('[data-md]').addEventListener('click',()=>downloadExport('markdown'));
+    const state=controlState(grid),composerContainer=state.composer?.closest('.composer,[data-test-id="message-composer"],[aria-label="Message composer"]')||state.composer?.parentElement||state.conversation;
+    composerContainer?.append(composerHost);state.properties?.append(propertiesHost);
+    if(state.mode==='public'&&!globalThis.zdhWorkflow.composerHasContent(state.composerContent))chooseNativeMode(grid,'internal').then(refreshWorkflow);
+    state.composer?.addEventListener('input',()=>{const review=composerUI()?.querySelector('[data-public-review]');if(review)review.checked=false;refreshWorkflow();});refreshWorkflow();
   }
-  function clearWorkflow(){workflowHost?.remove();workflowHost=null;workflowGrid=null;delete document.documentElement.dataset.zdhTheme;}
+  function clearWorkflow(){composerHost?.remove();propertiesHost?.remove();composerHost=null;propertiesHost=null;workflowGrid=null;delete document.documentElement.dataset.zdhTheme;}
   function ticketIdentity(){
     const requester=document.querySelector('[data-test-id="ticket-system-field-requester-select"] input, input[aria-label="Requester"]')?.value?.trim();
     const organization=document.querySelector('[data-test-id="organization_id-field-test-id"]')?.textContent?.trim().replace(/^Org\.\s*/i,'');
@@ -145,9 +153,9 @@
       enabled=false;armed=false;manualField=false;observer.disconnect();if(syncFrame)cancelAnimationFrame(syncFrame);syncFrame=0;clearWarning();field=null;
       clearWorkflow();for(const grid of marked){grid.removeAttribute('data-zdh-layout');grid.removeAttribute('data-zdh-context');delete grid.dataset.zdhTheme;}marked.clear();
     }
-    ,saveActive
+    ,sendActive,savePropertiesActive
   };
-  document.addEventListener('keydown',event=>{if(!enabled||event.key!=='Enter'||!event.metaKey||event.ctrlKey||event.repeat||event.isComposing)return;if(!workflowGrid?.contains(event.target))return;event.preventDefault();saveActive();},true);
+  document.addEventListener('keydown',event=>{if(!enabled||event.key!=='Enter'||!event.metaKey||event.ctrlKey||event.repeat||event.isComposing)return;if(!propertiesHost?.contains(event.target))return;event.preventDefault();savePropertiesActive();},true);
   const runtime=globalThis.chrome?.runtime;
   runtime?.onMessage?.addListener((message,_sender,sendResponse)=>{
     let result=null;

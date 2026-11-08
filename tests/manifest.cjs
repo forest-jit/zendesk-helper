@@ -12,7 +12,7 @@ assert.equal(manifest.permissions.includes('scripting'), false);
 assert.deepEqual(manifest.content_scripts, [{
   matches: [approvedOrigin],
   css: ['content.css'],
-  js: ['validator.js', 'workflow.js', 'exporter.js', 'content.js'],
+  js: ['validator.js', 'workflow.js', 'exporter.js', 'workspace.js', 'content.js'],
   run_at: 'document_idle'
 }]);
 

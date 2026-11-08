@@ -21,6 +21,7 @@
         "validator.js",
         "workflow.js",
         "exporter.js",
+        "workspace.js",
         "content.js"
       ],
       "run_at": "document_idle"
