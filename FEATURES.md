@@ -15,6 +15,13 @@ This is the working product and test inventory. Live mutation tests require a na
 - [x] Active-workspace filtering so cached tickets are not styled
 - [x] Reversible **Turn off** behavior
 - [x] Synthetic browser tests with fictional single-ticket and six-ticket list views
+- [x] Separate composer **Send** and property **Save changes** actions
+- [x] Public reply / Internal note segmented controls
+- [x] Page-level ticket scrolling with a responsive native fallback
+- [x] Older-conversation disclosure showing the newest three entries
+- [x] Condensed message images with hover, focus, click, and Escape behavior
+- [x] Workspace-wide System, Calm, and High contrast themes
+- [x] Requester, semantic priority, status, appearance, export, and Save actions in the properties rail
 
 ## Next test passes
 
@@ -30,18 +37,18 @@ This is the working product and test inventory. Live mutation tests require a na
 - [ ] Authoritative title correction using organization and requester fields, never invented values
 - [ ] Navigation-safe title warnings when switching among cached workspaces
 - [x] Private-note default and explicit public-reply review safeguard
-- [x] Separate draft status selection from deliberate native save behavior
-- [x] Scoped ⌘Enter through the guarded save path
+- [x] Separate property status selection from composer Send behavior
+- [x] Scoped ⌘Enter for property Save only
 - [x] Explicit local ticket export to reviewable JSON and Markdown
 - [ ] Local documentation-draft generation from exported evidence
 - [ ] Connect reviewed drafts to the existing Notion workflow
 - [ ] ClickDoc import contract for captions and action evidence
 - [ ] Team deployment, updates, and organization-approved distribution
-- [x] System, Calm, and High contrast personal themes without broader permissions
+- [x] Robust System, Calm, and High contrast workspace themes without broader permissions
 
 ## Deliberately out of scope for now
 
-- Automatic sends, replies, notes, saves, or status changes
+- Automatic sends, replies, notes, saves, or status changes without a deliberate agent action
 - Background scraping or storage of ticket bodies
 - Hosted AI or third-party telemetry at runtime
 - Public webhooks or broad host permissions

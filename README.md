@@ -1,4 +1,12 @@
-# Zendesk Helper · 0.4.0
+# Zendesk Helper · 0.6.1
+
+## Freshservice-inspired workspace
+
+Version 0.6.1 turns the active Zendesk ticket into a page-scrolling, conversation-first workspace. Public reply and Internal note are always visible above the composer. **Send** submits composer content without changing the current status; **Save changes** lives with the ticket properties and is disabled while an unsent composer draft exists. Command-Enter is scoped to the property actions.
+
+Long conversations show the newest three rendered entries behind a `+N conversations` disclosure. Message images become compact thumbnails with hover/focus previews and a keyboard-accessible lightbox. System, Calm, and High contrast themes now cover the active ticket canvas, conversation, properties, composer, fields, controls, focus rings, and preview surfaces. Theme selection is available both in the extension popup and inside the properties panel.
+
+The extension only presents requester, SLA, priority, status, conversations, and images that Zendesk has already rendered. Missing SLA information is omitted; nothing is invented or fetched from an API. Below 1000px, Zendesk's native layout and scrolling are retained.
 
 ## Update from 0.3
 
@@ -10,7 +18,7 @@ The complete implementation and testing backlog is in [`FEATURES.md`](FEATURES.m
 
 Version 0.3 extracts the ticket layout into `content.css` and gives the properties rail a restrained local token system, clearer separation, comfortable native fields, and visible keyboard focus. It also limits layout changes to the visible ticket workspace and preserves a manually selected title field across Zendesk DOM updates.
 
-Version 0.6 adds a guarded workflow bar: safe Internal note defaulting for empty drafts, explicit public-reply review, draft status selection, deliberate Save changes, scoped Command-Enter, local JSON/Markdown export, and three personal themes.
+Version 0.6 added safe Internal note defaulting, explicit public-reply review, local JSON/Markdown export, and personal themes.
 
 ### Reload and test locally
 
