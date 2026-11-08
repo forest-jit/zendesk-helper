@@ -4,9 +4,10 @@
   "private": true,
   "description": "Local development and synthetic tests for the Zendesk Helper Chrome extension.",
   "scripts": {
-    "check": "npm run check:syntax && npm run test:manifest && npm run test",
-    "check:syntax": "node --check content.js && node --check popup.js && node --check validator.js && node --check tests/manifest.cjs && node --check tests/browser.cjs",
+    "check": "npm run check:syntax && npm run test:manifest && npm run test:workflow && npm run test",
+    "check:syntax": "node --check content.js && node --check popup.js && node --check validator.js && node --check workflow.js && node --check exporter.js && node --check tests/manifest.cjs && node --check tests/workflow.cjs && node --check tests/browser.cjs",
     "test:manifest": "node tests/manifest.cjs",
+    "test:workflow": "node tests/workflow.cjs",
     "test": "node tests/browser.cjs"
   },
   "devDependencies": {
