@@ -38,6 +38,8 @@ fs.mkdirSync(resultsDir, { recursive: true });
   assert.equal(await composerActions.locator('[data-send]').count(),1);
   assert.equal(await propertiesActions.locator('[data-status]').count(),1);
   assert.equal(await propertiesActions.locator('[data-save]').count(),1);
+  assert.equal(await propertiesActions.locator('[data-sla]').count(),1,'rendered Zendesk SLA data should appear in the property summary');
+  assert.match(await propertiesActions.locator('[data-sla]').innerText(),/First response due.*In 2 hours/s);
   assert.equal(await page.locator('[data-test-id="omnichannel-channel-switcher-button"]').innerText(),'Internal note','empty composer should default through the native mode control');
   assert.equal((await page.evaluate(()=>globalThis.__nativeActions)).modeClicks,1);
   assert.equal(await page.locator('#active-ticket').getAttribute('data-zdh-page-scroll'),'true');
