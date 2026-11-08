@@ -40,8 +40,13 @@
     <main data-test-id="column-2" id="conversation">
       <h1>Laptop cannot join office Wi-Fi</h1>
       <div class="subject-row"><label for="active-subject">Subject</label><input id="active-subject" data-test-id="omni-header-subject" value="FaceID error"></div>
-      <article class="message" data-zdh-export-comment data-author="Taylor Baxter" data-time="Today 9:15 am" data-visibility="public"><strong data-zdh-author>Taylor Baxter</strong><p data-zdh-body>My laptop stopped joining the office Wi-Fi after this morning’s restart. Other devices still connect.</p></article>
-      <article class="message"><strong>Support note</strong><p>Network appears available. Confirm the saved network profile and device certificate before changing access.</p></article>
+      <div class="conversation-log" data-test-id="conversation-log">
+        <article class="message" data-zdh-export-comment data-author="Taylor Baxter" data-time="Today 8:45 am" data-visibility="public"><img class="avatar" alt="Taylor Baxter" width="32" height="32"><strong data-zdh-author>Taylor Baxter</strong><p data-zdh-body>Initial report.</p></article>
+        <article class="message"><strong>Support note</strong><p>Requested connection details.</p></article>
+        <article class="message"><strong>Taylor Baxter</strong><p>Restart did not help.</p></article>
+        <article class="message"><strong>Support note</strong><p>Network appears available. Confirm the saved network profile and device certificate.</p></article>
+        <article class="message" data-zdh-export-comment data-author="Taylor Baxter" data-time="Today 9:15 am" data-visibility="public"><strong data-zdh-author>Taylor Baxter</strong><p data-zdh-body>Other devices still connect.</p><img class="message-image" alt="Wi-Fi error screenshot" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Crect width='640' height='360' fill='%23dceaf0'/%3E%3C/svg%3E"></article>
+      </div>
       <section class="composer">
         <button type="button" data-test-id="omnichannel-channel-switcher-button" aria-label="Public reply">Public reply</button>
         <div data-test-id="omnichannel-channel-switcher-menu" hidden><button type="button">Internal note</button><button type="button">Public reply</button></div>

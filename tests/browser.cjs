@@ -14,7 +14,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
   const browser = await chromium.launch(launchOptions);
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   let external = 0;
-  page.on('request', request => { if (!request.url().startsWith('file:')) external += 1; });
+  page.on('request', request => { if (/^https?:/.test(request.url())) external += 1; });
   await page.goto(`file://${path.join(__dirname, 'fixtures', 'zendesk-ticket.html')}`);
   await page.addStyleTag({ path: path.join(root, 'content.css') });
   await page.evaluate(() => {
@@ -39,6 +39,30 @@ fs.mkdirSync(resultsDir, { recursive: true });
   assert.equal(await propertiesActions.locator('[data-save]').count(),1);
   assert.equal(await page.locator('[data-test-id="omnichannel-channel-switcher-button"]').innerText(),'Internal note','empty composer should default through the native mode control');
   assert.equal((await page.evaluate(()=>globalThis.__nativeActions)).modeClicks,1);
+  assert.equal(await page.locator('#active-ticket').getAttribute('data-zdh-page-scroll'),'true');
+  assert.equal(await page.locator('#conversation').evaluate(element=>getComputedStyle(element).overflowY),'visible');
+  assert.equal(await page.locator('#properties').evaluate(element=>getComputedStyle(element).position),'static','properties should scroll away with the page');
+  const disclosure=page.locator('[data-zdh-conversation-disclosure]');
+  assert.equal(await disclosure.count(),1);
+  assert.match(await disclosure.innerText(),/\+2 conversations/);
+  assert.equal(await page.locator('.conversation-log .message:visible').count(),3);
+  await disclosure.click();
+  assert.equal(await disclosure.getAttribute('aria-expanded'),'true');
+  assert.equal(await page.locator('.conversation-log .message:visible').count(),5);
+  await disclosure.click();
+  await page.locator('.conversation-log').evaluate(log=>{const item=document.createElement('article');item.className='message';item.innerHTML='<strong>New reply</strong><p>Newest update</p>';log.append(item);});
+  await page.waitForTimeout(50);
+  assert.equal(await page.locator('[data-zdh-conversation-disclosure]').count(),1,'disclosure must remain idempotent');
+  assert.match(await disclosure.innerText(),/\+3 conversations/);
+  const messageImage=page.locator('[data-zdh-message-image]');
+  assert.equal(await messageImage.getAttribute('data-zdh-message-image'),'true');
+  assert.equal(await page.locator('.avatar[data-zdh-message-image]').count(),0,'avatars must not become previews');
+  await messageImage.focus();
+  assert.equal(await page.locator('[data-zdh-image-preview]').evaluate(element=>getComputedStyle(element).visibility),'visible');
+  await messageImage.click();
+  assert.equal(await page.locator('[data-zdh-image-lightbox][role="dialog"]').count(),1);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('[data-zdh-image-lightbox]').count(),0);
 
   const disabledPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   await disabledPage.goto(`file://${path.join(__dirname, 'fixtures', 'zendesk-ticket.html')}`);
@@ -152,7 +176,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
   assert.equal(await page.locator('#active-subject + [data-zdh-warning]').count(),0);
   await page.locator('#active-subject').fill('<img src=x onerror=alert(1)>');
   await page.locator('#requester').focus();
-  assert.equal(await page.locator('img').count(), 0);
+  assert.equal(await page.locator('[data-zdh-warning] img').count(), 0);
 
   await page.evaluate(() => globalThis.zdTitleHelper.configure({ layout: true, context: true, manual: true }));
   await page.locator('#manual-title').click();
@@ -187,6 +211,8 @@ fs.mkdirSync(resultsDir, { recursive: true });
   assert.equal(await page.evaluate(() => document.activeElement.id), 'reply');
 
   await page.setViewportSize({ width: 900, height: 800 });
+  await page.waitForTimeout(20);
+  assert.equal(await page.locator('#active-ticket').getAttribute('data-zdh-page-scroll'),null,'narrow layout must keep native scrolling');
   assert.equal(await page.locator('#active-ticket').evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length), 3);
   await page.setViewportSize({ width: 1280, height: 800 });
 
