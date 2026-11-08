@@ -21,6 +21,7 @@
   .composer button, #properties-action { min-height: 40px; padding: 0 16px; }
   #context { font-size: 14px; }
   #context h2 { margin-top: 0; font-size: 1rem; }
+  .zendesk-native-control:focus-visible { outline: 3px dashed rgb(0, 92, 153); outline-offset: 1px; }
 </style>
 <body>
   <section data-test-id="ticket-111-standard-layout" hidden>
@@ -31,7 +32,7 @@
   <section data-test-id="ticket-222-standard-layout" id="active-ticket">
     <aside data-test-id="column-1" id="properties">
       <h2>Ticket fields</h2>
-      <div class="field"><label for="requester">Requester</label><span data-test-id="ticket-system-field-requester-select"><input id="requester" aria-label="Requester" value="Taylor Baxter"></span></div>
+      <div class="field"><label for="requester">Requester</label><span data-test-id="ticket-system-field-requester-select"><input class="zendesk-native-control" id="requester" aria-label="Requester" value="Taylor Baxter"></span></div>
       <div class="field"><span>Organization</span><span data-test-id="organization_id-field-test-id">Org.Beluga Sales Inc.</span></div>
       <div class="field"><label for="priority">Priority</label><select id="priority"><option>Normal</option></select></div>
       <button id="properties-action" type="button">Update property</button>

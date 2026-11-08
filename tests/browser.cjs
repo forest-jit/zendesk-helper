@@ -100,7 +100,8 @@ fs.mkdirSync(resultsDir, { recursive: true });
   await page.evaluate(() => { document.body.tabIndex = -1; document.body.focus(); });
   await page.keyboard.press('Tab');
   assert.equal(await page.evaluate(() => document.activeElement.id), 'requester');
-  assert.equal(await page.locator('#requester').evaluate(element => getComputedStyle(element).outlineStyle), 'solid');
+  assert.equal(await page.locator('#requester').evaluate(element => getComputedStyle(element).outlineStyle), 'dashed');
+  assert.equal(await page.locator('#requester').evaluate(element => getComputedStyle(element).outlineWidth), '3px');
   await page.keyboard.press('Tab');
   await page.keyboard.press('Tab');
   await page.keyboard.press('Tab');
@@ -126,7 +127,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
     assert.equal(await listPage.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), true);
   }
   await listPage.locator('a').first().focus();
-  assert.equal(await listPage.locator('a').first().evaluate(element => getComputedStyle(element).outlineStyle), 'solid');
+  assert.notEqual(await listPage.locator('a').first().evaluate(element => getComputedStyle(element).outlineStyle), 'none');
   await listPage.screenshot({ path: path.join(resultsDir, 'ticket-list.png'), fullPage: true });
   await browser.close();
   console.log('PASS: synthetic list/single views, duplicate-title suggestion, blur warnings, manual selection, active workspace, responsive placement, focus, restoration, literal text, screenshots, and no external requests.');
