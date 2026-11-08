@@ -11,18 +11,19 @@
     }
     host?.remove();host=null;
   }
-  function message(text,anchor){
+  function message(text,anchor,action){
     clearWarning();host=document.createElement('div');
     const anchored=Boolean(anchor?.isConnected);
     host.id='zdh-warning-'+Math.random().toString(36).slice(2);
     host.dataset.zdhWarning='true';host.setAttribute('role','status');host.setAttribute('aria-live','polite');host.setAttribute('aria-label',text);
     if(!anchored)host.dataset.floating='true';
-    const root=host.attachShadow({mode:'closed'});
+    const root=host.attachShadow({mode:'open'});
     const css=document.createElement('style');
     css.textContent=':host{display:block!important;position:relative!important;z-index:2147483647!important}section{pointer-events:auto;margin:6px 0;padding:10px 14px;background:#fff4d6;color:#513d09;border:1px solid #d8ad3e;border-radius:6px;font:14px/1.5 system-ui;white-space:normal}:host([data-floating="true"]) section{pointer-events:none}button{float:right;margin-left:12px;cursor:pointer}';
     const panel=document.createElement('section');panel.setAttribute('role','status');panel.setAttribute('aria-live','polite');
     const label=document.createElement('span');label.textContent=text;
     const close=document.createElement('button');close.type='button';close.textContent='Dismiss';close.addEventListener('click',clearWarning);
+    if(action){const apply=document.createElement('button');apply.type='button';apply.textContent=action.label;apply.addEventListener('click',action.run);panel.append(apply);}
     if(anchored)panel.append(close);
     panel.append(label);root.append(css,panel);
     if(anchored){anchor.insertAdjacentElement('afterend',host);anchor.setAttribute('aria-describedby',[anchor.getAttribute('aria-describedby'),host.id].filter(Boolean).join(' '));}
@@ -54,7 +55,14 @@
     if(!enabled||!field?.isConnected||!visible(field))return;
     const review=globalThis.zdTitleReview?.(field.value,ticketIdentity())||{valid:globalThis.zdTitleFormat(field.value),kind:'format'};
     if(review.valid)clearWarning();
-    else if(review.kind==='duplicate-identity')message(`This title may contain two company/requester prefixes. Review this suggestion: ${review.suggestion}. Nothing was changed; you can still save.`,field);
+    else if(review.kind==='duplicate-identity')message(`This title may contain two company/requester prefixes. Review this suggestion: ${review.suggestion}. Nothing was changed; you can still save.`,field,{label:'Use suggestion',run:()=>{
+      const target=field;
+      const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value')?.set;
+      if(setter)setter.call(target,review.suggestion);else target.value=review.suggestion;
+      target.dispatchEvent(new Event('input',{bubbles:true}));
+      target.dispatchEvent(new Event('change',{bubbles:true}));
+      clearWarning();target.focus();
+    }});
     else message('Expected: Company - Requester - Issue. Example: Beluga Sales Inc. - Taylor Baxter - FaceID error. Format only; names are not verified. You can still save.',field);
   }
   function scheduleSync(){if(syncFrame)return;syncFrame=requestAnimationFrame(()=>{syncFrame=0;sync();});}
