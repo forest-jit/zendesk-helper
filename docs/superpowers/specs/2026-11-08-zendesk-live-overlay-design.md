@@ -68,13 +68,13 @@ Could become appropriate for supported API actions later, but it adds packaging,
 
 ## Five live test tickets
 
-All use requester Forest Welch and organization Jones IT. Subjects are clearly fictional and follow `Company - Requester - Issue`:
+All use requester Forest Welch and organization Jones IT. Draft subjects contain only the clearly fictional issue description because Zendesk prepends the organization and requester after submission:
 
-1. `Jones IT - Forest Welch - TEST Wi-Fi connection issue`
-2. `Jones IT - Forest Welch - TEST new user email access`
-3. `Jones IT - Forest Welch - TEST printer queue issue`
-4. `Jones IT - Forest Welch - TEST shared drive permission review`
-5. `Jones IT - Forest Welch - TEST microphone input issue`
+1. `TEST Wi-Fi connection issue`
+2. `TEST new user email access`
+3. `TEST printer queue issue`
+4. `TEST shared drive permission review`
+5. `TEST microphone input issue`
 
 Each body states that it is a fictional extension test ticket and must not be treated as a customer request. Creation and any later save/send mutation requires action-time confirmation in the browser.
 

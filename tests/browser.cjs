@@ -81,6 +81,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
   const useSuggestion=page.locator('#active-subject + [data-zdh-warning]').getByRole('button',{name:'Use suggestion'});
   assert.equal(await useSuggestion.count(),1);
   await page.evaluate(()=>{globalThis.__zdhEvents={input:0,change:0,submit:0};});
+  await page.locator('#active-subject').focus();
   await useSuggestion.click();
   assert.equal(await page.locator('#active-subject').inputValue(),'Beluga Sales Inc. - Taylor Baxter - Test error');
   assert.deepEqual(await page.evaluate(()=>globalThis.__zdhEvents),{input:1,change:1,submit:0});

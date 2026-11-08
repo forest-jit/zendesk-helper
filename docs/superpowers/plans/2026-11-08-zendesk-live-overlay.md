@@ -176,7 +176,7 @@ Check the active workspace only, ticket-list table, native focus/highlight, 1000
 
 - [ ] **Step 3: Prepare five ticket forms**
 
-Use requester Forest Welch, organization Jones IT, the five exact subjects in the spec, and bodies stating they are fictional extension tests. Do not submit yet.
+Use requester Forest Welch, organization Jones IT, the five description-only draft subjects in the spec, and bodies stating they are fictional extension tests. Zendesk adds the organization/requester prefix after submission. Do not submit yet.
 
 - [ ] **Step 4: Request action-time confirmation**
 
