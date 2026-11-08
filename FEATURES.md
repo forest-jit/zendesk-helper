@@ -29,15 +29,15 @@ This is the working product and test inventory. Live mutation tests require a na
 
 - [ ] Authoritative title correction using organization and requester fields, never invented values
 - [ ] Navigation-safe title warnings when switching among cached workspaces
-- [ ] Private-note default and public-reply safeguards after native state is verified
-- [ ] Separate draft status selection from deliberate save behavior
-- [ ] Scoped ⌘Enter save after duplicate-submit behavior is ruled out
-- [ ] Explicit local ticket export to reviewable JSON and Markdown
+- [x] Private-note default and explicit public-reply review safeguard
+- [x] Separate draft status selection from deliberate native save behavior
+- [x] Scoped ⌘Enter through the guarded save path
+- [x] Explicit local ticket export to reviewable JSON and Markdown
 - [ ] Local documentation-draft generation from exported evidence
 - [ ] Connect reviewed drafts to the existing Notion workflow
 - [ ] ClickDoc import contract for captions and action evidence
 - [ ] Team deployment, updates, and organization-approved distribution
-- [ ] Optional personal layout/theme preferences without broadening site permissions
+- [x] System, Calm, and High contrast personal themes without broader permissions
 
 ## Deliberately out of scope for now
 

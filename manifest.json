@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Zendesk Helper \u2014 Prototype",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "description": "Automatic title warnings and a reversible conversation-left layout for Jones IT Zendesk.",
   "permissions": [
     "storage"
@@ -19,6 +19,8 @@
       ],
       "js": [
         "validator.js",
+        "workflow.js",
+        "exporter.js",
         "content.js"
       ],
       "run_at": "document_idle"

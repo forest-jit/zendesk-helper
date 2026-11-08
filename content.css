@@ -15,6 +15,30 @@
   --zdh-space-lg: 24px;
   --zdh-properties-width: 360px;
   --zdh-context-width: 280px;
+  --zdh-calm-canvas: oklch(95% 0.014 225);
+  --zdh-calm-surface-subtle: oklch(92% 0.018 225);
+  --zdh-calm-rule: oklch(76% 0.028 225);
+  --zdh-contrast-canvas: #f4f6f7;
+  --zdh-contrast-surface: #fff;
+  --zdh-contrast-surface-subtle: #e7ecef;
+  --zdh-contrast-ink: #101820;
+  --zdh-contrast-rule: #536570;
+  --zdh-contrast-field-edge: #263740;
+}
+
+:root[data-zdh-theme="calm"] {
+  --zdh-color-canvas: var(--zdh-calm-canvas);
+  --zdh-color-surface-subtle: var(--zdh-calm-surface-subtle);
+  --zdh-color-rule: var(--zdh-calm-rule);
+}
+
+:root[data-zdh-theme="contrast"] {
+  --zdh-color-canvas: var(--zdh-contrast-canvas);
+  --zdh-color-surface: var(--zdh-contrast-surface);
+  --zdh-color-surface-subtle: var(--zdh-contrast-surface-subtle);
+  --zdh-color-ink: var(--zdh-contrast-ink);
+  --zdh-color-rule: var(--zdh-contrast-rule);
+  --zdh-color-field-edge: var(--zdh-contrast-field-edge);
 }
 
 html,

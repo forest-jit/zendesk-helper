@@ -19,7 +19,7 @@
     const ticketId = url.match(/\/tickets\/(\d+)/)?.[1] || text(doc.querySelector('[aria-label*="Ticket #"]')).match(/\d+/)?.[0] || '';
     const title = active.querySelector('input[data-test-id="omni-header-subject"], input[aria-label="Subject"]')?.value?.trim() || text(active.querySelector('h1'));
     const requester = active.querySelector('[data-test-id="ticket-system-field-requester-select"] input, input[aria-label="Requester"]')?.value?.trim() || '';
-    const organization = text(active.querySelector('[data-test-id="organization_id-field-test-id"], [data-zdh-export-organization]')).replace(/^Org\.\s*/i, '');
+    const organization = text(active.querySelector('[data-test-id="organization_id-field-test-id"], [data-zdh-export-organization]') || doc.querySelector('[data-test-id="organization_id-field-test-id"], [data-zdh-export-organization]')).replace(/^Org\.\s*/i, '');
     const modeLabel = text(active.querySelector('[data-test-id="omnichannel-channel-switcher-button"], [aria-label="Public reply"], [aria-label="Internal note"], [data-zdh-mode]'));
     const statusLabel = text(active.querySelector('[data-test-id="ticket-fields-status-view"], [data-zdh-status]')) || 'Unknown';
     const comments = [...active.querySelectorAll('[data-zdh-export-comment], [data-test-id="conversation-log"] article')].map(comment => ({

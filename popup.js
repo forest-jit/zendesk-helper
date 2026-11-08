@@ -1,5 +1,5 @@
 'use strict';
-const defaults={enabled:true,layout:true,context:false};
+const defaults={enabled:true,layout:true,context:false,theme:'system'};
 
 function readPreferences(){return new Promise(resolve=>chrome.storage.local.get(defaults,resolve));}
 function writePreferences(preferences){return new Promise(resolve=>chrome.storage.local.set(preferences,resolve));}
@@ -20,14 +20,14 @@ async function run(mode){
  const status=document.getElementById('status');
  try{
   const tab=await activeZendeskTab();
-  const options={layout:document.getElementById('layout').checked,context:document.getElementById('context').checked,manual:false};
+  const options={layout:document.getElementById('layout').checked,context:document.getElementById('context').checked,theme:document.getElementById('theme').value,manual:false};
   if(mode==='off'){
-   await writePreferences({enabled:false,layout:options.layout,context:options.context});
+   await writePreferences({enabled:false,layout:options.layout,context:options.context,theme:options.theme});
    await send(tab.id,{type:'zdh-set-enabled',value:false});
    status.textContent='Turned off. This choice persists until you enable it again.';
    return;
   }
-  await writePreferences({enabled:true,layout:options.layout,context:options.context});
+  await writePreferences({enabled:true,layout:options.layout,context:options.context,theme:options.theme});
   const type=mode==='manual'?'zdh-manual-select':'zdh-configure';
   const result=await send(tab.id,{type,options});
   if(mode==='manual'){status.textContent='Close this popup and click the title field. No ticket data will be changed.';return;}
@@ -39,6 +39,7 @@ async function initialize(){
  const preferences=await readPreferences();
  document.getElementById('layout').checked=Boolean(preferences.layout);
  document.getElementById('context').checked=Boolean(preferences.context);
+ document.getElementById('theme').value=preferences.theme;
  document.getElementById('status').textContent=preferences.enabled===false?'Overlay is off. Apply settings to enable it.':'Overlay applies automatically on Jones IT Zendesk.';
 }
 

@@ -10,7 +10,7 @@ The complete implementation and testing backlog is in [`FEATURES.md`](FEATURES.m
 
 Version 0.3 extracts the ticket layout into `content.css` and gives the properties rail a restrained local token system, clearer separation, comfortable native fields, and visible keyboard focus. It also limits layout changes to the visible ticket workspace and preserves a manually selected title field across Zendesk DOM updates.
 
-The extension still does not change save, status, reply visibility, or ticket contents.
+Version 0.6 adds a guarded workflow bar: safe Internal note defaulting for empty drafts, explicit public-reply review, draft status selection, deliberate Save changes, scoped Command-Enter, local JSON/Markdown export, and three personal themes.
 
 ### Reload and test locally
 
@@ -34,7 +34,7 @@ Replace the files in the existing extension folder with this version, click Relo
 - Turn off restores the original layout. Refresh also clears all changes. No persistent settings.
 - Activation is limited in code to https://itjones.zendesk.com/agent/.
 - Uses existing DOM nodes and native inputs without moving nodes or replacing native controls.
-- Does not alter status or Save behavior. No custom save keyboard shortcut yet.
+- Adds a guarded workflow bar while preserving Zendesk's native mode, status, and submit controls underneath.
 
 The layout and selectors were checked against a saved HTML snapshot, not a running Zendesk session. The snapshot contains no live React state. Live layout, responsiveness, navigation and menu behavior require manual testing. No customer snapshot or its assets are included in this package.
 
@@ -65,7 +65,9 @@ Your organization may restrict unpacked extensions. This is a test build, not an
 - Checks on blur (focus leaving the selected input).
 - Expected structure: Company - Requester - Issue, with spaces around separators.
 - Additional ` - ` segments in the issue are permitted. Empty segments are rejected.
-- No edits, automatic correction, sending, blocked saves, status changes, exports, or private-note protection yet.
+- Empty drafts default to Internal note. Public replies require an explicit review checkbox before the helper Save action is enabled.
+- Status stays a draft until deliberate Save; scoped Command-Enter works only inside the active ticket workspace.
+- JSON and Markdown exports contain visible ticket content only and never call Zendesk APIs.
 - Valid format removes the warning. Invalid format displays a dismissible message immediately after the input.
 - Uses the observed omni-header-subject input; manual selection is available as a fallback.
 - Follows detected subject inputs and layout grids in SPA navigation; refresh or Turn off clears changes. Manual field selection may need repeating.
@@ -74,15 +76,15 @@ Your organization may restrict unpacked extensions. This is a test build, not an
 - An extension only checks the tab where it is active. It cannot enforce titles for tickets arriving from email or other agents.
 
 ## Security boundaries
-Only activeTab and scripting permissions. The popup restricts activation to HTTPS itjones.zendesk.com/agent/ URLs. Custom Zendesk domains are not supported yet. Chrome grants temporary access to the active origin when you invoke the extension. Ticket strings are never inserted as HTML. Content-script code runs in Chrome's default isolated world. The extension does not call Zendesk APIs or touch authentication, notes, status, or save controls. Warning styles are isolated in a shadow root.
+Only activeTab and scripting permissions. The popup restricts activation to HTTPS itjones.zendesk.com/agent/ URLs. Custom Zendesk domains are not supported yet. Chrome grants temporary access to the active origin when you invoke the extension. Ticket strings are never inserted as HTML. Content-script code runs in Chrome's default isolated world. The extension does not call Zendesk APIs or touch authentication; guarded saves operate the visible native controls. Helper UI is isolated in shadow roots.
 
 This is not a security audit or a guarantee of safety. Page modifications can conflict with Zendesk rendering; test with a fictional ticket first. A hostile page could tamper with page-visible warnings. Never treat this helper as an authorization control or guaranteed prevention of public replies. Before team rollout: verify actual Zendesk markup/accessibility, review permissions and dependencies, use managed distribution, and test navigation and concurrent ticket editing.
 
 ## Next increments
 1. Confirm the real title field and automate its detection without broad page scraping.
 2. Resolve company/requester from authoritative ticket fields and show a suggested title.
-3. Add private/public note safeguards and separate status review only after verifying Zendesk behavior.
-4. Explicit local ticket export, then local AI and approved Notion integration.
+3. Validate selectors against future Zendesk UI changes.
+4. Consider approved integrations only after local export is reviewed.
 
 ## Development
-Run `node tests/browser.cjs` with Playwright available via NODE_PATH. Browser tests use synthetic markup, not live Zendesk. No live Zendesk access has been tested.
+Run `npm run check`. Browser tests use controlled Zendesk-like markup; the extension is also smoke-tested read-only against a live test ticket without submitting it.

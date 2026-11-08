@@ -1,8 +1,9 @@
 (() => {
   'use strict';
   if (globalThis.zdTitleHelper) return;
-  const defaults={enabled:true,layout:true,context:false};
-  let enabled=false, armed=false, manualField=false, field=null, host=null, layout=false, context=false, syncFrame=0, warningActionPointer=false;
+  const defaults={enabled:true,layout:true,context:false,theme:'system'};
+  let enabled=false, armed=false, manualField=false, field=null, host=null, layout=false, context=false, theme='system', syncFrame=0, warningActionPointer=false, workflowHost=null, workflowGrid=null;
+  const saveLock=globalThis.zdhWorkflow.createSaveLock();
   const marked=new Set();
   function clearWarning(){
     if(field&&host?.id){
@@ -35,6 +36,51 @@
     return styles.display!=='none'&&styles.visibility!=='hidden'&&styles.opacity!=='0'&&el.getClientRects().length>0;
   }
   function activeTitle(){return [...document.querySelectorAll('input[data-test-id="omni-header-subject"]')].find(visible)||null;}
+  function controlState(grid){
+    const modeButton=grid.querySelector('[data-test-id="omnichannel-channel-switcher-button"],button[aria-label="Public reply"],button[aria-label="Internal note"]');
+    const composer=grid.querySelector('[data-test-id="ticket-rich-text-editor"],textarea,[contenteditable="true"]');
+    const submit=document.querySelector('[data-test-id="submit_button-button"]');
+    const statusMenu=document.querySelector('[data-test-id="submit_button-menu-button"],[aria-label="Displays possible ticket submission types"]');
+    const mode=globalThis.zdhWorkflow.normalizeMode(modeButton?.getAttribute('aria-label')||modeButton?.textContent);
+    const status=(submit?.textContent.match(/Submit as\s+(.+)/i)?.[1]||'open').trim().toLowerCase();
+    return {modeButton,composer,submit,statusMenu,mode,status:status==='on hold'?'on-hold':status,nativeReady:Boolean(modeButton&&submit&&statusMenu)};
+  }
+  function clickText(root,text){const wanted=text.toLowerCase();const button=[...root.querySelectorAll('button,[role="menuitem"],[role="menuitemcheckbox"],[role="option"]')].find(node=>{const label=node.textContent.trim().toLowerCase();return visible(node)&&(label===wanted||label.endsWith(` as ${wanted}`));});button?.click();return Boolean(button);}
+  async function chooseNativeMode(grid,mode){const state=controlState(grid);if(!state.modeButton)return false;state.modeButton.click();const label=mode==='internal'?'Internal note':'Public reply';for(let i=0;i<8;i++){if(clickText(document,label))return true;await new Promise(resolve=>setTimeout(resolve,75));}return false;}
+  async function chooseNativeStatus(state,status){state.statusMenu.click();for(let i=0;i<8;i++){if(clickText(document,status==='on-hold'?'On-hold':status[0].toUpperCase()+status.slice(1)))return true;await new Promise(resolve=>setTimeout(resolve,75));}return false;}
+  function workflowUI(){return workflowHost?.shadowRoot;}
+  function refreshWorkflow(){
+    if(!workflowGrid||!workflowHost?.isConnected)return;
+    const state=controlState(workflowGrid),ui=workflowUI(),review=ui.querySelector('[data-public-review]'),status=ui.querySelector('[data-status]');
+    if(workflowHost.dataset.mode&&workflowHost.dataset.mode!==state.mode)review.checked=false;
+    workflowHost.dataset.mode=state.mode;
+    if(!status.dataset.touched)status.value=globalThis.zdhWorkflow.statuses.has(state.status)?state.status:'open';
+    ui.querySelector('[data-mode]').textContent=state.mode==='internal'?'Internal note':state.mode==='public'?'Public reply':'Mode unavailable';
+    review.closest('label').hidden=state.mode!=='public';
+    const gate=globalThis.zdhWorkflow.canSave({mode:state.mode,publicReviewed:review.checked,status:status.value,busy:saveLock.busy,nativeReady:state.nativeReady});
+    const save=ui.querySelector('[data-save]');save.disabled=!gate.allowed;ui.querySelector('[data-state]').textContent=gate.reason||`Ready to save as ${status.options[status.selectedIndex].text}.`;
+  }
+  async function saveActive(){
+    if(!workflowGrid||!saveLock.acquire())return false;
+    const ui=workflowUI(),state=controlState(workflowGrid),status=ui.querySelector('[data-status]').value,gate=globalThis.zdhWorkflow.canSave({mode:state.mode,publicReviewed:ui.querySelector('[data-public-review]').checked,status,busy:false,nativeReady:state.nativeReady});
+    if(!gate.allowed){saveLock.release();refreshWorkflow();return false;}
+    ui.querySelector('[data-state]').textContent='Preparing Zendesk save…';
+    const selected=await chooseNativeStatus(state,status);
+    const expected=globalThis.zdhWorkflow.submitLabel(status);
+    if(!selected||!state.submit.textContent.includes(expected.replace('Submit as ',''))){saveLock.release();ui.querySelector('[data-state]').textContent='Zendesk did not confirm the selected status. Nothing was saved.';refreshWorkflow();return false;}
+    state.submit.click();ui.querySelector('[data-public-review]').checked=false;ui.querySelector('[data-state]').textContent=`Save requested as ${status}.`;refreshWorkflow();setTimeout(()=>{saveLock.release();refreshWorkflow();},1200);return true;
+  }
+  function downloadExport(format){const ticket=globalThis.zdhExporter.collect(document,location,workflowGrid);const blob=new Blob([globalThis.zdhExporter.serialize(ticket,format)],{type:format==='json'?'application/json':'text/markdown'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=globalThis.zdhExporter.filename(ticket,format);link.click();setTimeout(()=>URL.revokeObjectURL(url),0);}
+  function mountWorkflow(grid){
+    if(workflowGrid===grid&&workflowHost?.isConnected){refreshWorkflow();return;}
+    workflowHost?.remove();workflowGrid=grid;workflowHost=document.createElement('div');workflowHost.dataset.zdhWorkflow='true';workflowHost.dataset.zdhTheme=theme;
+    const root=workflowHost.attachShadow({mode:'open'});root.innerHTML=`<style>:host{display:block;margin:0 0 16px;font:14px/1.4 system-ui;color:#23323a}section{display:flex;align-items:end;gap:12px;flex-wrap:wrap;padding:12px 16px;border:1px solid #c6d2d8;border-radius:10px;background:#f7fafb}label{display:grid;gap:4px;font-weight:600}label.review{display:flex;align-items:center;min-height:38px}select,button{font:inherit;min-height:38px}button{padding:0 12px}.primary{background:#174f63;color:white;border:1px solid #174f63;border-radius:6px}.secondary{background:white;color:#174f63;border:1px solid #79929d;border-radius:6px}button:disabled{opacity:.55}output{flex-basis:100%;color:#425b66}:host([data-zdh-theme="contrast"]) section{background:#fff;border-color:#263238;color:#111}:host([data-zdh-theme="calm"]) section{background:#eef5f7;border-color:#9eb6c0}</style><section aria-label="Zendesk Helper workflow"><label>Reply mode <strong data-mode>Checking…</strong></label><label>Status after save <select data-status aria-label="Status after save"><option value="open">Open</option><option value="pending">Pending</option><option value="on-hold">On-hold</option><option value="solved">Solved</option></select></label><label class="review"><input data-public-review type="checkbox"> Public reply reviewed</label><button class="primary" data-save type="button">Save changes</button><button class="secondary" data-json type="button">Export JSON</button><button class="secondary" data-md type="button">Export Markdown</button><output data-state aria-live="polite"></output></section>`;
+    root.querySelector('[data-status]').addEventListener('change',event=>{event.target.dataset.touched='true';refreshWorkflow();});root.querySelector('[data-public-review]').addEventListener('change',refreshWorkflow);root.querySelector('[data-save]').addEventListener('click',saveActive);root.querySelector('[data-json]').addEventListener('click',()=>downloadExport('json'));root.querySelector('[data-md]').addEventListener('click',()=>downloadExport('markdown'));
+    const column=grid.querySelector(':scope > [data-test-id="column-2"]')||grid;column.append(workflowHost);
+    const state=controlState(grid);if(state.mode==='public'&&!(state.composer?.value||state.composer?.textContent||'').trim())chooseNativeMode(grid,'internal').then(refreshWorkflow);
+    state.composer?.addEventListener('input',()=>{const review=workflowUI()?.querySelector('[data-public-review]');if(review)review.checked=false;refreshWorkflow();});refreshWorkflow();
+  }
+  function clearWorkflow(){workflowHost?.remove();workflowHost=null;workflowGrid=null;delete document.documentElement.dataset.zdhTheme;}
   function ticketIdentity(){
     const requester=document.querySelector('[data-test-id="ticket-system-field-requester-select"] input, input[aria-label="Requester"]')?.value?.trim();
     const organization=document.querySelector('[data-test-id="organization_id-field-test-id"]')?.textContent?.trim().replace(/^Org\.\s*/i,'');
@@ -46,7 +92,7 @@
     const grids=[...document.querySelectorAll('[data-test-id^="ticket-"][data-test-id$="-standard-layout"]')];
     for(const grid of grids){
       if(!grid.querySelector(':scope > [data-test-id="column-1"]')||!grid.querySelector(':scope > [data-test-id="column-2"]'))continue;
-      if(layout&&visible(grid)){grid.setAttribute('data-zdh-layout','true');grid.setAttribute('data-zdh-context',String(context));marked.add(grid);}
+      if(layout&&visible(grid)){grid.setAttribute('data-zdh-layout','true');grid.setAttribute('data-zdh-context',String(context));grid.dataset.zdhTheme=theme;document.documentElement.dataset.zdhTheme=theme;marked.add(grid);mountWorkflow(grid);}
       else{grid.removeAttribute('data-zdh-layout');grid.removeAttribute('data-zdh-context');marked.delete(grid);}
     }
     for(const grid of marked)if(!grid.isConnected)marked.delete(grid);
@@ -88,7 +134,7 @@
   // Observe only element additions/removals, not values, text or our attribute updates.
   globalThis.zdTitleHelper={
     configure(options){
-      enabled=true;layout=Boolean(options.layout);context=Boolean(options.context);armed=Boolean(options.manual);manualField=false;
+      enabled=true;layout=Boolean(options.layout);context=Boolean(options.context);theme=['system','calm','contrast'].includes(options.theme)?options.theme:'system';armed=Boolean(options.manual);manualField=false;
       clearWarning();field=null;
       observer.disconnect();sync();observer.observe(document.body,{childList:true,subtree:true});
       if(armed)message('Click the title field to select it. No edits or submissions.');
@@ -97,9 +143,11 @@
     setEnabled(value){
       if(value)return this.configure({layout:false,context:false,manual:true});
       enabled=false;armed=false;manualField=false;observer.disconnect();if(syncFrame)cancelAnimationFrame(syncFrame);syncFrame=0;clearWarning();field=null;
-      for(const grid of marked){grid.removeAttribute('data-zdh-layout');grid.removeAttribute('data-zdh-context');}marked.clear();
+      clearWorkflow();for(const grid of marked){grid.removeAttribute('data-zdh-layout');grid.removeAttribute('data-zdh-context');delete grid.dataset.zdhTheme;}marked.clear();
     }
+    ,saveActive
   };
+  document.addEventListener('keydown',event=>{if(!enabled||event.key!=='Enter'||!event.metaKey||event.ctrlKey||event.repeat||event.isComposing)return;if(!workflowGrid?.contains(event.target))return;event.preventDefault();saveActive();},true);
   const runtime=globalThis.chrome?.runtime;
   runtime?.onMessage?.addListener((message,_sender,sendResponse)=>{
     let result=null;
@@ -113,7 +161,7 @@
   const storage=globalThis.chrome?.storage?.local;
   if(storage?.get)storage.get(defaults,preferences=>{
     if(preferences.enabled===false)globalThis.zdTitleHelper.setEnabled(false);
-    else globalThis.zdTitleHelper.configure({layout:preferences.layout,context:preferences.context,manual:false});
+    else globalThis.zdTitleHelper.configure({layout:preferences.layout,context:preferences.context,theme:preferences.theme,manual:false});
   });
   else globalThis.zdTitleHelper.configure(defaults);
 })();

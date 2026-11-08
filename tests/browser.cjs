@@ -23,10 +23,14 @@ fs.mkdirSync(resultsDir, { recursive: true });
       runtime: { onMessage: { addListener: listener => { globalThis.__zdhMessage = listener; } } }
     };
   });
-  for (const file of ['validator.js', 'content.js']) await page.addScriptTag({ path: path.join(root, file) });
+  for (const file of ['validator.js', 'workflow.js', 'exporter.js', 'content.js']) await page.addScriptTag({ path: path.join(root, file) });
 
   await page.waitForTimeout(0);
   assert.equal(await page.locator('#active-ticket[data-zdh-layout="true"]').count(), 1, 'default startup should enable the visible ticket layout');
+  const workflowBar=page.locator('[data-zdh-workflow="true"]');
+  assert.equal(await workflowBar.count(),1,'active ticket should receive one workflow bar');
+  assert.equal(await page.locator('[data-test-id="omnichannel-channel-switcher-button"]').innerText(),'Internal note','empty composer should default through the native mode control');
+  assert.equal((await page.evaluate(()=>globalThis.__nativeActions)).modeClicks,1);
 
   const disabledPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   await disabledPage.goto(`file://${path.join(__dirname, 'fixtures', 'zendesk-ticket.html')}`);
@@ -37,7 +41,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
       runtime: { onMessage: { addListener: listener => { globalThis.__zdhMessage = listener; } } }
     };
   });
-  for (const file of ['validator.js', 'content.js']) await disabledPage.addScriptTag({ path: path.join(root, file) });
+  for (const file of ['validator.js', 'workflow.js', 'exporter.js', 'content.js']) await disabledPage.addScriptTag({ path: path.join(root, file) });
   await disabledPage.waitForTimeout(0);
   assert.equal(await disabledPage.locator('[data-zdh-layout]').count(), 0, 'stored disabled preference should win over defaults');
   await disabledPage.evaluate(() => globalThis.__zdhMessage({ type: 'zdh-configure', options: { layout: true, context: true, manual: false } }, {}, () => {}));
@@ -63,6 +67,38 @@ fs.mkdirSync(resultsDir, { recursive: true });
   await page.locator('#active-subject').fill('Beluga Sales Inc. - Taylor Baxter - FaceID error');
   await page.locator('#requester').focus();
   assert.equal(await page.locator('#active-subject + [data-zdh-warning]').count(), 0);
+
+  const statusSelect=workflowBar.getByLabel('Status after save');
+  await statusSelect.selectOption('pending');
+  assert.equal(await page.locator('[data-test-id="submit_button-button"]').innerText(),'Submit as Open','draft status must not touch native Zendesk before save');
+  await page.locator('[data-test-id="omnichannel-channel-switcher-button"]').click();
+  await page.locator('[data-test-id="omnichannel-channel-switcher-menu"] button',{hasText:'Public reply'}).click();
+  await page.locator('#reply').fill('A reviewed public test response');
+  await page.evaluate(()=>document.body.append(document.createElement('b')));
+  const helperSave=workflowBar.getByRole('button',{name:'Save changes'});
+  assert.equal(await helperSave.isEnabled(),false,'public reply must be blocked before review');
+  await workflowBar.getByLabel('Public reply reviewed').check();
+  assert.equal(await helperSave.isEnabled(),true);
+  await helperSave.click();
+  assert.deepEqual(await page.evaluate(()=>globalThis.__nativeActions),{modeClicks:2,statusClicks:1,submitClicks:1});
+  assert.equal(await page.locator('[data-test-id="submit_button-button"]').innerText(),'Submit as Pending');
+  assert.equal(await workflowBar.getByRole('button',{name:'Save changes'}).isEnabled(),false,'save lock should prevent duplicate submission');
+  await page.waitForTimeout(1250);
+  await workflowBar.getByLabel('Public reply reviewed').check();
+  await page.locator('#reply').focus();
+  await page.keyboard.press('Meta+Enter');
+  assert.equal((await page.evaluate(()=>globalThis.__nativeActions)).submitClicks,2,'Command-Enter should use the same guarded save path once');
+  const jsonDownload=page.waitForEvent('download');
+  await workflowBar.getByRole('button',{name:'Export JSON'}).click();
+  const jsonFile=await jsonDownload;
+  assert.match(jsonFile.suggestedFilename(),/^ticket-|^\d+-/);
+  assert.equal(JSON.parse(fs.readFileSync(await jsonFile.path(),'utf8')).schemaVersion,1);
+  const markdownDownload=page.waitForEvent('download');
+  await workflowBar.getByRole('button',{name:'Export Markdown'}).click();
+  const markdownFile=await markdownDownload;
+  assert.match(fs.readFileSync(await markdownFile.path(),'utf8'),/Visible content only/);
+  await page.evaluate(() => globalThis.__zdhMessage({ type: 'zdh-configure', options: { layout: true, context: false, theme: 'contrast', manual: false } }, {}, () => {}));
+  assert.equal(await page.locator('#active-ticket').getAttribute('data-zdh-theme'),'contrast');
 
   const checks = await page.evaluate(() => ['', 'Company - Person', 'Company -  - Issue', 'Company - Person - Issue', 'Company - Person - Issue - detail', 'Company - Person - <img src=x onerror=alert(1)>'].map(globalThis.zdTitleFormat));
   assert.deepEqual(checks, [false, false, false, true, true, true]);
@@ -125,6 +161,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
   await page.keyboard.press('Tab');
   await page.keyboard.press('Tab');
   assert.equal(await page.evaluate(() => document.activeElement.id), 'active-subject');
+  await page.keyboard.press('Tab');
   await page.keyboard.press('Tab');
   assert.equal(await page.evaluate(() => document.activeElement.id), 'reply');
 
