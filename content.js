@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   if (globalThis.zdTitleHelper) return;
+  const defaults={enabled:true,layout:true,context:false};
   let enabled=false, armed=false, manualField=false, field=null, host=null, layout=false, context=false, syncFrame=0;
   const marked=new Set();
   function clearWarning(){
@@ -83,4 +84,20 @@
       for(const grid of marked){grid.removeAttribute('data-zdh-layout');grid.removeAttribute('data-zdh-context');}marked.clear();
     }
   };
+  const runtime=globalThis.chrome?.runtime;
+  runtime?.onMessage?.addListener((message,_sender,sendResponse)=>{
+    let result=null;
+    if(message?.type==='zdh-configure')result=globalThis.zdTitleHelper.configure(message.options||defaults);
+    else if(message?.type==='zdh-manual-select')result=globalThis.zdTitleHelper.configure({...defaults,...message.options,manual:true});
+    else if(message?.type==='zdh-set-enabled'){globalThis.zdTitleHelper.setEnabled(Boolean(message.value));result={enabled:Boolean(message.value)};}
+    else return false;
+    sendResponse?.(result);
+    return false;
+  });
+  const storage=globalThis.chrome?.storage?.local;
+  if(storage?.get)storage.get(defaults,preferences=>{
+    if(preferences.enabled===false)globalThis.zdTitleHelper.setEnabled(false);
+    else globalThis.zdTitleHelper.configure({layout:preferences.layout,context:preferences.context,manual:false});
+  });
+  else globalThis.zdTitleHelper.configure(defaults);
 })();

@@ -17,7 +17,34 @@ fs.mkdirSync(resultsDir, { recursive: true });
   page.on('request', request => { if (!request.url().startsWith('file:')) external += 1; });
   await page.goto(`file://${path.join(__dirname, 'fixtures', 'zendesk-ticket.html')}`);
   await page.addStyleTag({ path: path.join(root, 'content.css') });
+  await page.evaluate(() => {
+    globalThis.chrome = {
+      storage: { local: { get: (defaults, callback) => callback(defaults) } },
+      runtime: { onMessage: { addListener: listener => { globalThis.__zdhMessage = listener; } } }
+    };
+  });
   for (const file of ['validator.js', 'content.js']) await page.addScriptTag({ path: path.join(root, file) });
+
+  await page.waitForTimeout(0);
+  assert.equal(await page.locator('#active-ticket[data-zdh-layout="true"]').count(), 1, 'default startup should enable the visible ticket layout');
+
+  const disabledPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  await disabledPage.goto(`file://${path.join(__dirname, 'fixtures', 'zendesk-ticket.html')}`);
+  await disabledPage.addStyleTag({ path: path.join(root, 'content.css') });
+  await disabledPage.evaluate(() => {
+    globalThis.chrome = {
+      storage: { local: { get: (defaults, callback) => callback({ ...defaults, enabled: false }) } },
+      runtime: { onMessage: { addListener: listener => { globalThis.__zdhMessage = listener; } } }
+    };
+  });
+  for (const file of ['validator.js', 'content.js']) await disabledPage.addScriptTag({ path: path.join(root, file) });
+  await disabledPage.waitForTimeout(0);
+  assert.equal(await disabledPage.locator('[data-zdh-layout]').count(), 0, 'stored disabled preference should win over defaults');
+  await disabledPage.evaluate(() => globalThis.__zdhMessage({ type: 'zdh-configure', options: { layout: true, context: true, manual: false } }, {}, () => {}));
+  assert.equal(await disabledPage.locator('#active-ticket[data-zdh-context="true"]').count(), 1);
+  await disabledPage.evaluate(() => globalThis.__zdhMessage({ type: 'zdh-set-enabled', value: false }, {}, () => {}));
+  assert.equal(await disabledPage.locator('[data-zdh-layout]').count(), 0);
+  await disabledPage.close();
 
   const configured = await page.evaluate(() => globalThis.zdTitleHelper.configure({ layout: true, context: false, manual: false }));
   assert.deepEqual(configured, { titleFound: true, layoutFound: true, narrow: false });
