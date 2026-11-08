@@ -13,6 +13,18 @@ assert.deepEqual(workflow.canSave({ mode: 'internal', publicReviewed: false, sta
 assert.equal(workflow.submitLabel('pending'), 'Submit as Pending');
 assert.equal(workflow.submitLabel('on-hold'), 'Submit as On-hold');
 assert.equal(workflow.submitLabel('solved'), 'Submit as Solved');
+assert.equal(workflow.composerHasContent(''), false);
+assert.equal(workflow.composerHasContent(' \u00a0\u200b<br><p> </p>'), false);
+assert.equal(workflow.composerHasContent('<p>Reply body</p>'), true);
+assert.deepEqual(workflow.canSend({ mode: 'internal', publicReviewed: false, composerContent: '<p>Private update</p>', busy: false, nativeReady: true }), { allowed: true, reason: '' });
+assert.deepEqual(workflow.canSend({ mode: 'public', publicReviewed: false, composerContent: 'Customer update', busy: false, nativeReady: true }), { allowed: false, reason: 'Review and confirm the public reply before sending.' });
+assert.deepEqual(workflow.canSend({ mode: 'public', publicReviewed: true, composerContent: 'Customer update', busy: false, nativeReady: true }), { allowed: true, reason: '' });
+assert.deepEqual(workflow.canSend({ mode: 'internal', publicReviewed: false, composerContent: '<br>', busy: false, nativeReady: true }), { allowed: false, reason: 'Write a reply or note before sending.' });
+assert.deepEqual(workflow.canSend({ mode: 'internal', publicReviewed: false, composerContent: 'Update', busy: false, nativeReady: false }), { allowed: false, reason: 'Zendesk send controls are unavailable.' });
+assert.deepEqual(workflow.canSaveProperties({ composerContent: '', status: 'pending', busy: false, nativeReady: true }), { allowed: true, reason: '' });
+assert.deepEqual(workflow.canSaveProperties({ composerContent: '<p>Unsent draft</p>', status: 'open', busy: false, nativeReady: true }), { allowed: false, reason: 'Send or clear the draft before saving ticket properties.' });
+assert.deepEqual(workflow.canSaveProperties({ composerContent: '', status: 'invalid', busy: false, nativeReady: true }), { allowed: false, reason: 'Choose a valid status.' });
+assert.deepEqual(workflow.canSaveProperties({ composerContent: '', status: 'open', busy: false, nativeReady: false }), { allowed: false, reason: 'Zendesk save controls are unavailable.' });
 const lock = workflow.createSaveLock();
 assert.equal(lock.acquire(), true);
 assert.equal(lock.acquire(), false);

@@ -15,6 +15,28 @@
     if (!statuses.has(status)) return '';
     return `Submit as ${status === 'on-hold' ? 'On-hold' : status[0].toUpperCase() + status.slice(1)}`;
   }
+  function composerHasContent(value = '') {
+    return String(value)
+      .replace(/<[^>]*>/g, '')
+      .replace(/&(?:nbsp|#160|#x0*a0);/gi, ' ')
+      .replace(/[\s\u00a0\u200b-\u200d\ufeff]/g, '')
+      .length > 0;
+  }
+  function canSend({ mode, publicReviewed, composerContent, busy, nativeReady }) {
+    if (busy) return { allowed: false, reason: 'A send is already in progress.' };
+    if (!nativeReady) return { allowed: false, reason: 'Zendesk send controls are unavailable.' };
+    if (mode === 'unknown') return { allowed: false, reason: 'Reply mode is unavailable.' };
+    if (!composerHasContent(composerContent)) return { allowed: false, reason: 'Write a reply or note before sending.' };
+    if (mode === 'public' && !publicReviewed) return { allowed: false, reason: 'Review and confirm the public reply before sending.' };
+    return { allowed: true, reason: '' };
+  }
+  function canSaveProperties({ composerContent, status, busy, nativeReady }) {
+    if (busy) return { allowed: false, reason: 'A save is already in progress.' };
+    if (!nativeReady) return { allowed: false, reason: 'Zendesk save controls are unavailable.' };
+    if (!statuses.has(status)) return { allowed: false, reason: 'Choose a valid status.' };
+    if (composerHasContent(composerContent)) return { allowed: false, reason: 'Send or clear the draft before saving ticket properties.' };
+    return { allowed: true, reason: '' };
+  }
   function canSave({ mode, publicReviewed, status, busy, nativeReady }) {
     if (busy) return { allowed: false, reason: 'A save is already in progress.' };
     if (!nativeReady) return { allowed: false, reason: 'Zendesk save controls are unavailable.' };
@@ -31,6 +53,6 @@
       get busy() { return busy; }
     };
   }
-  return { statuses, normalizeMode, submitLabel, canSave, createSaveLock };
+  return { statuses, normalizeMode, submitLabel, composerHasContent, canSend, canSaveProperties, canSave, createSaveLock };
 });
 
