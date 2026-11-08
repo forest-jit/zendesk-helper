@@ -2,48 +2,94 @@
 /* Hallmark · pre-emit critique: P4 H4 E4 S5 R5 V4 · weakest: E, broad host selectors could disrupt Zendesk; scoped every rule to data-zdh-layout and kept native controls */
 
 :root {
-  --zdh-font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --zdh-color-canvas: oklch(97% 0.006 235);
-  --zdh-color-surface: oklch(99% 0.004 235);
-  --zdh-color-surface-subtle: oklch(95% 0.009 235);
-  --zdh-color-ink: oklch(24% 0.018 235);
-  --zdh-color-rule: oklch(84% 0.015 235);
-  --zdh-color-field-edge: oklch(56% 0.035 235);
+  --zdh-font-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --zdh-color-canvas: #f4f7f8;
+  --zdh-color-surface: #fbfdfe;
+  --zdh-color-surface-raised: #fdfefe;
+  --zdh-color-surface-subtle: #edf2f4;
+  --zdh-color-input: #fdfefe;
+  --zdh-color-ink: #17252d;
+  --zdh-color-muted: #526871;
+  --zdh-color-rule: #cbd7dc;
+  --zdh-color-field-edge: #78909a;
+  --zdh-color-accent: #17667a;
+  --zdh-color-on-accent: #ffffff;
+  --zdh-color-focus: #087ea4;
+  --zdh-priority-low: #647781;
+  --zdh-priority-normal: #1f78b4;
+  --zdh-priority-high: #b56b00;
+  --zdh-priority-urgent: #c43d3d;
+  --zdh-preview-shadow: rgb(24 39 48 / 22%);
+  --zdh-lightbox-scrim: rgb(14 25 31 / 78%);
+  --zdh-lightbox-shadow: rgb(0 0 0 / 35%);
+  --zdh-calm-canvas: #eaf1f2;
+  --zdh-calm-surface: #f8fbfb;
+  --zdh-calm-surface-raised: #f1f6f6;
+  --zdh-calm-surface-subtle: #dfeaec;
+  --zdh-calm-input: #fbfdfd;
+  --zdh-calm-ink: #1c3036;
+  --zdh-calm-muted: #536c73;
+  --zdh-calm-rule: #aec3c8;
+  --zdh-calm-field-edge: #78969e;
+  --zdh-calm-accent: #2d6971;
+  --zdh-calm-focus: #087b8c;
+  --zdh-contrast-canvas: #e8ecee;
+  --zdh-contrast-surface: #fbfdfe;
+  --zdh-contrast-surface-raised: #fdfefe;
+  --zdh-contrast-surface-subtle: #dce3e6;
+  --zdh-contrast-input: #fdfefe;
+  --zdh-contrast-ink: #071217;
+  --zdh-contrast-muted: #283d46;
+  --zdh-contrast-rule: #536770;
+  --zdh-contrast-field-edge: #263a43;
+  --zdh-contrast-accent: #004f66;
+  --zdh-contrast-focus: #d04400;
+  --zdh-space-2xs: 4px;
   --zdh-space-xs: 8px;
   --zdh-space-sm: 12px;
   --zdh-space-md: 16px;
   --zdh-space-lg: 24px;
   --zdh-properties-width: 360px;
   --zdh-context-width: 280px;
-  --zdh-calm-canvas: oklch(95% 0.014 225);
-  --zdh-calm-surface-subtle: oklch(92% 0.018 225);
-  --zdh-calm-rule: oklch(76% 0.028 225);
-  --zdh-contrast-canvas: #f4f6f7;
-  --zdh-contrast-surface: #fff;
-  --zdh-contrast-surface-subtle: #e7ecef;
-  --zdh-contrast-ink: #101820;
-  --zdh-contrast-rule: #536570;
-  --zdh-contrast-field-edge: #263740;
 }
 
 :root[data-zdh-theme="calm"] {
   --zdh-color-canvas: var(--zdh-calm-canvas);
+  --zdh-color-surface: var(--zdh-calm-surface);
+  --zdh-color-surface-raised: var(--zdh-calm-surface-raised);
   --zdh-color-surface-subtle: var(--zdh-calm-surface-subtle);
+  --zdh-color-input: var(--zdh-calm-input);
+  --zdh-color-ink: var(--zdh-calm-ink);
+  --zdh-color-muted: var(--zdh-calm-muted);
   --zdh-color-rule: var(--zdh-calm-rule);
+  --zdh-color-field-edge: var(--zdh-calm-field-edge);
+  --zdh-color-accent: var(--zdh-calm-accent);
+  --zdh-color-focus: var(--zdh-calm-focus);
 }
 
 :root[data-zdh-theme="contrast"] {
   --zdh-color-canvas: var(--zdh-contrast-canvas);
   --zdh-color-surface: var(--zdh-contrast-surface);
+  --zdh-color-surface-raised: var(--zdh-contrast-surface-raised);
   --zdh-color-surface-subtle: var(--zdh-contrast-surface-subtle);
+  --zdh-color-input: var(--zdh-contrast-input);
   --zdh-color-ink: var(--zdh-contrast-ink);
+  --zdh-color-muted: var(--zdh-contrast-muted);
   --zdh-color-rule: var(--zdh-contrast-rule);
   --zdh-color-field-edge: var(--zdh-contrast-field-edge);
+  --zdh-color-accent: var(--zdh-contrast-accent);
+  --zdh-color-focus: var(--zdh-contrast-focus);
 }
 
 html,
 body {
   overflow-x: clip;
+}
+
+:root[data-zdh-theme] body {
+  background: var(--zdh-color-canvas) !important;
+  color: var(--zdh-color-ink) !important;
+  font-family: var(--zdh-font-body) !important;
 }
 
 @media (min-width: 1000px) {
@@ -58,6 +104,8 @@ body {
     grid-row: 1 !important;
     min-width: 0 !important;
     background: var(--zdh-color-surface) !important;
+    color: var(--zdh-color-ink) !important;
+    font-family: var(--zdh-font-body) !important;
   }
 
   [data-zdh-layout="true"] > [data-test-id="column-1"] {
@@ -102,6 +150,31 @@ body {
   [data-zdh-page-scroll="true"] > [data-test-id="column-1"] {
     position: static !important;
     align-self: start !important;
+  }
+
+  [data-zdh-layout="true"] :is(input,textarea,select) {
+    border: 1px solid var(--zdh-color-field-edge) !important;
+    border-radius: 8px !important;
+    background: var(--zdh-color-input) !important;
+    color: var(--zdh-color-ink) !important;
+    font-family: var(--zdh-font-body) !important;
+  }
+
+  [data-zdh-layout="true"] :is(input,textarea,select,button):focus-visible {
+    outline: 3px solid var(--zdh-color-focus) !important;
+    outline-offset: 2px !important;
+  }
+
+  [data-zdh-layout="true"] :is(article,.message) {
+    border-color: var(--zdh-color-rule) !important;
+    color: var(--zdh-color-ink) !important;
+  }
+
+  [data-zdh-layout="true"] [data-test-id*="composer"],
+  [data-zdh-layout="true"] .composer {
+    background: var(--zdh-color-surface-raised) !important;
+    border-color: var(--zdh-color-rule) !important;
+    border-radius: 12px !important;
   }
 
 }
@@ -157,7 +230,7 @@ body {
   opacity: 0;
   border-radius: 12px;
   background: var(--zdh-color-surface);
-  box-shadow: 0 14px 36px rgb(24 39 48 / 22%);
+  box-shadow: 0 14px 36px var(--zdh-preview-shadow);
   pointer-events: none;
   transition: opacity 140ms ease-out;
 }
@@ -172,11 +245,14 @@ body {
   display: grid;
   place-items: center;
   padding: 56px;
-  background: rgb(14 25 31 / 78%);
+  background: var(--zdh-lightbox-scrim);
 }
 
-[data-zdh-image-lightbox] img { max-width: min(1100px, 92vw); max-height: 82vh; border-radius: 12px; box-shadow: 0 24px 64px rgb(0 0 0 / 35%); }
-[data-zdh-image-lightbox] button { position: absolute; top: 18px; right: 18px; min-height: 40px; padding: 0 14px; border: 0; border-radius: 8px; background: white; color: #17252d; font: 600 14px/1 var(--zdh-font-body); cursor: pointer; }
+[data-zdh-image-lightbox] img { max-width: min(1100px, 92vw); max-height: 82vh; border-radius: 12px; box-shadow: 0 24px 64px var(--zdh-lightbox-shadow); }
+[data-zdh-image-lightbox] button { position: absolute; top: 18px; right: 18px; min-height: 40px; padding: 0 16px; border: 0; border-radius: 8px; background: var(--zdh-color-surface); color: var(--zdh-color-ink); font: 600 14px/1 var(--zdh-font-body); cursor: pointer; }
+
+[data-zdh-conversation-disclosure]:active,
+[data-zdh-image-lightbox] button:active { filter: brightness(.92); }
 
 [data-test-id="views_views-pane_content"] {
   background: var(--zdh-color-canvas) !important;

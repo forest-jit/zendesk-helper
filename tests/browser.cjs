@@ -18,8 +18,9 @@ fs.mkdirSync(resultsDir, { recursive: true });
   await page.goto(`file://${path.join(__dirname, 'fixtures', 'zendesk-ticket.html')}`);
   await page.addStyleTag({ path: path.join(root, 'content.css') });
   await page.evaluate(() => {
+    globalThis.__storedPreferences={};
     globalThis.chrome = {
-      storage: { local: { get: (defaults, callback) => callback(defaults) } },
+      storage: { local: { get: (defaults, callback) => callback({ ...defaults, ...globalThis.__storedPreferences }), set: (values, callback) => { Object.assign(globalThis.__storedPreferences,values); callback?.(); } } },
       runtime: { onMessage: { addListener: listener => { globalThis.__zdhMessage = listener; } } }
     };
   });
@@ -147,6 +148,27 @@ fs.mkdirSync(resultsDir, { recursive: true });
   assert.match(fs.readFileSync(await markdownFile.path(),'utf8'),/Visible content only/);
   await page.evaluate(() => globalThis.__zdhMessage({ type: 'zdh-configure', options: { layout: true, context: false, theme: 'contrast', manual: false } }, {}, () => {}));
   assert.equal(await page.locator('#active-ticket').getAttribute('data-zdh-theme'),'contrast');
+  const appearance=propertiesActions.locator('[data-zdh-appearance]');
+  assert.equal(await appearance.count(),1,'theme must be discoverable in the workspace');
+  assert.equal(await appearance.inputValue(),'contrast','workspace appearance must mirror popup configuration');
+  const styledSurfaces=async()=>page.evaluate(()=>{const read=selector=>{const style=getComputedStyle(document.querySelector(selector));return [style.backgroundColor,style.color,style.borderColor,style.borderRadius,style.fontFamily]};return [read('#active-ticket'),read('#conversation'),read('#properties'),read('#active-subject'),read('#reply')];});
+  const contrastSurfaces=await styledSurfaces();
+  await appearance.selectOption('calm');
+  await page.waitForTimeout(20);
+  assert.equal(await page.locator('#active-ticket').getAttribute('data-zdh-theme'),'calm');
+  assert.equal(await page.evaluate(()=>globalThis.__storedPreferences.theme),'calm');
+  const calmSurfaces=await styledSurfaces();
+  assert.notDeepEqual(calmSurfaces,contrastSurfaces,'themes must change the complete ticket workspace');
+  assert.equal(await page.locator('[data-test-id="ticket-111-standard-layout"][data-zdh-theme]').count(),0,'inactive tickets must remain unthemed');
+  const priorityDot=propertiesActions.locator('[data-priority-dot]');
+  const priorityColors=[];
+  for(const priority of ['low','normal','high','urgent']){
+    await page.locator('#priority').selectOption({label:priority[0].toUpperCase()+priority.slice(1)});
+    await page.waitForTimeout(20);
+    assert.equal(await priorityDot.getAttribute('data-priority'),priority);
+    priorityColors.push(await priorityDot.evaluate(element=>getComputedStyle(element).backgroundColor));
+  }
+  assert.equal(new Set(priorityColors).size,4,'each priority needs a distinct semantic color');
 
   const checks = await page.evaluate(() => ['', 'Company - Person', 'Company -  - Issue', 'Company - Person - Issue', 'Company - Person - Issue - detail', 'Company - Person - <img src=x onerror=alert(1)>'].map(globalThis.zdTitleFormat));
   assert.deepEqual(checks, [false, false, false, true, true, true]);
@@ -203,7 +225,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
   await page.evaluate(() => { document.body.tabIndex = -1; document.body.focus(); });
   await page.keyboard.press('Tab');
   assert.equal(await page.evaluate(() => document.activeElement.id), 'requester');
-  assert.equal(await page.locator('#requester').evaluate(element => getComputedStyle(element).outlineStyle), 'dashed');
+  assert.notEqual(await page.locator('#requester').evaluate(element => getComputedStyle(element).outlineStyle), 'none');
   assert.equal(await page.locator('#requester').evaluate(element => getComputedStyle(element).outlineWidth), '3px');
   for(let i=0;i<12&&await page.evaluate(()=>document.activeElement.id!=='active-subject');i++)await page.keyboard.press('Tab');
   assert.equal(await page.evaluate(() => document.activeElement.id), 'active-subject');
