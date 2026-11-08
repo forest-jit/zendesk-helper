@@ -17,7 +17,8 @@
     organization: '[data-test-id="organization_id-field-test-id"]',
     priority: '[data-test-id="ticket-fields-priority-view"],[aria-label="Priority"],select#priority',
     sla: '[data-test-id*="sla"],[aria-label*="SLA" i]',
-    conversationLog: '[data-test-id="conversation-log"],[aria-label="Conversation log"],.conversation-log'
+    conversationLog: '[data-test-id="conversation-log"],[aria-label="Conversation log"],.conversation-log',
+    conversationEntry: '[data-test-id="omni-log-comment-item"],article.message,[data-zdh-export-comment]'
   };
   const isVisible = node => {
     if (!node?.isConnected || node.closest('[hidden],[aria-hidden="true"]')) return false;

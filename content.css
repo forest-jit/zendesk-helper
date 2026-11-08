@@ -236,7 +236,7 @@ body {
 }
 
 [data-zdh-image-preview] img { display: block; width: 100%; height: auto; border-radius: 8px; }
-[data-zdh-message-image="true"]:is(:hover,:focus,:focus-visible) + [data-zdh-image-preview] { visibility: visible; opacity: 1; }
+[data-zdh-preview-trigger]:is(:hover,:focus,:focus-visible) + [data-zdh-image-preview] { visibility: visible; opacity: 1; }
 
 [data-zdh-image-lightbox] {
   position: fixed;
