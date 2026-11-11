@@ -4,7 +4,7 @@
 
 ## In progress
 
-- [ ] **T49 — Tagged GitHub releases.** Version-matched tags run checks, build ZIPs/checksums and create a draft release. Verify the first v0.7.7 run. Chrome Web Store upload remains separate until a listing and credentials exist.
+None.
 
 ## Next — needs another person
 
@@ -20,6 +20,8 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 - [ ] **T09 — Organization rollout.** v0.7.7 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are ready locally (docs/release/START_HERE.md). Publisher ownership/contact confirmation, account setup, policy hosting, approved reviewer access and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
 
 ## Done
+
+- [x] **T49 — Tagged GitHub releases.** v0.7.7 tag points to a7faec9. Prepare tagged release run 43077707696 passed build/preflight/checksum/draft jobs; authenticated release inspection confirms draft with both ZIPs and both checksums. Version mismatch/malformed tag tests pass. Docs explain next tags and private draft visibility. Runtime unchanged; no Web Store submission, credentials or Pages deployment.
 
 - [x] **T48 — Feature-based source layout and Chrome standards, v0.7.7.** Runtime grouped under src; extracted readable control CSS; source map/code tour and Chrome/Web Store record updated. Added ESLint recommended rules, syntax/resource gates and read-only CI. Dynamic Harvest registrations migrate old script paths. Local aggregate, formatting, store preflight and dependency audit pass. Actual Chrome loaded version/source/Reloaded; popup/help, temporary theme preview and rollback, Status menu, Midnight/Blush and Harvest checked. Current internal draft retained, public buffer restored empty after carry test; Save disabled, no ticket save/send/time entry. Evidence: current chat outputs/reorg-077.
 

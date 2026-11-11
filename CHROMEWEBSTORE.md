@@ -80,7 +80,7 @@ Private pilot for designated trusted testers. Do not substitute Unlisted for acc
 
 ## Release automation
 
-Pushing a version tag runs the automated checks, validates matching manifest/package/lockfile versions, builds store/development ZIPs and checksums, then creates a draft GitHub release. See [tagged release instructions](docs/release/TAGGED_RELEASES.md). No Chrome Web Store upload/submission credentials are configured. The first store item still requires dashboard setup; future API submission can be connected after that.
+Pushing a version tag runs the automated checks, validates matching manifest/package/lockfile versions, builds store/development ZIPs and checksums, then creates a draft GitHub release. See [tagged release instructions](docs/release/TAGGED_RELEASES.md). The first v0.7.7 tagged build passed on GitHub and its draft contains both ZIPs and checksums. No Chrome Web Store upload/submission credentials are configured. The first store item still requires dashboard setup; future API submission can be connected after that.
 
 ## Version history
 
