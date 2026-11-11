@@ -40,11 +40,11 @@ This is a private pilot, independently developed and not an official Zendesk or 
 
 Publisher display name: **forest**. Contact: **forest.r.welch@gmail.com**. Both remain proposed public values pending owner confirmation. Repository: https://github.com/forest-jit/zendesk-helper.
 
-Homepage: https://github.com/forest-jit/zendesk-helper. Support: https://github.com/forest-jit/zendesk-helper/issues (issues enabled). Both are saved in the listing. The privacy policy URL is not hosted/verified yet. See [hosting steps](docs/release/GITHUB_HOSTING.md). Account ownership, trader declaration, company-approved reviewer access and Google certifications remain owner steps.
+Homepage: https://github.com/forest-jit/zendesk-helper. Support: https://github.com/forest-jit/zendesk-helper/issues (issues enabled). Both are saved in the listing. Privacy policy URL: https://github.com/forest-jit/zendesk-helper/blob/main/docs/release/PRIVACY.md (publicly readable without sign-in; saved in the Privacy form). See [hosting steps](docs/release/GITHUB_HOSTING.md). Account ownership, trader declaration, company-approved reviewer access and Google certifications remain owner steps.
 
 ## Single purpose and permission justifications
 
-Customize the Jones IT Zendesk agent workspace to make reading tickets and completing normal reply/field workflows easier, with local preferences and optional local exports.
+Make the Jones IT Zendesk agent workspace easier to read and use by improving ticket conversations, reply drafts and ticket-field controls.
 
 ## Permission explanations
 
@@ -108,3 +108,27 @@ Store item ID: `bbhdbfdfidlfihbbohohdndpppibgogf`. Publisher ID in the dashboard
 Saved and reloaded: the detailed description above, Workflow & Planning category, English, store icon, three screenshots, small promo tile and GitHub homepage/support links. Title and summary come from the uploaded package and already match this record. No promo video, marquee tile or verified Official URL was invented. Save confirmation read “Item saved.”
 
 Only Store Listing was completed. Privacy disclosures/certifications, policy hosting, Distribution and reviewer access remain outside this pass. The uploaded package itself was not replaced or audited during listing edits. The item remains a draft; Submit for review was not clicked. Evidence is local to the current chat outputs/store-listing.
+
+## Privacy draft, November 11, 2026
+
+Saved and refreshed successfully: single purpose, storage/downloads/scripting/host explanations, four data categories and the existing public GitHub policy URL. No separate site deployment was needed. The three publisher certifications remain unchecked; no submission occurred.
+
+### storage justification
+
+Keep preferences and custom themes in this Chrome profile. Store local recovery copies of unsent reply drafts during field saves and reply-mode transfers so interrupted or conflicting operations can be recovered. Session storage holds unsaved theme-editor settings. There is no publisher server or settings account.
+
+### downloads justification
+
+Save raw ticket exports and draft recovery copies to the user’s computer when requested. Exports can include rendered messages and accessible image data. The background worker checks the specific extension-created download for completion; it does not scan unrelated downloaded file contents.
+
+### scripting justification
+
+Optional permission for Harvest styling. After the user enables Harvest styling and grants access, register the packaged theme scripts and stylesheet for the embedded Harvest timer. Remove them when styling is disabled or permission is revoked. No remote scripts are loaded and no timer fields or entries are changed.
+
+### Host permission justification
+
+On https://itjones.zendesk.com/agent/*, read the active ticket interface to provide conversation controls, draft protection, ticket-field actions, copy/export and themes. User-requested saves and sends use Zendesk’s native controls. Optional https://platform.harvestapp.com/* access styles only the embedded timer after consent; runtime checks restrict it to the Zendesk timer context. It does not read or change Harvest project, task, notes, duration or timer values. No general all-sites or browsing-history access.
+
+Selected categories: Personally identifiable information, Personal communications, User activity and Website content. User activity covers native activity indicators and interactions needed for workspace features, not general monitoring. No dedicated health, finance, credentials, location or browser-history collection is implemented; these were left unchecked in the draft. Raw messages/exports do not filter incidental sensitive content, so the owner must review applicable categories against actual pilot use before certifying.
+
+Publisher action: review the policy and category choices, then make the three declarations about sale/transfer, use limited to the single purpose, and no creditworthiness/lending use. These declarations were not accepted on the owner’s behalf. Current form did not show a separate remote-code control; packaged-code/no-remote-code details remain above. Evidence: current chat outputs/store-privacy.

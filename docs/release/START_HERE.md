@@ -1,6 +1,6 @@
 # Private release: what is ready
 
-Source is on GitHub. Store Listing is saved as a dashboard draft with description, category/language, images and GitHub links. Privacy/distribution/reviewer setup is still pending. The extension has not been submitted for review, and the policy site has not been deployed.
+Source is on GitHub. Store Listing is saved as a dashboard draft with description, category/language, images and GitHub links. Privacy explanations, data selections and the public GitHub policy URL are also saved. Publisher certifications, distribution and reviewer setup remain pending. The extension has not been submitted for review, and the policy site has not been deployed.
 
 ## Files to use
 
@@ -18,7 +18,7 @@ Use the matching `zendesk-helper-0.7.7-store.zip` and checksum in this chat's ou
 ## You need to handle these five things
 
 1. **Ownership/account:** confirm “forest” as display name, whether your or the company's publisher account owns the extension, and whether the supplied Gmail should be public. Register/verify the account, pay the registration fee and make the truthful trader declaration. Legal information may be public depending on the required verification.
-2. **Hosting:** approve the policy and upload `site/` to an accessible HTTPS location, such as an approved GitHub Pages site. Record the actual homepage, policy and support URLs in CHROMEWEBSTORE.md at the repository root. A private repository alone does not provide a publicly readable policy URL.
+2. **Policy review:** the existing GitHub policy page is publicly readable and saved as the policy URL. Review its content, the selected data categories and the three publisher certifications. A separate Pages website remains optional. Keep the policy URL public and update CHROMEWEBSTORE.md if it changes.
 3. **Reviewer access:** arrange a company-approved synthetic Zendesk environment/account and MFA/access instructions. Fill REVIEWER.md through the dashboard's secure field. Never add passwords to GitHub or this release packet.
 4. **Pilot sign-off:** choose tester Google accounts; arrange the outstanding coworker presence and assistive-technology checks from TASKS.md. Confirm company approval for this authenticated tool and its local data practices.
 5. **Submit:** upload the ZIP/assets, copy the listing/disclosures, choose Private and submit for review. Review all certifications yourself. After approval, install the store copy in a clean test profile; plan migration and disable duplicate unpacked copies.

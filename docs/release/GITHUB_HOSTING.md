@@ -2,6 +2,8 @@
 
 GitHub stores the source. **GitHub Pages serves the homepage, privacy policy and support page.** Chrome Web Store handles extension installation and automatic updates; Pages does not replace it.
 
+The current privacy policy is already publicly readable at https://github.com/forest-jit/zendesk-helper/blob/main/docs/release/PRIVACY.md and is saved in the store privacy draft. A Pages site is optional; the instructions below apply if you want a separate information website.
+
 ## What you need
 
 - Repository: https://github.com/forest-jit/zendesk-helper (public). You need permission to push or open a pull request, plus admin/maintainer access for Pages configuration.
@@ -16,8 +18,8 @@ No custom domain is required. A normal project URL looks like `https://ORGANIZAT
 1. Review the three pages in `docs/release/site/`, the policy in `docs/release/PRIVACY.md`, and the contact values in `scripts/build_release_site.py`. Confirm who owns the publisher account. Do not push raw ticket exports, audit screenshots, credentials or reviewer access details to a public repository.
 2. Push the approved source and `.github/workflows/pages.yml` to the company's repository through its normal review process. The workflow must be on the default branch to appear for manual runs. Do not push this whole dirty checkout without reviewing what is included.
 3. In **Settings → Pages → Build and deployment**, choose **GitHub Actions**. An administrator may need to enable Pages/Actions or approve the `github-pages` environment first.
-4. In **Actions → Publish extension information pages**, choose **Run workflow** on the approved default branch. The workflow builds and publishes only `index.html`, `src/guide/privacy.html` and `support.html`. It does not deploy the repository, customer evidence, submission notes or extension ZIP.
-5. Open the resulting homepage, `/src/guide/privacy.html` and `/support.html` in a signed-out browser. Verify they work over HTTPS without SSO. Add the final URLs to LISTING.md and the store dashboard.
+4. In **Actions → Publish extension information pages**, choose **Run workflow** on the approved default branch. The workflow builds and publishes only `index.html`, `privacy.html` and `support.html`. It does not deploy the repository, customer evidence, submission notes or extension ZIP.
+5. Open the resulting homepage, `/privacy.html` and `/support.html` in a signed-out browser. Verify they work over HTTPS without SSO. Add the final URLs to CHROMEWEBSTORE.md and the store dashboard.
 
 The workflow is manual. A push alone does not publish; after a reviewed policy/site change, run it again. It uses GitHub's Pages environment and short-lived workflow token, not a personal access token. Review the official action versions against your organization's allowlist.
 
