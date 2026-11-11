@@ -21,7 +21,7 @@ A draft is visible to repository collaborators, not ordinary visitors. Clicking 
 
    ```sh
    git push origin main
-   git tag -a v0.7.8 -m "Zendesk Helper 0.7.8"
+   git tag -a v0.7.8 -m "Jones IT Zendesk Helper 0.7.8"
    git push origin v0.7.8
    ```
 

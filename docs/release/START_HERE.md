@@ -13,7 +13,7 @@ Source is on GitHub. Store Listing is saved as a dashboard draft with descriptio
 | Icons, screenshot provenance and image sizes | ASSETS.md |
 | Company GitHub / Pages setup | GITHUB_HOSTING.md |
 
-Use the matching `zendesk-helper-0.7.7-store.zip` and checksum in this chat's outputs folder for the dashboard. The separate development ZIP also includes local-processing instructions/tooling. Store artwork and policy pages are outside the extension ZIP. The runtime icon files are inside it. `docs/CODE_TOUR.md` is the reading guide for the source.
+Use the matching `zendesk-helper-0.7.8-store.zip` and checksum in this chat's outputs folder for the dashboard. The separate development ZIP also includes local-processing instructions/tooling. Store artwork and policy pages are outside the extension ZIP. The runtime icon files are inside it. `docs/CODE_TOUR.md` is the reading guide for the source.
 
 ## You need to handle these five things
 

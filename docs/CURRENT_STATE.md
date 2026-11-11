@@ -2,7 +2,7 @@
 
 ## Installed build
 
-v0.7.7 loaded in actual Chrome from `~/Projects/zendesk-helper`; version, source and Reloaded confirmation checked. Runtime files now live under `src/` by responsibility. Keep loading this same repository root: `manifest.json` remains there. No added permissions. Chrome 114+ is now explicit because Status uses the native Popover API.
+v0.7.8 loaded in actual Chrome from `~/Projects/zendesk-helper`; version, source and Reloaded confirmation checked. The installed name is now Jones IT Zendesk Helper. Runtime files live under `src/` by responsibility. Keep loading this same repository root: `manifest.json` remains there. No added permissions. Chrome 114+ is now explicit because Status uses the native Popover API.
 
 Start reading at `src/README.md`, then `docs/CODE_TOUR.md`. `docs/DEVELOPMENT.md` explains checks, execution contexts and path bases. The guarded save coordinator remains in `src/content/index.js`; its control CSS is separate. This pass does not claim a full state-machine rewrite or a security/accessibility certification.
 
@@ -15,6 +15,8 @@ Actual Chrome checked the moved popup and feature guide, temporary custom previe
 Earlier acceptance still covers Closed/Unavailable status, short headers, received-email contrast, quote/image lifecycle, quiet feedback and hover/keyboard Copy. A native second-agent test and screen-reader walkthrough remain open in TASKS.md. Do not treat unknown presence as nobody else working.
 
 ## Release and repository
+
+Renamed current extension UI, policy, guides, release tooling and artwork to Jones IT Zendesk Helper. Metadata/package/lock versions match 0.7.8. Internal IDs, storage keys, repo and ZIP prefixes are unchanged. Aggregate checks and store preflight pass. Actual Chrome version/source/Reloaded and renamed live popup verified. New runtime ZIP uploaded to the existing store draft; listing image replacements are awaiting the browser’s removal confirmation. No review submission. Historical task/release evidence and prior tags retain their original names.
 
 Origin is `https://github.com/forest-jit/zendesk-helper.git`; source is public. Exclude ignored customer audits, historical evidence and raw exports from all source uploads. `CHROMEWEBSTORE.md` is the single store-field/readiness record; start with `docs/release/START_HERE.md` for owner steps.
 

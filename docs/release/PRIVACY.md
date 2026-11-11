@@ -1,11 +1,11 @@
-# Zendesk Helper privacy policy
+# Jones IT Zendesk Helper privacy policy
 
 Last updated: November 11, 2026
 
 Publisher display name: forest  
 Privacy and support contact: forest.r.welch@gmail.com
 
-Zendesk Helper adds reading controls, reply shortcuts and ticket tools to the Jones IT Zendesk workspace. It protects drafts during field saves and copies or exports ticket information when you ask. It works on `itjones.zendesk.com/agent/` pages. You can also choose to style the Harvest timer embedded there.
+Jones IT Zendesk Helper adds reading controls, reply shortcuts and ticket tools to the Jones IT Zendesk workspace. It protects drafts during field saves and copies or exports ticket information when you ask. It works on `itjones.zendesk.com/agent/` pages. You can also choose to style the Harvest timer embedded there.
 
 ## What the extension reads
 

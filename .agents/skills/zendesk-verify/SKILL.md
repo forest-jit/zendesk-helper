@@ -1,6 +1,6 @@
 ---
 name: zendesk-verify
-description: Verify Zendesk Helper extension changes with focused local checks and live Chrome evidence. Use for ticket UI, composer, status, scrolling, title, or conversation behavior changes; not documentation-only edits.
+description: Verify Jones IT Zendesk Helper extension changes with focused local checks and live Chrome evidence. Use for ticket UI, composer, status, scrolling, title, or conversation behavior changes; not documentation-only edits.
 ---
 
 Define the observable acceptance condition for the changed behavior. Inspect existing tests and add a regression only when it covers a meaningful failure; do not rebuild fixtures for every visual tweak.

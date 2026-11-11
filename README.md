@@ -1,4 +1,4 @@
-# Zendesk Helper
+# Jones IT Zendesk Helper
 
 A local Chrome extension that adjusts the Jones IT Zendesk interface. It loads automatically on `https://itjones.zendesk.com/agent/*`.
 

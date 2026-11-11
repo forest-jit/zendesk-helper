@@ -6,7 +6,7 @@ This is a local prototype for Jones IT Zendesk. The release zip contains the ext
 
 1. Unzip the release to a stable folder. Each person keeps their own Chrome preferences and custom themes.
 2. In Chrome, open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select the unzipped folder.
-3. Refresh Zendesk once. Pin **Zendesk Helper settings** if desired. The popup's single **On / Off** switch controls the helper; settings save immediately.
+3. Refresh Zendesk once. Pin **Jones IT Zendesk Helper settings** if desired. The popup's single **On / Off** switch controls the helper; settings save immediately.
 4. Harvest theming is optional. Enabling it asks for access to its embedded timer origin. Without that choice, Harvest keeps its own colors.
 5. To update, replace files in that folder, reload the extension in Chrome, and refresh Zendesk after protecting any drafts. Verify the loaded version. To roll back, load the preceding release folder and refresh.
 

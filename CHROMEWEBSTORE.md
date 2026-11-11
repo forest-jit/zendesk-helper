@@ -1,10 +1,10 @@
-# Chrome Web Store — Zendesk Helper
+# Chrome Web Store — Jones IT Zendesk Helper
 
-Last updated: November 11, 2026. Release version 0.7.7. The Store Listing draft is saved in the dashboard; nothing has been submitted for review.
+Last updated: November 11, 2026. Release version 0.7.8. The Store Listing draft is saved in the dashboard; nothing has been submitted for review.
 
 ## Store listing
 
-- **Name:** Zendesk Helper
+- **Name:** Jones IT Zendesk Helper
 - **Publisher display name:** forest
 - **Summary:** A collection of tools and improvements for Jones IT Zendesk: conversation controls, draft protection and ticket actions.
 - **Category:** Workflow & Planning (under Productivity).
@@ -12,7 +12,7 @@ Last updated: November 11, 2026. Release version 0.7.7. The Store Listing draft 
 
 ## Detailed description
 
-Zendesk Helper is a collection of tools and improvements for working in Jones IT Zendesk. It works only on itjones.zendesk.com agent pages and requires an authorized account.
+Jones IT Zendesk Helper is a collection of tools and improvements for working in Jones IT Zendesk. It works only on itjones.zendesk.com agent pages and requires an authorized account.
 
 WHAT YOU CAN DO
 • Read long tickets: show the latest five messages or expand the loaded history. Collapse supported quoted email threads, simplify bulky email layouts and open images from compact previews.
@@ -94,6 +94,7 @@ Pushing a version tag runs the automated checks, validates matching manifest/pac
 
 | Version | Date | Change | Store status |
 | --- | --- | --- | --- |
+|0.7.8|2026-11-11|Renamed to Jones IT Zendesk Helper across extension, policy, guide and listing artwork; same scope and permissions|Draft|
 |0.7.7|2026-11-11|Feature-based src layout, readable control styles, lint/resource/CI checks, migrated Harvest registration paths; no new permissions|Draft|
 |0.7.6|2026-11-11|Removed desktop column divider; source pushed to GitHub|Not submitted|
 

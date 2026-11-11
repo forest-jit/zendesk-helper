@@ -1,4 +1,4 @@
-# Zendesk Helper design baseline
+# Jones IT Zendesk Helper design baseline
 
 Operate mode: scan the ticket, read messages, reply, adjust properties. Zendesk's native structure and font remain the visual authority.
 

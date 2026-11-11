@@ -1,8 +1,8 @@
 {
   "name": "zendesk-helper",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "private": true,
-  "description": "Local development and synthetic tests for the Zendesk Helper Chrome extension.",
+  "description": "Local development and synthetic tests for the Jones IT Zendesk Helper Chrome extension.",
   "scripts": {
     "check": "npm run check:syntax && npm run lint && npm run test:resources && npm run test:manifest && npm run test:workflow && npm run test:local && npm run test:downloads && npm run test:themes && npm run test:harvest && npm run test:release",
     "check:syntax": "node scripts/check_source.mjs",

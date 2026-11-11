@@ -34,7 +34,7 @@ def main():
     tile.paste(badge, (24, 22), badge)
     regular = '/System/Library/Fonts/Supplemental/Arial.ttf'
     bold = '/System/Library/Fonts/Supplemental/Arial Bold.ttf'
-    draw.text((30, 128), 'Zendesk Helper', font=ImageFont.truetype(bold, 30), fill='#ffffff')
+    draw.text((30, 128), 'Jones IT Zendesk Helper', font=ImageFont.truetype(bold, 30), fill='#ffffff')
     draw.text((30, 177), 'Ticket tools and improvements.', font=ImageFont.truetype(regular, 19), fill='#d8edf4')
     draw.text((30, 221), 'For Jones IT Zendesk', font=ImageFont.truetype(regular, 16), fill='#a9c9d7')
     tile.save(RELEASE / 'small-promo-440x280.png')

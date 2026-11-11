@@ -4,7 +4,7 @@
 
 ## In progress
 
-None.
+- [ ] **T54 — Rename to Jones IT Zendesk Helper.** Update extension, policy, guides, artwork and store draft. Verify v0.7.8 in Chrome and prepare matching release files.
 
 ## Next — needs another person
 

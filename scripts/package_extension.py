@@ -26,7 +26,7 @@ def package(output, store=False):
         if not (ROOT / name).is_file():
             raise ValueError('Missing extension file: ' + name)
     output.parent.mkdir(parents=True, exist_ok=True)
-    readme = f'''# Zendesk Helper {version}
+    readme = f'''# Jones IT Zendesk Helper {version}
 
 Unzip this folder, then open chrome://extensions in Chrome. Enable Developer mode,
 choose Load unpacked, and select this folder. Refresh Zendesk once.

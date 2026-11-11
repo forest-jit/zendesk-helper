@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Zendesk Helper",
-  "version": "0.7.7",
+  "name": "Jones IT Zendesk Helper",
+  "version": "0.7.8",
   "description": "A collection of tools and improvements for Jones IT Zendesk: conversation controls, draft protection and ticket actions.",
   "permissions": ["storage", "downloads"],
   "host_permissions": ["https://itjones.zendesk.com/agent/*"],
@@ -34,7 +34,7 @@
   ],
   "action": {
     "default_popup": "src/popup/popup.html",
-    "default_title": "Zendesk Helper settings",
+    "default_title": "Jones IT Zendesk Helper settings",
     "default_icon": {
       "16": "assets/icons/icon-16.png",
       "32": "assets/icons/icon-32.png"
