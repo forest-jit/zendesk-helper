@@ -1,11 +1,11 @@
 {
   "name": "zendesk-helper",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "private": true,
   "description": "Local development and synthetic tests for the Zendesk Helper Chrome extension.",
   "scripts": {
-    "check": "npm run check:syntax && npm run test:manifest && npm run test:workflow && npm run test:local && npm run test:downloads && npm run test:themes && npm run test:harvest",
-    "check:syntax": "node --check background.js && node --check content.js && node --check popup.js && node --check validator.js && node --check workflow.js && node --check exporter.js && node --check workspace.js && node --check tests/manifest.cjs && node --check tests/workflow.cjs && node --check tests/browser.cjs && node --check themes.js && node --check theme-page.js && node --check harvest-policy.js && node --check harvest-controller.js && node --check harvest-theme.js && node --check draft-bridge.js && node --check ticket-model.js && node --check ticket-tools.js && node --check guide.js && node --check message-display.js && node --check email-threads.js",
+    "check": "npm run check:syntax && npm run lint && npm run test:resources && npm run test:manifest && npm run test:workflow && npm run test:local && npm run test:downloads && npm run test:themes && npm run test:harvest",
+    "check:syntax": "node scripts/check_source.mjs",
     "test:manifest": "node tests/manifest.cjs",
     "test:workflow": "node tests/workflow.cjs && node tests/draft-bridge.cjs && node tests/draft-recovery.cjs && node tests/conversation-flow.cjs && node tests/ticket-model.cjs && node tests/mode-transfer.cjs && node tests/workspace-status.cjs && node tests/conversation-header.cjs && node tests/message-display.cjs && node tests/email-threads.cjs && node tests/image-bindings.cjs && node tests/title-warning.cjs && node tests/closed-actions.cjs",
     "test": "npm run test:fixtures",
@@ -14,14 +14,22 @@
     "test:downloads": "node tests/downloads.cjs",
     "test:themes": "node tests/themes.cjs && node tests/theme-page.cjs",
     "test:harvest": "node tests/harvest.cjs",
-    "format": "prettier --write '*.js' '*.css' 'popup.html' 'guide.html' 'tests/*.cjs' 'manifest.json' 'package.json'",
-    "format:check": "prettier --check '*.js' '*.css' 'popup.html' 'guide.html' 'tests/*.cjs' 'manifest.json' 'package.json'"
+    "format": "prettier --write 'src/**/*.{js,css,html}' 'tests/*.cjs' 'scripts/*.mjs' '*.mjs' 'manifest.json' 'package.json'",
+    "format:check": "prettier --check 'src/**/*.{js,css,html}' 'tests/*.cjs' 'scripts/*.mjs' '*.mjs' 'manifest.json' 'package.json'",
+    "lint": "eslint src scripts/*.mjs eslint.config.mjs",
+    "test:resources": "node tests/resources.cjs"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.14.0",
+    "globals": "17.4.0",
     "playwright": "1.56.1",
     "prettier": "3.10.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": "^22.13.0 || >=24"
+  },
+  "overrides": {
+    "minimatch": "11.0.8"
   }
 }

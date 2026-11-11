@@ -1,6 +1,6 @@
 'use strict';
 const assert = require('node:assert/strict'),
-  m = require('../message-display.js');
+  m = require('../src/conversations/message-display.js');
 const text = { role: 'text', color: [232, 242, 233, 1] },
   dark = { role: 'dark', color: [0, 0, 0, 1] },
   light = { role: 'light', color: [255, 255, 255, 1] };

@@ -27,7 +27,7 @@ const harvestAccess = {
   permissions: ['scripting'],
   origins: ['https://platform.harvestapp.com/*']
 };
-const status = (text) => {
+const setStatus = (text) => {
   $('status').textContent = text;
 };
 function readPreferences() {
@@ -114,7 +114,7 @@ function renderThemes() {
     button.append(swatches, label);
     button.addEventListener('pointerenter', () => paintPopup(id));
     button.addEventListener('focus', () => paintPopup(id));
-    button.addEventListener('click', () => chooseTheme(id).catch((e) => status(e.message)));
+    button.addEventListener('click', () => chooseTheme(id).catch((e) => setStatus(e.message)));
     box.append(button);
   }
   $('theme-name').textContent = themeLabel(prefs.theme);
@@ -139,7 +139,7 @@ async function chooseTheme(id) {
   renderThemes();
   closeThemes();
   loadStudio(id);
-  status(prefs.enabled ? '' : 'Turn on to apply your theme.');
+  setStatus(prefs.enabled ? '' : 'Turn on to apply your theme.');
 }
 function stopPreview() {
   if (previewPort) {
@@ -202,7 +202,7 @@ async function applyPower(value) {
   await writePreferences({ enabled: value });
   powerState();
   validateStudio(false);
-  status('');
+  setStatus('');
 }
 async function initialize() {
   prefs = await readPreferences();
@@ -274,7 +274,7 @@ async function initialize() {
     } catch {}
   }
   paintPopup(prefs.theme);
-  status(prefs.enabled ? 'Changes save automatically.' : 'Off · Your settings are kept.');
+  setStatus(prefs.enabled ? 'Changes save automatically.' : 'Off · Your settings are kept.');
   ready = true;
 }
 $('theme-trigger').addEventListener('click', () => {
@@ -307,7 +307,7 @@ document.addEventListener('pointerdown', (event) => {
     closeThemes();
 });
 $('power').addEventListener('click', () =>
-  applyPower(prefs.enabled === false).catch((e) => status(e.message))
+  applyPower(prefs.enabled === false).catch((e) => setStatus(e.message))
 );
 for (const [id, key] of Object.entries({
   layout: 'layout',
@@ -322,9 +322,9 @@ for (const [id, key] of Object.entries({
       await writePreferences({
         [key]: id === 'queue-refresh' ? Number($(id).value) : $(id).checked
       });
-      status('');
+      setStatus('');
     } catch (e) {
-      status(e.message);
+      setStatus(e.message);
     }
   });
 $('theme-studio').addEventListener('toggle', () => {
@@ -337,7 +337,7 @@ $('theme-studio').addEventListener('toggle', () => {
 $('preview-site').addEventListener('click', async () => {
   if (previewPort) {
     stopPreview();
-    status('');
+    setStatus('');
     return;
   }
   if (!validateStudio()) return;
@@ -350,9 +350,9 @@ $('preview-site').addEventListener('click', async () => {
     });
     previewPort.postMessage({ type: 'preview', palette: studioPalette });
     $('preview-site').textContent = 'Stop ticket preview';
-    status('Temporary preview · closing this popup restores your theme.');
+    setStatus('Temporary preview · closing this popup restores your theme.');
   } catch (e) {
-    status(e.message);
+    setStatus(e.message);
   }
 });
 $('custom-name').addEventListener('input', rememberStudio);
@@ -360,12 +360,12 @@ $('save-theme').addEventListener('click', async () => {
   if (!validateStudio()) return;
   const name = $('custom-name').value.trim();
   if (!name) {
-    status('Give your theme a name first.');
+    setStatus('Give your theme a name first.');
     $('custom-name').focus();
     return;
   }
   if (!editingId && Object.keys(prefs.customThemes).length >= 32) {
-    status('You can keep up to 32 custom themes.');
+    setStatus('You can keep up to 32 custom themes.');
     return;
   }
   clearTimeout(studioDraftTimer);
@@ -379,7 +379,7 @@ $('save-theme').addEventListener('click', async () => {
   renderThemes();
   loadStudio(id);
   paintPopup(id);
-  status(prefs.enabled ? '' : 'Turn on to apply your theme.');
+  setStatus(prefs.enabled ? '' : 'Turn on to apply your theme.');
 });
 $('delete-theme').addEventListener('click', async () => {
   if (!editingId) return;
@@ -393,17 +393,17 @@ $('delete-theme').addEventListener('click', async () => {
   renderThemes();
   loadStudio('native');
   paintPopup('native');
-  status('');
+  setStatus('');
 });
 $('export').addEventListener('click', async () => {
   try {
     const tab = await activeZendeskTab();
-    status('Preparing local export…');
+    setStatus('Preparing local export…');
     const result = await send(tab.id, { type: 'zdh-export' });
     if (result?.error) throw Error(result.error);
-    status('');
+    setStatus('');
   } catch (e) {
-    status(e.message);
+    setStatus(e.message);
   }
 });
 $('manual').addEventListener('click', async () => {
@@ -413,9 +413,9 @@ $('manual').addEventListener('click', async () => {
       type: 'zdh-manual-select',
       options: { layout: prefs.layout, context: prefs.context }
     });
-    status('Close this popup and click the title field.');
+    setStatus('Close this popup and click the title field.');
   } catch (e) {
-    status(e.message);
+    setStatus(e.message);
   }
 });
 $('harvest-theme').addEventListener('click', () => {
@@ -423,7 +423,7 @@ $('harvest-theme').addEventListener('click', () => {
     writePreferences({ harvestTheme: false }).then(() => {
       harvestEnabled = false;
       paintHarvestButton();
-      status('');
+      setStatus('');
     });
     return;
   }
@@ -431,7 +431,7 @@ $('harvest-theme').addEventListener('click', () => {
     .request(harvestAccess)
     .then(async (granted) => {
       if (!granted) {
-        status('Harvest access was not granted.');
+        setStatus('Harvest access was not granted.');
         return;
       }
       await writePreferences({ harvestTheme: true });
@@ -439,8 +439,8 @@ $('harvest-theme').addEventListener('click', () => {
       if (result?.error) throw Error(result.error);
       harvestEnabled = true;
       paintHarvestButton();
-      status('Harvest theme on. Refresh once if needed.');
+      setStatus('Harvest theme on. Refresh once if needed.');
     })
-    .catch((e) => status(e.message));
+    .catch((e) => setStatus(e.message));
 });
-initialize().catch((e) => status(e.message));
+initialize().catch((e) => setStatus(e.message));

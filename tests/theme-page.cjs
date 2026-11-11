@@ -94,10 +94,13 @@ const document = {
 const context = {
   document,
   matchMedia: (query) => (query.includes('forced-colors') ? media : systemMedia),
-  zdhThemes: require('../themes.js'),
-  zdhWorkflow: require('../workflow.js')
+  zdhThemes: require('../src/shared/themes.js'),
+  zdhWorkflow: require('../src/tickets/workflow.js')
 };
-vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../theme-page.js'), 'utf8'), context);
+vm.runInNewContext(
+  fs.readFileSync(path.join(__dirname, '../src/themes/native.js'), 'utf8'),
+  context
+);
 const api = context.zdhThemePage;
 for (const id of [
   'daylight',

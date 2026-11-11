@@ -77,7 +77,7 @@
     if (
       port.name !== 'zdh-theme-preview' ||
       port.sender?.id !== chrome.runtime.id ||
-      port.sender?.url !== chrome.runtime.getURL('popup.html')
+      port.sender?.url !== chrome.runtime.getURL('src/popup/popup.html')
     )
       return;
     port.onMessage.addListener((message) => {

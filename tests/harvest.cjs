@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const vm = require('node:vm');
 const fs = require('node:fs');
 const path = require('node:path');
-const policy = require('../harvest-policy.js');
+const policy = require('../src/integrations/harvest/policy.js');
 const timer =
   'https://platform.harvestapp.com/platform/timer?service=itjones.zendesk.com&app_name=Zendesk';
 const ancestors = ['https://3.apps.zdusercontent.com', 'https://itjones.zendesk.com'];
@@ -49,7 +49,7 @@ const context = {
   matchMedia: (q) =>
     q.includes('forced-colors') ? media : { matches: false, addEventListener() {} },
   zdhHarvestPolicy: policy,
-  zdhThemes: require('../themes.js'),
+  zdhThemes: require('../src/shared/themes.js'),
   chrome: {
     storage: {
       local: {
@@ -65,7 +65,10 @@ const context = {
     }
   }
 };
-vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../harvest-theme.js'), 'utf8'), context);
+vm.runInNewContext(
+  fs.readFileSync(path.join(__dirname, '../src/integrations/harvest/theme.js'), 'utf8'),
+  context
+);
 assert.equal(html.dataset.zdhHarvestTheme, 'midnight');
 assert.equal(styles.length, 1);
 for (const theme of ['blush', 'forest', 'purple', 'magenta', 'jones', 'tealPink', 'pinkTeal']) {
@@ -97,7 +100,8 @@ assert.equal(styles.length, 0);
     installed,
     changed,
     removed,
-    registerCount = 0;
+    registerCount = 0,
+    updateCount = 0;
   const controller = {
     zdhHarvestPolicy: policy,
     chrome: {
@@ -129,6 +133,10 @@ assert.equal(styles.length, 0);
           registerCount++;
           registered = entries;
         },
+        updateContentScripts: async (entries) => {
+          updateCount++;
+          registered = entries;
+        },
         unregisterContentScripts: async () => {
           registered = [];
         }
@@ -145,7 +153,7 @@ assert.equal(styles.length, 0);
     }
   };
   vm.runInNewContext(
-    fs.readFileSync(path.join(__dirname, '../harvest-controller.js'), 'utf8'),
+    fs.readFileSync(path.join(__dirname, '../src/integrations/harvest/controller.js'), 'utf8'),
     controller
   );
   async function flush() {
@@ -160,6 +168,14 @@ assert.equal(styles.length, 0);
   await flush();
   assert.equal(registerCount, 1);
   assert.equal(registered[0].allFrames, true);
+  registered = [{ ...registered[0], js: ['themes.js', 'harvest-policy.js', 'harvest-theme.js'] }];
+  installed();
+  await flush();
+  assert.equal(updateCount, 1, 'surviving registrations must migrate old runtime paths');
+  assert.deepEqual(registered[0].js, policy.registration.js);
+  installed();
+  await flush();
+  assert.equal(updateCount, 1, 'current registrations do not need repeated updates');
   prefs.harvestTheme = false;
   changed({ harvestTheme: {} }, 'local');
   await flush();

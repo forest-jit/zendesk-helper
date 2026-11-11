@@ -23,7 +23,10 @@ const chrome = {
   }
 };
 vm.runInNewContext(
-  fs.readFileSync(require('node:path').join(__dirname, '../background.js'), 'utf8'),
+  fs.readFileSync(
+    require('node:path').join(__dirname, '../src/background/service-worker.js'),
+    'utf8'
+  ),
   { chrome, URL, encodeURIComponent, setTimeout, clearTimeout, importScripts() {} }
 );
 const sender = { id: 'helper', url: 'https://itjones.zendesk.com/agent/tickets/209867' };

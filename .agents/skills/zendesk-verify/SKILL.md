@@ -11,7 +11,7 @@ Read `package.json` when commands may have changed. Available checks:
 - `npm run test:manifest`: extension manifest contract.
 - `npm run test:workflow`: workflow guards and serialization.
 - `npm test`: synthetic Playwright browser suite.
-- `npm run check`: aggregate of those checks.
+- `npm run check`: syntax, lint, resources and local behavior checks; the synthetic browser suite runs separately.
 
 Run the relevant checks during iteration. For a delivered behavior change, run the aggregate once after the final code change when the environment supports it. If unavailable, report the exact unrun part. Do not rerun an unchanged passing suite without a reason.
 

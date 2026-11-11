@@ -2,3 +2,6 @@ node_modules/
 docs/archive/
 .agents/
 test-results/
+
+# Generated from the reviewed privacy Markdown.
+src/guide/privacy.html

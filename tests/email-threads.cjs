@@ -1,6 +1,6 @@
 'use strict';
 const assert = require('node:assert/strict');
-const { classify, analyze, forwardHeader } = require('../email-threads.js');
+const { classify, analyze, forwardHeader } = require('../src/conversations/email-threads.js');
 
 // These are detector policy checks, not claims of Zendesk layout acceptance.
 assert.equal(

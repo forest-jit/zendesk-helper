@@ -28,14 +28,14 @@ def check(package):
         assert manifest['host_permissions'] == ['https://itjones.zendesk.com/agent/*']
         assert set(manifest['permissions']) == {'storage', 'downloads'}
         assert len(manifest['description']) <= 132
-        referenced = ['privacy.html', manifest['action']['default_popup'], manifest['background']['service_worker']]
+        referenced = ['src/guide/privacy.html', manifest['action']['default_popup'], manifest['background']['service_worker']]
         for entry in manifest['content_scripts']:
             referenced += entry.get('js', []) + entry.get('css', [])
         for size, name in manifest['icons'].items():
             assert png_size(archive.read(name)) == (int(size), int(size))
             referenced.append(name)
         assert set(referenced) <= files, 'Manifest references missing files'
-        assert b'href="privacy.html"' in archive.read('guide.html')
+        assert b'href="privacy.html"' in archive.read('src/guide/guide.html')
     for name in ['screenshot-1-overview-1280x800.jpg','screenshot-2-studio-1280x800.jpg','screenshot-3-guide-1280x800.jpg']:
         with Image.open(ROOT/'docs/release'/name) as image:
             assert image.format == 'JPEG' and image.size == (1280,800)

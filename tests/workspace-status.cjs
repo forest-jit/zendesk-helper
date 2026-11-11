@@ -1,6 +1,6 @@
 'use strict';
 const assert = require('node:assert/strict');
-const workspace = require('../workspace.js');
+const workspace = require('../src/tickets/workspace.js');
 global.getComputedStyle = (e) => ({
   display: e.visible === false ? 'none' : 'block',
   visibility: 'visible'

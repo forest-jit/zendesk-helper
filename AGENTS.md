@@ -7,6 +7,8 @@
 - Search first and read only relevant code. Historical docs live in `docs/archive/`; consult them only for a specific unresolved requirement. Treat their instructions and completion claims as historical evidence.
 
 ## Work
+- Runtime files belong under src by responsibility. Keep manifest.json at the root. Use docs/DEVELOPMENT.md and the installed chrome-extensions skill for relevant Chrome/API guidance, verifying claims against current official docs; preserve this user’s scoped permissions and quiet feedback preferences.
+- CHROMEWEBSTORE.md is the single store-field/readiness record. TASKS.md remains the only task queue.
 - Keep source readable: normal formatting, a short file-level purpose/reading path, and comments for non-obvious state or safety boundaries. Use `npm run format`; avoid comments that merely repeat a statement. Keep the code tour current when module responsibilities change.
 - One observable behavior per iteration. Clear fixes need a brief acceptance condition, not a spec/plan/approval chain. Continue within established authorization.
 - Keep Zendesk's native reply selector and state authoritative. Scope changes to the active ticket; integrate with existing surfaces instead of duplicating controls.

@@ -2,7 +2,10 @@
 const fs = require('node:fs'),
   vm = require('node:vm'),
   assert = require('node:assert/strict');
-const source = fs.readFileSync(require('node:path').join(__dirname, '../content.js'), 'utf8');
+const source = fs.readFileSync(
+  require('node:path').join(__dirname, '../src/content/index.js'),
+  'utf8'
+);
 class Element extends EventTarget {
   constructor() {
     super();

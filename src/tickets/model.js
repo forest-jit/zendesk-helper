@@ -37,7 +37,15 @@
     if (format === 'number') return '#' + id;
     if (format === 'url') return url;
     if (format === 'markdown')
-      return '[' + safeTitle.replace(/[\\\[\]]/g, '\\$&') + ' (#' + id + ')](' + url + ')';
+      return (
+        '[' +
+        safeTitle.replaceAll('\\', '\\\\').replaceAll('[', '\\[').replaceAll(']', '\\]') +
+        ' (#' +
+        id +
+        ')](' +
+        url +
+        ')'
+      );
     return '#' + id + ' · ' + safeTitle + '\n' + url;
   }
   function queueAllowed(s) {

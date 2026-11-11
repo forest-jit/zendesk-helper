@@ -19,6 +19,6 @@ The icon and tile are original code-drawn artwork, not Zendesk/Harvest logos. Re
 
 Popup screenshots use the actual shipped popup HTML/CSS/JavaScript on a loopback preview with synthetic in-memory Chrome preferences. The popup images are labeled as settings previews with sample data. They contain no customer ticket content, real profile, browser chrome or fabricated presence result. The guide screenshot uses the actual guide. These are listing images, not proof of live Zendesk compatibility.
 
-Reproduce with `python3 scripts/release_preview.py`, open the printed loopback URL in Chrome at1280×800, capture the popup overview and custom editor, then capture `/guide.html`. Stop the local server afterward. This server uses a narrow asset allowlist and is bound to127.0.0.1. Do not run screenshot demos against live customer data or present a fabricated ticket as a real one.
+Reproduce with `python3 scripts/release_preview.py`, open the printed loopback URL in Chrome at1280×800, capture the popup overview and custom editor, then capture `/src/guide/guide.html`. Stop the local server afterward. This server uses a narrow asset allowlist and is bound to127.0.0.1. Do not run screenshot demos against live customer data or present a fabricated ticket as a real one.
 
 Source references: [image requirements](https://developer.chrome.com/docs/webstore/images), [listing fields](https://developer.chrome.com/docs/webstore/cws-dashboard-listing).

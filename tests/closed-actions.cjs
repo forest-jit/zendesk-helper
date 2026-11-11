@@ -2,7 +2,7 @@
 const assert = require('node:assert/strict'),
   fs = require('node:fs'),
   vm = require('node:vm');
-const source = fs.readFileSync(require.resolve('../content.js'), 'utf8');
+const source = fs.readFileSync(require.resolve('../src/content/index.js'), 'utf8');
 let clicked = 0,
   released = 0;
 const state = {
@@ -28,7 +28,7 @@ const context = {
     }
   },
   controlState: () => state,
-  globalThis: { zdhWorkflow: require('../workflow.js') },
+  globalThis: { zdhWorkflow: require('../src/tickets/workflow.js') },
   refreshWorkflow() {},
   releaseAction() {}
 };

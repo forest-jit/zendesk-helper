@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 
-const workflow = require('../workflow.js');
-const exporter = require('../exporter.js');
+const workflow = require('../src/tickets/workflow.js');
+const exporter = require('../src/export/exporter.js');
 
 assert.equal(workflow.normalizeMode('Internal note'), 'internal');
 assert.equal(workflow.normalizeMode('Public reply'), 'public');

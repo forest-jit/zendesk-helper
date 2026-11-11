@@ -28,8 +28,12 @@
   const registration = {
     id: 'zdh-harvest-theme',
     matches: ['https://platform.harvestapp.com/platform/timer*'],
-    js: ['themes.js', 'harvest-policy.js', 'harvest-theme.js'],
-    css: ['harvest-theme.css'],
+    js: [
+      'src/shared/themes.js',
+      'src/integrations/harvest/policy.js',
+      'src/integrations/harvest/theme.js'
+    ],
+    css: ['src/integrations/harvest/theme.css'],
     allFrames: true,
     runAt: 'document_idle',
     persistAcrossSessions: true

@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict'),
   fs = require('node:fs'),
   vm = require('node:vm');
-const source = fs.readFileSync(require.resolve('../ticket-tools.js'), 'utf8');
+const source = fs.readFileSync(require.resolve('../src/tickets/tools.js'), 'utf8');
 const implementation = source.slice(
   source.indexOf(' function waitFor('),
   source.indexOf(' function syncMode(')
@@ -62,8 +62,8 @@ async function scenario(destination) {
   };
   const context = {
     ctx,
-    root: { zdhWorkflow: require('../workflow.js') },
-    model: require('../ticket-model.js'),
+    root: { zdhWorkflow: require('../src/tickets/workflow.js') },
+    model: require('../src/tickets/model.js'),
     getState: () => state,
     editorOf: () => editor,
     visible: () => true,

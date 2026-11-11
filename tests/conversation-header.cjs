@@ -2,7 +2,10 @@
 const assert = require('node:assert/strict'),
   fs = require('node:fs'),
   vm = require('node:vm');
-const source = fs.readFileSync(require('node:path').join(__dirname, '../content.js'), 'utf8');
+const source = fs.readFileSync(
+  require('node:path').join(__dirname, '../src/content/index.js'),
+  'utf8'
+);
 // Execute real sync over short tickets: marker assignment must precede the early return.
 for (const count of [0, 1, 2, 5]) {
   const header = { dataset: {} },

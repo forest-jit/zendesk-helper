@@ -2,8 +2,8 @@
 // Requests must come from this extension on the allowed Zendesk site.
 // A download is successful only when Chrome reports completion, not when it returns an ID.
 
-importScripts('harvest-policy.js', 'harvest-controller.js');
-('use strict');
+'use strict';
+importScripts('../integrations/harvest/policy.js', '../integrations/harvest/controller.js');
 // Only this extension's content script on the approved Zendesk agent site can save exports.
 chrome.runtime.onMessage.addListener((message, sender, respond) => {
   if (message?.type !== 'zdh-download') return;

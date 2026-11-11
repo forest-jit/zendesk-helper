@@ -33,7 +33,7 @@ const node = {
   getClientRects: () => [{}],
   dispatchEvent: (event) => (response = JSON.parse(event.detail))
 };
-vm.runInNewContext(fs.readFileSync(require.resolve('../draft-bridge.js'), 'utf8'), {
+vm.runInNewContext(fs.readFileSync(require.resolve('../src/page/draft-bridge.js'), 'utf8'), {
   document: {
     documentElement: { dataset: {} },
     querySelectorAll: () => [node],

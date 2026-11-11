@@ -19,7 +19,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
     if (/^https?:/.test(request.url())) external += 1;
   });
   await page.goto(`file://${path.join(__dirname, 'fixtures', 'zendesk-ticket.html')}`);
-  await page.addStyleTag({ path: path.join(root, 'content.css') });
+  await page.addStyleTag({ path: path.join(root, 'src/content/layout.css') });
   await page.evaluate(() => {
     globalThis.__storedPreferences = {};
     globalThis.chrome = {
@@ -41,7 +41,14 @@ fs.mkdirSync(resultsDir, { recursive: true });
       }
     };
   });
-  for (const file of ['validator.js', 'workflow.js', 'exporter.js', 'workspace.js', 'content.js'])
+  for (const file of [
+    'src/tickets/title-rules.js',
+    'src/tickets/workflow.js',
+    'src/export/exporter.js',
+    'src/tickets/workspace.js',
+    'src/content/control-styles.js',
+    'src/content/index.js'
+  ])
     await page.addScriptTag({ path: path.join(root, file) });
 
   await page.waitForTimeout(0);
@@ -186,7 +193,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
 
   const disabledPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   await disabledPage.goto(`file://${path.join(__dirname, 'fixtures', 'zendesk-ticket.html')}`);
-  await disabledPage.addStyleTag({ path: path.join(root, 'content.css') });
+  await disabledPage.addStyleTag({ path: path.join(root, 'src/content/layout.css') });
   await disabledPage.evaluate(() => {
     globalThis.chrome = {
       storage: {
@@ -201,7 +208,14 @@ fs.mkdirSync(resultsDir, { recursive: true });
       }
     };
   });
-  for (const file of ['validator.js', 'workflow.js', 'exporter.js', 'workspace.js', 'content.js'])
+  for (const file of [
+    'src/tickets/title-rules.js',
+    'src/tickets/workflow.js',
+    'src/export/exporter.js',
+    'src/tickets/workspace.js',
+    'src/content/control-styles.js',
+    'src/content/index.js'
+  ])
     await disabledPage.addScriptTag({ path: path.join(root, file) });
   await disabledPage.waitForTimeout(0);
   assert.equal(

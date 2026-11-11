@@ -17,7 +17,16 @@
     const active = prefs.enabled !== false && prefs.harvestTheme === true;
     if (active && !registered.length)
       await chrome.scripting.registerContentScripts([policy.registration]);
-    else if (!active && registered.length)
+    else if (
+      active &&
+      registered.length &&
+      ['js', 'css', 'matches', 'allFrames', 'runAt', 'persistAcrossSessions'].some(
+        (key) => JSON.stringify(registered[0][key]) !== JSON.stringify(policy.registration[key])
+      )
+    ) {
+      // Dynamic registrations survive updates; migrate old file paths before the next iframe load.
+      await chrome.scripting.updateContentScripts([policy.registration]);
+    } else if (!active && registered.length)
       await chrome.scripting.unregisterContentScripts({ ids: [policy.registration.id] });
     return { active };
   }
@@ -39,7 +48,10 @@
   });
   chrome.runtime.onMessage.addListener((message, sender, reply) => {
     if (message?.type !== 'zdh-harvest-sync') return;
-    if (sender.id !== chrome.runtime.id || sender.url !== chrome.runtime.getURL('popup.html')) {
+    if (
+      sender.id !== chrome.runtime.id ||
+      sender.url !== chrome.runtime.getURL('src/popup/popup.html')
+    ) {
       reply({ error: 'Open the extension popup to configure Harvest styling.' });
       return;
     }

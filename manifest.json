@@ -1,38 +1,39 @@
 {
   "manifest_version": 3,
   "name": "Zendesk Helper",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "A collection of tools and improvements for Jones IT Zendesk: conversation controls, draft protection and ticket actions.",
   "permissions": ["storage", "downloads"],
   "host_permissions": ["https://itjones.zendesk.com/agent/*"],
   "content_scripts": [
     {
       "matches": ["https://itjones.zendesk.com/agent/*"],
-      "js": ["draft-bridge.js"],
+      "js": ["src/page/draft-bridge.js"],
       "world": "MAIN",
       "run_at": "document_idle"
     },
     {
       "matches": ["https://itjones.zendesk.com/agent/*"],
-      "css": ["content.css", "theme.css"],
+      "css": ["src/content/layout.css", "src/themes/native.css"],
       "js": [
-        "themes.js",
-        "theme-page.js",
-        "validator.js",
-        "workflow.js",
-        "exporter.js",
-        "workspace.js",
-        "ticket-model.js",
-        "ticket-tools.js",
-        "message-display.js",
-        "email-threads.js",
-        "content.js"
+        "src/shared/themes.js",
+        "src/themes/native.js",
+        "src/tickets/title-rules.js",
+        "src/tickets/workflow.js",
+        "src/export/exporter.js",
+        "src/tickets/workspace.js",
+        "src/tickets/model.js",
+        "src/tickets/tools.js",
+        "src/conversations/message-display.js",
+        "src/conversations/email-threads.js",
+        "src/content/control-styles.js",
+        "src/content/index.js"
       ],
       "run_at": "document_idle"
     }
   ],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "src/popup/popup.html",
     "default_title": "Zendesk Helper settings",
     "default_icon": {
       "16": "assets/icons/icon-16.png",
@@ -43,7 +44,7 @@
     "extension_pages": "script-src 'self'; object-src 'none'; connect-src 'none'"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background/service-worker.js"
   },
   "optional_permissions": ["scripting"],
   "optional_host_permissions": ["https://platform.harvestapp.com/*"],
@@ -52,5 +53,6 @@
     "32": "assets/icons/icon-32.png",
     "48": "assets/icons/icon-48.png",
     "128": "assets/icons/icon-128.png"
-  }
+  },
+  "minimum_chrome_version": "114"
 }

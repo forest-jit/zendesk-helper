@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const m = require('../ticket-model.js');
+const m = require('../src/tickets/model.js');
 const identity = { organization: 'Jones IT', requester: 'Forest Welch' };
 assert.equal(m.identityTitle('Wi-Fi issue', identity), 'Jones IT - Forest Welch - Wi-Fi issue');
 assert.equal(
@@ -84,7 +84,7 @@ const identityContext = {
   },
   visible: () => true
 };
-const adapter = fs.readFileSync(require.resolve('../ticket-tools.js'), 'utf8');
+const adapter = fs.readFileSync(require.resolve('../src/tickets/tools.js'), 'utf8');
 vm.runInNewContext(
   adapter.slice(
     adapter.indexOf(' function identity('),

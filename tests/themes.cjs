@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const { roles, palettes, compile, compileTheme, contrast } = require('../themes.js');
+const { roles, palettes, compile, compileTheme, contrast } = require('../src/shared/themes.js');
 assert.equal(roles.length, 5);
 for (const id of Object.keys(palettes)) {
   const { tokens: t, variables: v } = compileTheme(id);
@@ -88,7 +88,7 @@ assert.equal(palettes.pinkTeal.attention, palettes.tealPink.accent);
 
 // Every selectable palette has a shared compiler and accessible role mappings.
 const picker = require('node:fs').readFileSync(
-  require('node:path').join(__dirname, '../popup.html'),
+  require('node:path').join(__dirname, '../src/popup/popup.html'),
   'utf8'
 );
 const pickerIds = [
@@ -103,7 +103,7 @@ assert.equal(palettes.copper.accent, '#7f2b0a');
 assert.equal(compileTheme('chestnut').variables['--color-scheme'], 'dark');
 
 const custom = { ...palettes.forest, accent: '#c8a4f0' };
-const api = require('../themes.js');
+const api = require('../src/shared/themes.js');
 api.setCustomThemes({
   'custom-test': { name: 'Test', palette: custom },
   'bad-id': { palette: custom },

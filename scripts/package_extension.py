@@ -7,11 +7,10 @@ from pathlib import Path
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = '''manifest.json background.js harvest-policy.js harvest-controller.js
-harvest-theme.js harvest-theme.css themes.js theme-page.js validator.js workflow.js
-exporter.js workspace.js ticket-model.js ticket-tools.js message-display.js email-threads.js content.js content.css theme.css
-popup.html popup.js popup.css draft-bridge.js guide.html guide.js guide.css
-scripts/process_ticket.py docs/DISTRIBUTION.md docs/DOCUMENTATION_HANDOFF.md'''.split()
+# Only runtime extensions below src/ can ship. Source notes and tooling stay outside.
+RUNTIME_SUFFIXES = {'.js', '.css', '.html'}
+DEVELOPMENT_FILES = ['scripts/process_ticket.py', 'docs/DISTRIBUTION.md', 'docs/DOCUMENTATION_HANDOFF.md']
+
 
 def package(output, store=False):
     manifest = json.loads((ROOT / 'manifest.json').read_text())
@@ -19,9 +18,10 @@ def package(output, store=False):
     if output.suffix != '.zip':
         raise ValueError('Choose a .zip output filename.')
     icons = [f'assets/icons/icon-{size}.png' for size in (16, 32, 48, 128)]
-    files = FILES + ['privacy.html'] + icons
-    if store:
-        files = [name for name in files if not name.startswith(('scripts/', 'docs/'))]
+    runtime = [str(p.relative_to(ROOT)) for p in (ROOT / 'src').rglob('*') if p.is_file() and p.suffix in RUNTIME_SUFFIXES]
+    files = ['manifest.json'] + sorted(runtime) + icons
+    if not store:
+        files += DEVELOPMENT_FILES
     for name in files:
         if not (ROOT / name).is_file():
             raise ValueError('Missing extension file: ' + name)
@@ -32,7 +32,7 @@ Unzip this folder, then open chrome://extensions in Chrome. Enable Developer mod
 choose Load unpacked, and select this folder. Refresh Zendesk once.
 
 Open the toolbar popup. The On / Off switch controls the helper; other settings save
-automatically. Help & feature guide explains every feature. You can also open guide.html.
+automatically. Help & feature guide explains every feature. You can also open src/guide/guide.html.
 
 Team install and updates: docs/DISTRIBUTION.md
 Local AI and documentation review: docs/DOCUMENTATION_HANDOFF.md

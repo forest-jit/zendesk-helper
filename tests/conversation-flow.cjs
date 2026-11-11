@@ -1,7 +1,10 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const source = fs.readFileSync(require('node:path').join(__dirname, '../content.js'), 'utf8');
+const source = fs.readFileSync(
+  require('node:path').join(__dirname, '../src/content/index.js'),
+  'utf8'
+);
 // Execute the real adapter with late native controls; no Zendesk state or DOM reparenting.
 const root = { dataset: {} };
 const pane = { dataset: {}, parentElement: root, closest: () => root };

@@ -1,8 +1,8 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const workflow = require('../workflow.js');
-const source = fs.readFileSync(require.resolve('../content.js'), 'utf8');
+const workflow = require('../src/tickets/workflow.js');
+const source = fs.readFileSync(require.resolve('../src/content/index.js'), 'utf8');
 const saveSource = source.slice(
   source.indexOf('  async function savePropertiesActive('),
   source.indexOf('  async function prepareExport(')

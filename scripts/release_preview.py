@@ -11,7 +11,7 @@ from urllib.parse import urlparse, parse_qs
 ROOT = Path(__file__).resolve().parents[1]
 MOCK = '''<script>
 const localPrefs={enabled:true,theme:'forest',customThemes:{},harvestTheme:false};
-window.chrome={storage:{local:{get:async defaults=>({...defaults,...localPrefs}),set:async patch=>Object.assign(localPrefs,patch)},session:{get:async()=>({}),set:async()=>{},remove:async()=>{}}},permissions:{contains:async()=>false,request:async()=>false},runtime:{getManifest:()=>({version:'0.7.5'}),getURL:path=>path,sendMessage:async()=>({})},tabs:{query:async()=>[],sendMessage:async()=>({})}};
+window.chrome={storage:{local:{get:async defaults=>({...defaults,...localPrefs}),set:async patch=>Object.assign(localPrefs,patch)},session:{get:async()=>({}),set:async()=>{},remove:async()=>{}}},permissions:{contains:async()=>false,request:async()=>false},runtime:{getManifest:()=>({version:'0.7.7'}),getURL:path=>path,sendMessage:async()=>({})},tabs:{query:async()=>[],sendMessage:async()=>({})}};
 </script>'''
 
 class Handler(BaseHTTPRequestHandler):
@@ -25,13 +25,26 @@ class Handler(BaseHTTPRequestHandler):
                 content=content[:begin]+content[end:]
             body, mime = content.encode(), 'text/html'
         elif url.path == '/demo-popup.html':
-            source = (ROOT/'popup.html').read_text()
+            source = (ROOT/'src/popup/popup.html').read_text()
             body, mime = source.replace('<html lang="en">', '<html lang="en">'+MOCK).encode(), 'text/html'
         else:
-            allowed={'/popup.css':'text/css','/popup.js':'text/javascript','/themes.js':'text/javascript','/guide.html':'text/html','/guide.css':'text/css','/guide.js':'text/javascript','/privacy.html':'text/html'}
+            allowed={
+                '/popup.css': ('src/popup/popup.css', 'text/css'),
+                '/popup.js': ('src/popup/popup.js', 'text/javascript'),
+                '/shared/themes.js': ('src/shared/themes.js', 'text/javascript'),
+                '/guide.html': ('src/guide/guide.html', 'text/html'),
+                '/guide/guide.html': ('src/guide/guide.html', 'text/html'),
+                '/guide/guide.css': ('src/guide/guide.css', 'text/css'),
+                '/guide/guide.js': ('src/guide/guide.js', 'text/javascript'),
+                '/guide/privacy.html': ('src/guide/privacy.html', 'text/html'),
+                '/guide.css': ('src/guide/guide.css', 'text/css'),
+                '/guide.js': ('src/guide/guide.js', 'text/javascript'),
+                '/privacy.html': ('src/guide/privacy.html', 'text/html')
+            }
             if url.path not in allowed:
                 self.send_error(404); return
-            body, mime = (ROOT/url.path.lstrip('/')).read_bytes(), allowed[url.path]
+            file, mime = allowed[url.path]
+            body = (ROOT/file).read_bytes()
         self.send_response(200)
         self.send_header('Content-Type', mime+'; charset=utf-8')
         self.send_header('Content-Length', str(len(body)))

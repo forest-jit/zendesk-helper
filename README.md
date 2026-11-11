@@ -2,9 +2,11 @@
 
 A local Chrome extension that adjusts the Jones IT Zendesk interface. It loads automatically on `https://itjones.zendesk.com/agent/*`.
 
-**[Feature guide](guide.html)** explains what the extension offers and how to use it. The same guide is available through **Help & feature guide** in the popup.
+**[Feature guide](src/guide/guide.html)** explains what the extension offers and how to use it. The same guide is available through **Help & feature guide** in the popup.
 
 **Reading the source? Start with [the code tour](docs/CODE_TOUR.md).** Each runtime file has a short reading path; `npm run format` keeps it readable.
+
+Store fields: [CHROMEWEBSTORE.md](CHROMEWEBSTORE.md).
 
 Private release preparation: [docs/release/START_HERE.md](docs/release/START_HERE.md). These materials are local drafts, not a published store listing.
 
@@ -20,7 +22,7 @@ The version in `manifest.json` identifies the local build. Confirm Chrome's load
 - **[Current state](docs/CURRENT_STATE.md):** latest evidence, limitations, and next step.
 - **[AGENTS.md](AGENTS.md):** instructions for working in this repository.
 
-Run `npm ci` when dependencies need installing, then `npm run check` for local checks. `npm run test:fixtures` is an optional synthetic regression suite. It does not prove the live Zendesk UI works; follow the project's verification skill for extension changes.
+Development: use Node24+ (or22.13+) and run `npm ci --ignore-scripts`, then `npm run check`. That checks syntax, ESLint, runtime resources and behavior regressions. `npm run format` / `npm run format:check` maintain layout. [Development guide](docs/DEVELOPMENT.md) explains the standards, CI and live Chrome checks.
 
 Historical docs are in [docs/archive/](docs/archive/). They may describe superseded behavior and are not current instructions or proof of completion. Design-skill provenance remains in [docs/design-skills.md](docs/design-skills.md).
 

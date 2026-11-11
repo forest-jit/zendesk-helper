@@ -17,9 +17,11 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 
 ## Later — external rollout
 
-- [ ] **T09 — Organization rollout.** v0.7.5 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are ready locally (docs/release/START_HERE.md). Publisher ownership/contact confirmation, account setup, policy hosting, approved reviewer access and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
+- [ ] **T09 — Organization rollout.** v0.7.7 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are ready locally (docs/release/START_HERE.md). Publisher ownership/contact confirmation, account setup, policy hosting, approved reviewer access and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
 
 ## Done
+
+- [x] **T48 — Feature-based source layout and Chrome standards, v0.7.7.** Runtime grouped under src; extracted readable control CSS; source map/code tour and Chrome/Web Store record updated. Added ESLint recommended rules, syntax/resource gates and read-only CI. Dynamic Harvest registrations migrate old script paths. Local aggregate, formatting, store preflight and dependency audit pass. Actual Chrome loaded version/source/Reloaded; popup/help, temporary theme preview and rollback, Status menu, Midnight/Blush and Harvest checked. Current internal draft retained, public buffer restored empty after carry test; Save disabled, no ticket save/send/time entry. Evidence: current chat outputs/reorg-077.
 
 - [x] **T47 — Remove desktop column divider, v0.7.6.** Scoped inner conversation border removed; native layout Off unaffected. Actual Chrome:0px right border, independent scrolling, reply frame and current draft retained. No saves/sends. GitHub source upload excludes ignored local audits/archive.
 
