@@ -44,7 +44,7 @@ Homepage: https://github.com/forest-jit/zendesk-helper. Support: https://github.
 
 ## Single purpose and permission justifications
 
-Make the Jones IT Zendesk agent workspace easier to read and use by improving ticket conversations, reply drafts and ticket-field controls.
+Help Jones IT agents read ticket conversations, write replies and update ticket fields in Zendesk.
 
 ## Permission explanations
 
@@ -111,23 +111,35 @@ Only Store Listing was completed. Privacy disclosures/certifications, policy hos
 
 ## Privacy draft, November 11, 2026
 
+The five editable explanations and policy were revised with the humanizer and i-have-adhd skills. Short paragraphs separate uses, storage and limits. All five form values persisted after save/refresh. No data categories, certifications or data practices changed.
+
 Saved and refreshed successfully: single purpose, storage/downloads/scripting/host explanations, four data categories and the existing public GitHub policy URL. No separate site deployment was needed. The three publisher certifications remain unchecked; no submission occurred.
 
 ### storage justification
 
-Keep preferences and custom themes in this Chrome profile. Store local recovery copies of unsent reply drafts during field saves and reply-mode transfers so interrupted or conflicting operations can be recovered. Session storage holds unsaved theme-editor settings. There is no publisher server or settings account.
+Remember settings and custom themes in this Chrome profile. Keep local copies of unsent drafts so interrupted field saves or reply-mode changes can be recovered.
+
+Unsaved theme edits last for the Chrome session. Settings and draft copies are not uploaded to a publisher server. No settings account is needed.
 
 ### downloads justification
 
-Save raw ticket exports and draft recovery copies to the user’s computer when requested. Exports can include rendered messages and accessible image data. The background worker checks the specific extension-created download for completion; it does not scan unrelated downloaded file contents.
+Save ticket exports and draft recovery files to your computer when you request them. Exports can contain original messages and accessible images.
+
+The helper checks that its own download finishes. It does not inspect unrelated downloaded file contents.
 
 ### scripting justification
 
-Optional permission for Harvest styling. After the user enables Harvest styling and grants access, register the packaged theme scripts and stylesheet for the embedded Harvest timer. Remove them when styling is disabled or permission is revoked. No remote scripts are loaded and no timer fields or entries are changed.
+Apply theme colors to the embedded Harvest timer after you turn on Harvest styling and grant access. Use only the scripts and stylesheet included in the extension.
+
+The helper removes the registered scripts when styling is turned off or access is revoked. It does not load remote code or change timer fields or entries.
 
 ### Host permission justification
 
-On https://itjones.zendesk.com/agent/*, read the active ticket interface to provide conversation controls, draft protection, ticket-field actions, copy/export and themes. User-requested saves and sends use Zendesk’s native controls. Optional https://platform.harvestapp.com/* access styles only the embedded timer after consent; runtime checks restrict it to the Zendesk timer context. It does not read or change Harvest project, task, notes, duration or timer values. No general all-sites or browsing-history access.
+https://itjones.zendesk.com/agent/*: read the active ticket to provide conversation controls, draft recovery, field changes, copy/export and themes. Saves and sends happen through Zendesk’s own controls when requested.
+
+Optional https://platform.harvestapp.com/*: style only the embedded Zendesk timer after permission is granted. Runtime checks restrict this to the timer context. The helper does not read or change Harvest project, task, notes, duration or timer values.
+
+No general access to other sites or browsing history.
 
 Selected categories: Personally identifiable information, Personal communications, User activity and Website content. User activity covers native activity indicators and interactions needed for workspace features, not general monitoring. No dedicated health, finance, credentials, location or browser-history collection is implemented; these were left unchecked in the draft. Raw messages/exports do not filter incidental sensitive content, so the owner must review applicable categories against actual pilot use before certifying.
 

@@ -5,42 +5,68 @@ Last updated: November 11, 2026
 Publisher display name: forest  
 Privacy and support contact: forest.r.welch@gmail.com
 
-Zendesk Helper adjusts the Jones IT Zendesk agent workspace. It changes display settings, adds controls for reading messages, protects reply drafts during field saves, and copies or exports ticket information when requested. It works on `itjones.zendesk.com/agent/` pages. Optional styling applies to the Harvest timer embedded there.
+Zendesk Helper adds reading controls, reply shortcuts and ticket tools to the Jones IT Zendesk workspace. It protects drafts during field saves and copies or exports ticket information when you ask. It works on `itjones.zendesk.com/agent/` pages. You can also choose to style the Harvest timer embedded there.
 
-## Information used
+## What the extension reads
 
-The extension reads the ticket content and interface needed for the features you use. This can include ticket titles, identifiers, requester/organization details, author names, public replies, internal notes, timestamps, images and attachment references, selected fields and native agent-activity indicators. Ticket content can contain personal, confidential or other sensitive information.
+The helper reads the ticket details needed for its features: titles and ticket numbers, requester and organization details, author names, messages, internal notes, timestamps, images, attachment references and selected fields. It also reads the agent-activity indicators that Zendesk provides. Tickets can contain personal, confidential or other sensitive information.
 
-The extension also handles unsent replies and internal notes, including their formatting. It uses these drafts to protect a field save, recover an interrupted operation or carry text between reply modes. It reads the current agent page URL to identify the active ticket and route actions. It does not collect general browsing history or independently track agents across tabs.
+The helper handles unsent public replies and internal notes, including their formatting. It uses local draft copies to protect field saves, recover interrupted operations and carry text between reply modes.
 
-## Where information goes
+It reads the current agent-page URL to identify the ticket and direct your actions. It does not collect your general browsing history or independently track agents across tabs.
 
-Preferences and custom themes are stored in this Chrome profile using extension local storage. Unsaved theme-editor values use Chrome session storage. Draft recovery copies are stored locally in extension storage while needed to protect an interrupted or conflicting operation.
+## What stays on your computer
 
-Normal field saves and sends use Zendesk's existing controls and service. The extension does not operate a separate ticket server. Copy commands write the chosen ticket information to your clipboard. Export and recovery commands create local downloads, which can contain unredacted ticket content and image bytes or URLs.
+Settings and custom themes stay in this Chrome profile. Unsaved theme edits use Chrome session storage. Draft recovery copies stay in local extension storage while needed to protect an interrupted save or a conflict between drafts.
 
-When you export, the extension may request image resources referenced by the ticket to include them in the file. These requests go to the existing media provider; same-origin requests may use your existing Zendesk session, while cross-origin requests omit credentials. The provider can receive normal network-request information. Merely reading email content can also load resources under Zendesk/browser behavior. The helper does not add analytics or advertising trackers.
+Copy commands put the ticket details you choose on your clipboard. Export and recovery commands save files to your computer. These files can contain original, unredacted ticket content, image data and image URLs.
 
-There is no publisher-operated telemetry, advertising, sale of user data, or upload of ticket content to a publisher server in this build. The publisher does not receive your tickets or drafts through the extension. If you separately email support, the email provider and recipient receive what you choose to send; omit customer data unless an authorized support arrangement requires it.
+The extension uses Chrome's profile storage without adding its own encryption. Access to your device, profile management, backups and synced folders depends on your device and organization settings.
+
+## When information leaves your computer
+
+Saving ticket fields or sending a reply uses Zendesk's existing controls and service. The helper does not run a separate ticket server.
+
+An export may request images from the media providers already referenced in the ticket. Requests to the same origin may use your existing Zendesk session; requests to other origins omit credentials. Providers can receive the usual network-request information. Reading an email can also load resources through Zendesk and your browser.
+
+This build adds no publisher-run telemetry, analytics, advertising or tracking. It does not sell user data or upload tickets and drafts to a publisher server. The publisher does not receive your tickets through the extension.
+
+If you email support, your email provider and the recipient receive what you send. Leave out customer data unless an authorized support arrangement requires it.
 
 ## Optional Harvest styling
 
-If enabled, Chrome asks for access to `platform.harvestapp.com` and optional scripting permission. The adapter is restricted to the embedded Zendesk timer context and applies theme preferences. It does not read or change project, task, notes, duration or timer values. Harvest and Zendesk retain their own services and privacy practices.
+If you turn it on, Chrome asks for access to `platform.harvestapp.com` and optional scripting permission. The helper applies theme settings only to the Harvest timer embedded in Zendesk.
+
+It does not read or change project, task, notes, duration or timer values. Harvest and Zendesk keep their own services and privacy practices.
 
 ## Optional local AI processing
 
-The browser extension does not call hosted AI or publish to Notion or another documentation service. A separately run Python command can process your downloaded export using the local Ollama service at `127.0.0.1:11434`.
+The browser extension does not call hosted AI or publish to Notion or another documentation service. You can separately run a Python command to process an export with Ollama on your computer at `127.0.0.1:11434`.
 
-That command uses known-identity and pattern-based text scrubbing before/after local inference. It can send original image pixels to a local vision model; it does not automatically remove personal information from images. Scrubbing and model interpretations can be incomplete or incorrect. Review every result before sharing it. An explicit `--fetch-public-media` option can download public HTTPS images from their source providers; it does not use browser cookies. Model installation and other tools have their own network behavior.
+The command tries to remove known names and other identifying text before and after local AI processing. It uses known-identity and pattern-based checks. These checks can miss information.
 
-## Retention and your controls
+Original image pixels can be passed to the local vision model. Personal information is not automatically removed from images. The model can also misinterpret them. Review every result before sharing it.
 
-Settings remain until changed or extension data is removed. Theme-editor session data lasts for the Chrome session or until saved/deleted through the editor. Verified, settled draft backups are removed after safe restoration or a completed recovery-copy download. Uncertain or conflicting backups are retained for recovery rather than silently discarded; there is no automatic expiry promised for them.
+The `--fetch-public-media` option explicitly downloads public HTTPS images from their source providers. It does not use browser cookies. Installing models and using other tools can involve their own network requests.
 
-Turn the helper Off to remove its display changes and controls. This keeps settings and recovery data. Turn optional Harvest styling off or revoke its site access to stop that adapter. Removing the extension removes its Chrome extension storage through Chrome's normal behavior; keep any needed recovery copy first. Downloads and separately processed files remain until you delete them. Clipboard content follows your operating system and clipboard tools; the extension does not clear it automatically.
+## How long information stays
 
-The extension stores its data in Chrome's profile storage without adding its own encryption. Device access, Chrome profile management, backups and synced folders are governed by your device and organization settings.
+Settings stay until you change them or remove the extension data. Unsaved theme edits last for the Chrome session, or until you save or delete them in the editor.
 
-## Questions and changes
+Settled draft backups are removed after a verified safe restoration or a completed recovery-file download. Uncertain or conflicting copies stay available for recovery. They have no promised automatic expiry.
 
-Contact forest.r.welch@gmail.com with privacy questions. Do not include raw tickets or screenshots containing customer information in an initial report. Updates to the extension or its data practices may require an updated policy and store disclosures.
+Downloads and separately processed files stay on your computer until you delete them. Clipboard contents follow your operating system and clipboard tools; the helper does not clear them.
+
+## What you can control
+
+Turn the helper Off to remove its display changes and controls. Settings and recovery copies stay in place.
+
+Turn Harvest styling off, or revoke its site access, to stop that feature.
+
+Uninstalling the extension removes its extension storage through Chrome's normal behavior. Save any recovery copy you need first. Uninstalling does not delete downloaded or separately processed files.
+
+## Questions and policy changes
+
+Email forest.r.welch@gmail.com with privacy questions. Keep raw tickets and screenshots containing customer information out of your first message.
+
+Changes to the extension or its data use may require updates to this policy and the store disclosures.

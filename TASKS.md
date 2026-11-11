@@ -21,6 +21,8 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 
 ## Done
 
+- [x] **T52 — Plain-language privacy copy.** Applied humanizer/ADHD preferences to all five editable privacy explanations and the full linked policy. Saved form and verified exact text after refresh. Regenerated site/packaged policy HTML; no data-practice or category change. Certifications remain unchecked. Prior tagged ZIPs keep their original equivalent policy wording. Local resource check passes. Evidence: current chat outputs/store-privacy/plain-*.
+
 - [x] **T51 — Prepare Privacy dashboard draft.** Purpose and four permission explanations, four implemented data categories and public GitHub policy URL saved; Item saved and refresh persistence verified. Policy reachable without sign-in. Three publisher certifications left unchecked; owner category/policy review remains T09. No review submission, deployment or runtime change. Evidence: current chat outputs/store-privacy.
 
 - [x] **T50 — Fill Chrome Web Store listing.** Saved dashboard draft for bbhdbfdfidlfihbbohohdndpppibgogf; description reviewed with ADHD/humanizer preferences. Workflow & Planning, English, icon, three screenshots, small promo tile and GitHub homepage/support set. Item saved confirmation and refresh persistence checked. Title/summary inherited from package. No review submission, privacy certification, distribution or package replacement. Evidence: current chat outputs/store-listing.
