@@ -4,7 +4,7 @@
 
 ## In progress
 
-- [ ] **T54 — Rename to Jones IT Zendesk Helper.** Update extension, policy, guides, artwork and store draft. Verify v0.7.8 in Chrome and prepare matching release files.
+None.
 
 ## Next — needs another person
 
@@ -17,9 +17,11 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 
 ## Later — external rollout
 
-- [ ] **T09 — Organization rollout.** v0.7.7 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are prepared (docs/release/START_HERE.md). Store Listing and Privacy explanations/selections are saved as drafts. Public GitHub policy URL is set; owner privacy/category review and certifications, distribution and reviewer setup remain. Contact email is verified and Submit for review is enabled. Final account/distribution/reviewer-access review and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
+- [ ] **T09 — Organization rollout.** v0.7.8 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are prepared (docs/release/START_HERE.md). Store Listing and Privacy explanations/selections are saved as drafts. Public GitHub policy URL is set; owner privacy/category review and certifications, distribution and reviewer setup remain. Contact email is verified and Submit for review is enabled. Final account/distribution/reviewer-access review and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
 
 ## Done
+
+- [x] **T54 — Jones IT Zendesk Helper, v0.7.8.** Renamed current UI, policy, guides, release copy/tooling and artwork; internal identifiers/storage keys unchanged. Aggregate and format checks, store preflight and tagged GitHub build 43083408272 pass. Chrome source/version/Reloaded and live popup verified. Uploaded runtime-only v0.7.8 to existing store item; title, description, three screenshots and promo tile saved and retained after refresh. Store Package confirms 0.7.8; Submit for review enabled, not clicked. Image removals explicitly approved. Prior tags/history retain original names. No ticket edits/saves/sends. Evidence: current chat outputs/rename-078.
 
 - [x] **T53 — Publisher contact email.** Added forest.r.welch@gmail.com; owner completed Google’s verification link. Settings refresh shows Verified email address; returning to the item shows Submit for review enabled. Both contact-email blockers cleared. No submission or other publisher setting changes. Evidence: current chat outputs/publisher-contact.
 

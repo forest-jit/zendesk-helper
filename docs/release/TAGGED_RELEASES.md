@@ -14,15 +14,15 @@ A draft is visible to repository collaborators, not ordinary visitors. Clicking 
 
 ## Next release: five steps
 
-1. **Update the version.** For example, set `manifest.json` to `0.7.8`, then run `npm version 0.7.8 --no-git-tag-version`. npm updates `package.json` and `package-lock.json`. Use the same three-number version everywhere.
+1. **Update the version.** For example, set `manifest.json` to `0.7.9`, then run `npm version 0.7.9 --no-git-tag-version`. npm updates `package.json` and `package-lock.json`. Use the same three-number version everywhere.
 2. **Test and document the change.** Run `npm run format:check` and `npm run check`; test changed behavior in Chrome. Update the guide, TASKS.md and CHROMEWEBSTORE.md as relevant. A green automated check is not live UI acceptance.
 3. **Review and commit.** Use `git status` and `git diff`. Commit the intended source/version/documentation files. Keep customer data, exports and credentials out of Git.
 4. **Push the commit and tag.** From this repository, with the example version:
 
    ```sh
    git push origin main
-   git tag -a v0.7.8 -m "Jones IT Zendesk Helper 0.7.8"
-   git push origin v0.7.8
+   git tag -a v0.7.9 -m "Jones IT Zendesk Helper 0.7.9"
+   git push origin v0.7.9
    ```
 
 5. **Open Actions, then Releases.** Wait for **Prepare tagged release** to pass. Review the draft notes and download the matching store ZIP. Existing Web Store owners can upload it to the same store item.

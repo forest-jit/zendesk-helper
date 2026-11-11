@@ -149,3 +149,7 @@ Publisher action: review the policy and category choices, then make the three de
 ## Publisher contact verified, November 11, 2026
 
 Added forest.r.welch@gmail.com in Settings and requested verification. The owner completed the email link. After refresh, Google showed “Verified email address.” On returning to the item, Submit for review was enabled and the contact-email blockers were gone. No submission was made. Other account settings, declarations and access were not changed. Previous unchecked-certification observations describe earlier privacy edits; current certification/distribution contents were not re-audited in this pass. Evidence: current chat outputs/publisher-contact.
+
+## Name update, version 0.7.8
+
+Current product name is Jones IT Zendesk Helper. Runtime-only v0.7.8 was uploaded to the existing item; Package confirms the version. Store title and description use the name, with refreshed three screenshots and small promo tile. Save confirmation and refresh persistence passed. Chrome loaded source/version/Reloaded and the renamed popup were checked. Aggregate, format, preflight and tagged-release run 43083408272 pass. Submit for review is enabled; it was not clicked. Previous tagged releases and their names stay unchanged. No data practices, permissions, internal IDs or storage keys changed.
