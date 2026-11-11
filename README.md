@@ -1,98 +1,72 @@
-# Zendesk Helper · 0.6.1
+# Zendesk Helper
 
-## Freshservice-inspired workspace
+A local Chrome extension that adjusts the Jones IT Zendesk interface. It loads automatically on `https://itjones.zendesk.com/agent/*`.
 
-Version 0.6.1 turns the active Zendesk ticket into a page-scrolling, conversation-first workspace. Public reply and Internal note are always visible above the composer. **Send** submits composer content without changing the current status; **Save changes** lives with the ticket properties and is disabled while an unsent composer draft exists. Command-Enter is scoped to the property actions.
+**[Feature guide](guide.html)** explains what the extension offers and how to use it. The same guide is available through **Help & feature guide** in the popup.
 
-Long conversations show the newest three rendered entries behind a `+N conversations` disclosure. Message images become compact thumbnails with hover/focus previews and a keyboard-accessible lightbox. System, Calm, and High contrast themes now cover the active ticket canvas, conversation, properties, composer, fields, controls, focus rings, and preview surfaces. Theme selection is available both in the extension popup and inside the properties panel.
+**Reading the source? Start with [the code tour](docs/CODE_TOUR.md).** Each runtime file has a short reading path; `npm run format` keeps it readable.
 
-The extension only presents requester, SLA, priority, status, conversations, and images that Zendesk has already rendered. Missing SLA information is omitted; nothing is invented or fetched from an API. Below 1000px, Zendesk's native layout and scrolling are retained.
+Private release preparation: [docs/release/START_HERE.md](docs/release/START_HERE.md). These materials are local drafts, not a published store listing.
 
-## Update from 0.3
+## Install or reload
+1. Open `chrome://extensions`, enable Developer mode, and load this folder unpacked.
+2. After code changes, reload the extension and refresh the Zendesk tab.
+3. Use the extension popup’s single **On / Off** switch. Settings save immediately.
 
-Version 0.4 extends the restrained CSS treatment to Zendesk ticket-list tables and adds a conservative warning for titles that appear to contain two company/requester prefixes. The helper shows a suggestion but never edits the subject automatically. Development fixtures now include six fictional list tickets and a representative single-ticket workspace; screenshots are written to `test-results/` by `npm run check`.
+The version in `manifest.json` identifies the local build. Confirm Chrome's loaded version separately.
 
-The complete implementation and testing backlog is in [`FEATURES.md`](FEATURES.md).
+## Where things go
+- **[TASKS.md](TASKS.md):** add requests here; this is the only task queue.
+- **[Current state](docs/CURRENT_STATE.md):** latest evidence, limitations, and next step.
+- **[AGENTS.md](AGENTS.md):** instructions for working in this repository.
 
-## Update from 0.2
+Run `npm ci` when dependencies need installing, then `npm run check` for local checks. `npm run test:fixtures` is an optional synthetic regression suite. It does not prove the live Zendesk UI works; follow the project's verification skill for extension changes.
 
-Version 0.3 extracts the ticket layout into `content.css` and gives the properties rail a restrained local token system, clearer separation, comfortable native fields, and visible keyboard focus. It also limits layout changes to the visible ticket workspace and preserves a manually selected title field across Zendesk DOM updates.
+Historical docs are in [docs/archive/](docs/archive/). They may describe superseded behavior and are not current instructions or proof of completion. Design-skill provenance remains in [docs/design-skills.md](docs/design-skills.md).
 
-Version 0.6 added safe Internal note defaulting, explicit public-reply review, local JSON/Markdown export, and personal themes.
+While typing in Public reply or Internal note, press **⌘Enter** to use Send. Empty drafts and repeated keydown events are guarded.
 
-### Reload and test locally
+## Local documentation export
 
-1. Open `chrome://extensions`.
-2. Find **Zendesk Helper — Prototype** and click **Reload**.
-3. Refresh the Zendesk tab so previously injected code and CSS are removed.
-4. Open the extension and click **Apply to this tab**.
-5. Use a fictional or designated test ticket only. Confirm conversation is left, properties are right, focus rings appear when tabbing, the context option is reversible, and **Turn off** restores the native layout.
-6. Do not save or send a ticket while checking this visual change.
+Choose **Solved** to reveal **Close ticket** and **Close and export**. Both save Zendesk's Solved status (not Closed). Text drafts are protected and restored during property-only saves; queued attachments must be sent or removed first. Close and export prepares the snapshot before saving and downloads it after the save is acknowledged. The popup's **Export ticket for local AI** also exports without changing status.
 
-For automated checks, run `npm install` once and then `npm run check`. The browser suite uses only `tests/fixtures/zendesk-ticket.html`; it does not open Zendesk or submit anything.
+Exports are raw local JSON files, containing all rendered comments (including collapsed history), timestamps, visibility, and image references/bytes when accessible. Per-message quoted history remains in the export when its display is collapsed. Unloaded history is explicitly outside the snapshot. Some authenticated or cross-origin images may need a local copy.
 
-## Update from 0.1
-Replace the files in the existing extension folder with this version, click Reload on chrome://extensions, then refresh the Zendesk ticket. A page refresh is required to remove the old injected script. Open the extension and click Apply to this tab.
+Ollama models used by the local processor:
 
-## New in 0.2
-- Automatic title detection based on the supplied saved Zendesk page.
-- Reversible CSS grid layout: conversation left, ticket fields right.
-- Customer context/apps hidden by default; opt in using the popup.
-- Layout changes only on windows at least 1000px wide. Below that, Zendesk's existing layout is retained.
-- Turn off restores the original layout. Refresh also clears all changes. No persistent settings.
-- Activation is limited in code to https://itjones.zendesk.com/agent/.
-- Uses existing DOM nodes and native inputs without moving nodes or replacing native controls.
-- Adds a guarded workflow bar while preserving Zendesk's native mode, status, and submit controls underneath.
+```sh
+ollama pull mistral
+ollama pull qwen2.5vl:3b
+python3 scripts/process_ticket.py "/path/to/ticket.raw.json"
+```
 
-The layout and selectors were checked against a saved HTML snapshot, not a running Zendesk session. The snapshot contains no live React state. Live layout, responsiveness, navigation and menu behavior require manual testing. No customer snapshot or its assets are included in this package.
+Pattern matching and known-identity redaction run before and after local models. Author names are normalized separately from timestamps; known first-name references and domain names are also scrubbed. The text model drafts technical documentation. The vision model interprets embedded images. On macOS, wide/tall screenshots are padded locally with the built-in image tool so the model can see their edges. AI visual interpretations stay clearly marked as unverified, separate from the text-based draft. The output folder contains `notion-draft.md` and `processed.json`; review the draft before giving it to Notion AI. Raw screenshots and identity mappings are not included in the Markdown.
 
-## Manual test
-1. Apply to a fictional ticket. Confirm the conversation is left and fields are right.
-2. Try an invalid title, leave the field, and confirm the nonblocking warning.
-3. Use `Beluga Sales Inc. - Taylor Baxter - FaceID error` and leave the field; the warning should disappear.
-4. Enable context, apply again, and check that customer context/apps return.
-5. Turn off and verify the original layout returns. Do not save or send to test the layout.
+For missing images, place local copies named `image-001.png`, `image-002.jpg`, etc. in a folder and pass `--media-dir "/path/to/images"`. Alternatively, `--fetch-public-media` opts into downloading public HTTPS images; it does not use browser cookies and cannot retrieve private attachments that require them. Missing media is reported, never described as analyzed.
 
-## Known limitations
-Visual order differs from DOM/tab order; keyboard focus follows Zendesk's native DOM order. Pane resizing controls are still Zendesk's controls, but CSS overrides their column widths while the layout is active. If controls overlap or resize incorrectly, Turn off. Unknown layouts are left unchanged. This is a personal prototype pending testing and organizational review.
+Ollama must be running at `127.0.0.1:11434`. Processing uses local models; this command does not write to Notion or call a hosted AI service. Privacy removal is best-effort and review remains necessary. Add `--redact-term "Additional name or organization"` for identifying terms found during review; repeat the option as needed. Review image interpretations against the actual image: the tested local vision model confused Pending membership with Active. A model summary is not proof of a resolution.
 
-## Original prototype background
+Choose a built-in theme or **System light / dark** in the extension popup. Hover/focus previews the popup; selecting applies the theme. Create a custom theme with five color controls, preview it temporarily on the ticket/Harvest, then Save and apply. Preview ends when the popup closes; unsaved palette edits remain available for the current Chrome session. Themes apply immediately and persist across refresh; turning the overlay off restores native colors. Use **Enable Harvest theme** once to grant optional access to platform.harvestapp.com, then refresh Zendesk. Harvest follows the selected theme; other embedded apps keep their own colors. Turning Harvest styling off restores its native colors; Chrome site access can be managed in the extension details. Coverage and verification: [docs/THEMING.md](docs/THEMING.md).
 
-An experimental Chrome Manifest V3 extension. No build step, dependencies, API keys, network requests, AI, telemetry, or persistent ticket storage.
 
-## Install on your computer
-1. Unzip this folder.
-2. Open chrome://extensions and turn on Developer mode.
-3. Click Load unpacked and select the folder containing manifest.json.
-4. Open a Zendesk agent ticket. Click this extension, then Apply to this tab.
-5. Leave the title input to see its format warning.
+## Ticket tools
 
-Your organization may restrict unpacked extensions. This is a test build, not an approved organizational deployment.
+- **Internal note / Public reply** beside the native selector switches in one click. Optional **Carry this draft** preserves text/formatting across modes; a distinct destination draft is never silently overwritten. Queued attachments block carrying. Native separate drafts remain the default.
+- **Update company and requester in ticket titles** uses the selected native identity and preserves the issue suffix. Changes stay in the ticket draft until Save or Send; Undo also turns off automatic title updates.
+- **Copy ticket** opens on hover and closes when the pointer leaves. Enter/Space and touch tap also work; Escape closes. Choose number, link, title/link or Markdown.
+- The reply activity line mirrors Zendesk’s native collision reporting. Unknown activity is explicitly labeled; it is not a guarantee the ticket is free.
+- Views refresh every 15 seconds by default (10/15/30/60 seconds or Off). Refresh pauses for typing, selection, menus, hidden/offline tabs and recent interaction. It uses Zendesk’s native refresh action, not page reloads.
 
-## Behavior
-- Checks on blur (focus leaving the selected input).
-- Expected structure: Company - Requester - Issue, with spaces around separators.
-- Additional ` - ` segments in the issue are permitted. Empty segments are rejected.
-- Empty drafts default to Internal note. Public replies require an explicit review checkbox before the helper Save action is enabled.
-- Status stays a draft until deliberate Save; scoped Command-Enter works only inside the active ticket workspace.
-- JSON and Markdown exports contain visible ticket content only and never call Zendesk APIs.
-- Valid format removes the warning. Invalid format displays a dismissible message immediately after the input.
-- Uses the observed omni-header-subject input; manual selection is available as a fallback.
-- Follows detected subject inputs and layout grids in SPA navigation; refresh or Turn off clears changes. Manual field selection may need repeating.
-- Native form submit also checks the field without blocking; Zendesk's custom save actions are not yet integrated.
-- Company and requester names are NOT verified. Missing or ambiguous data must never be invented. Future mapping should use authoritative ticket fields.
-- An extension only checks the tab where it is active. It cannot enforce titles for tickets arriving from email or other agents.
+[Team installation](docs/DISTRIBUTION.md) · [Reviewed documentation handoff](docs/DOCUMENTATION_HANDOFF.md)
 
-## Security boundaries
-Only activeTab and scripting permissions. The popup restricts activation to HTTPS itjones.zendesk.com/agent/ URLs. Custom Zendesk domains are not supported yet. Chrome grants temporary access to the active origin when you invoke the extension. Ticket strings are never inserted as HTML. Content-script code runs in Chrome's default isolated world. The extension does not call Zendesk APIs or touch authentication; guarded saves operate the visible native controls. Helper UI is isolated in shadow roots.
+## Reading email threads
 
-This is not a security audit or a guarantee of safety. Page modifications can conflict with Zendesk rendering; test with a fictional ticket first. A hostile page could tamper with page-visible warnings. Never treat this helper as an authorization control or guaranteed prevention of public replies. Before team rollout: verify actual Zendesk markup/accessibility, review permissions and dependencies, use managed distribution, and test navigation and concurrent ticket editing.
+Use **Hide quoted email history** inside a received message and **Show quoted email history** to restore it. Clearly marked quotes with a separate new response can start collapsed; plain forward headers start open. Unrecognized or quote-only messages remain visible. Expand older email content when checking for inline answers. The five-message ticket disclosure remains separate.
 
-## Next increments
-1. Confirm the real title field and automate its detection without broad page scraping.
-2. Resolve company/requester from authoritative ticket fields and show a suggested title.
-3. Validate selectors against future Zendesk UI changes.
-4. Consider approved integrations only after local export is reviewed.
+For bulky formatted emails, choose **Simplify email formatting**. **Restore email formatting** returns the authored layout. It removes fixed widths, table padding and background fills; plain paragraphs can look unchanged. It does not collapse threads. The original message and raw export remain available.
 
-## Development
-Run `npm run check`. Browser tests use controlled Zendesk-like markup; the extension is also smoke-tested read-only against a live test ticket without submitting it.
+Theme adaptation repairs measured unreadable text on solid message backgrounds and preserves readable authored colors. Image previews contain the full image. Off restores native content display. Closed tickets show a disabled **Closed** status; the helper never substitutes Open when native status controls are missing.
+
+Desktop sidebar widths follow the helper layout. Native column handles return when that layout is off. Long Harvest notes and reference text scroll within their own areas; project/task and timer controls remain open. The guide has the full feature instructions.
+
+Routine copy, draft-carry, settings/theme and export success notices are silent. Errors, conflicts, recovery instructions, progress and title Undo remain visible. Closed tickets hide helper Send/Save actions. The guide includes coworker testing steps. Documentation changes follow the ADHD and humanizer skills under AGENTS.md.

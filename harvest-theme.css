@@ -1,0 +1,74 @@
+/* Scoped to the opt-in Harvest timer document; does not affect account/login pages. */
+html[data-zdh-harvest-theme] {
+  color-scheme: var(--color-scheme);
+  background: var(--zdh-theme-surface);
+  scrollbar-color: var(--zdh-theme-control-border) var(--zdh-theme-surface);
+}
+html[data-zdh-harvest-theme] body {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-harvest-theme]
+  :is(input, textarea, select, .pds-input, .pds-button, .pds-chosen-dropdown) {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+  box-shadow: none !important;
+}
+html[data-zdh-harvest-theme] :is(input, textarea)::placeholder {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-harvest-theme] :is(a, .pds-button-link) {
+  color: var(--zdh-theme-link) !important;
+}
+html[data-zdh-harvest-theme] .pds-button-primary {
+  background-color: var(--zdh-theme-accent) !important;
+  border-color: var(--zdh-theme-accent) !important;
+  color: var(--zdh-theme-on-emphasis) !important;
+}
+html[data-zdh-harvest-theme] :is(.pds-chosen-selection, .pds-chosen-result-group) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-harvest-theme] .pds-chosen-result {
+  color: var(--zdh-theme-text) !important;
+  background-color: var(--zdh-theme-surface) !important;
+}
+html[data-zdh-harvest-theme]
+  .pds-chosen-result:is(:hover, [aria-selected='true'], .pds-chosen-highlighted) {
+  color: var(--zdh-theme-selected-text) !important;
+  background-color: var(--zdh-theme-selected) !important;
+}
+html[data-zdh-harvest-theme] :is(button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--zdh-theme-focus) !important;
+  outline-offset: 1px;
+}
+html[data-zdh-harvest-theme] :is(.pds-color-muted, .pds-color-gray, .shift-enter-helper-text) {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-harvest-theme] .pds-chosen-button > svg {
+  color: inherit !important;
+}
+html[data-zdh-harvest-theme] :is(.pds-button, .pds-input) {
+  background-image: none !important;
+}
+html[data-zdh-harvest-theme] img[alt='Service icon'] {
+  background-color: var(--zdh-theme-muted);
+  border-radius: 3px;
+}
+/* PDS sets stroke separately from color on the native chevrons. */
+html[data-zdh-harvest-theme] .pds-chosen-button > svg {
+  stroke: currentColor !important;
+}
+/* Keep the full timer open; long ticket subjects scroll within the notes field. */
+html[data-zdh-harvest-theme] textarea {
+  min-height: 48px !important;
+  max-height: 56px !important;
+  overflow-y: auto !important;
+}
+/* Bound the secondary reference text, not the project/task controls or timer action. */
+html[data-zdh-harvest-theme] :is(p, div):has(> a[href*='harvestapp.com/timesheet']) {
+  max-height: 32px;
+  overflow-y: auto;
+  font-size: 12px;
+  line-height: 16px;
+}

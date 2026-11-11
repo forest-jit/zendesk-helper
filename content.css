@@ -1,219 +1,133 @@
-/* Hallmark · v2.0.0 · built: the project · redesign: polish · scope: app · job: work a Zendesk ticket · genre: modern-minimal · theme: existing Zendesk · colour: restrained · motion: still · layout: native order, conversation left and properties right at 1000px+ · signature: quiet blue focus and a clearly bounded properties rail */
-/* Hallmark · pre-emit critique: P4 H4 E4 S5 R5 V4 · weakest: E, broad host selectors could disrupt Zendesk; scoped every rule to data-zdh-layout and kept native controls */
-
+/* Layout and additive controls only. Zendesk owns colors, fields and composer states. */
 :root {
-  --zdh-font-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --zdh-color-canvas: #f4f7f8;
-  --zdh-color-surface: #fbfdfe;
-  --zdh-color-surface-raised: #fdfefe;
-  --zdh-color-surface-subtle: #edf2f4;
-  --zdh-color-input: #fdfefe;
-  --zdh-color-ink: #17252d;
-  --zdh-color-muted: #526871;
-  --zdh-color-rule: #cbd7dc;
-  --zdh-color-field-edge: #78909a;
-  --zdh-color-accent: #17667a;
-  --zdh-color-on-accent: #ffffff;
-  --zdh-color-focus: #087ea4;
-  --zdh-priority-low: #647781;
-  --zdh-priority-normal: #1f78b4;
-  --zdh-priority-high: #b56b00;
-  --zdh-priority-urgent: #c43d3d;
-  --zdh-preview-shadow: rgb(24 39 48 / 22%);
-  --zdh-lightbox-scrim: rgb(14 25 31 / 78%);
-  --zdh-lightbox-shadow: rgb(0 0 0 / 35%);
-  --zdh-calm-canvas: #eaf1f2;
-  --zdh-calm-surface: #f8fbfb;
-  --zdh-calm-surface-raised: #f1f6f6;
-  --zdh-calm-surface-subtle: #dfeaec;
-  --zdh-calm-input: #fbfdfd;
-  --zdh-calm-ink: #1c3036;
-  --zdh-calm-muted: #536c73;
-  --zdh-calm-rule: #aec3c8;
-  --zdh-calm-field-edge: #78969e;
-  --zdh-calm-accent: #2d6971;
-  --zdh-calm-focus: #087b8c;
-  --zdh-contrast-canvas: #e8ecee;
-  --zdh-contrast-surface: #fbfdfe;
-  --zdh-contrast-surface-raised: #fdfefe;
-  --zdh-contrast-surface-subtle: #dce3e6;
-  --zdh-contrast-input: #fdfefe;
-  --zdh-contrast-ink: #071217;
-  --zdh-contrast-muted: #283d46;
-  --zdh-contrast-rule: #536770;
-  --zdh-contrast-field-edge: #263a43;
-  --zdh-contrast-accent: #004f66;
-  --zdh-contrast-focus: #d04400;
-  --zdh-space-2xs: 4px;
-  --zdh-space-xs: 8px;
+  --zdh-font-body: system-ui, -apple-system, sans-serif;
+  --zdh-color-rule: #d8dcde;
+  --zdh-color-surface: #fff;
+  --zdh-color-ink: #2f3941;
+  --zdh-space-xs: 4px;
+  --zdh-space-tight: 8px;
+  --zdh-field-gap: 8px;
   --zdh-space-sm: 12px;
   --zdh-space-md: 16px;
   --zdh-space-lg: 24px;
-  --zdh-properties-width: 360px;
+  --zdh-preview-shadow: rgb(0 0 0 / 18%);
+  --zdh-lightbox-scrim: rgb(0 0 0 / 75%);
+  --zdh-lightbox-shadow: rgb(0 0 0 / 30%);
+  --zdh-properties-width: 440px;
   --zdh-context-width: 280px;
 }
-
-:root[data-zdh-theme="calm"] {
-  --zdh-color-canvas: var(--zdh-calm-canvas);
-  --zdh-color-surface: var(--zdh-calm-surface);
-  --zdh-color-surface-raised: var(--zdh-calm-surface-raised);
-  --zdh-color-surface-subtle: var(--zdh-calm-surface-subtle);
-  --zdh-color-input: var(--zdh-calm-input);
-  --zdh-color-ink: var(--zdh-calm-ink);
-  --zdh-color-muted: var(--zdh-calm-muted);
-  --zdh-color-rule: var(--zdh-calm-rule);
-  --zdh-color-field-edge: var(--zdh-calm-field-edge);
-  --zdh-color-accent: var(--zdh-calm-accent);
-  --zdh-color-focus: var(--zdh-calm-focus);
+[data-zdh-native-actions='true'] {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
 }
-
-:root[data-zdh-theme="contrast"] {
-  --zdh-color-canvas: var(--zdh-contrast-canvas);
-  --zdh-color-surface: var(--zdh-contrast-surface);
-  --zdh-color-surface-raised: var(--zdh-contrast-surface-raised);
-  --zdh-color-surface-subtle: var(--zdh-contrast-surface-subtle);
-  --zdh-color-input: var(--zdh-contrast-input);
-  --zdh-color-ink: var(--zdh-contrast-ink);
-  --zdh-color-muted: var(--zdh-contrast-muted);
-  --zdh-color-rule: var(--zdh-contrast-rule);
-  --zdh-color-field-edge: var(--zdh-contrast-field-edge);
-  --zdh-color-accent: var(--zdh-contrast-accent);
-  --zdh-color-focus: var(--zdh-contrast-focus);
-}
-
-html,
-body {
-  overflow-x: clip;
-}
-
-:root[data-zdh-theme] body {
-  background: var(--zdh-color-canvas) !important;
-  color: var(--zdh-color-ink) !important;
-  font-family: var(--zdh-font-body) !important;
-}
-
 @media (min-width: 1000px) {
-  [data-zdh-layout="true"] {
+  [data-zdh-layout='true'] {
     grid-template-columns: minmax(0, 1fr) var(--zdh-properties-width) !important;
     gap: 0 !important;
-    background: var(--zdh-color-canvas) !important;
   }
-
-  [data-zdh-layout="true"] > [data-test-id="column-2"] {
+  [data-zdh-layout='true'] > [data-test-id='column-2'] {
     grid-column: 1 !important;
     grid-row: 1 !important;
     min-width: 0 !important;
-    background: var(--zdh-color-surface) !important;
-    color: var(--zdh-color-ink) !important;
-    font-family: var(--zdh-font-body) !important;
+    padding: var(--zdh-space-sm) !important;
   }
-
-  [data-zdh-layout="true"] > [data-test-id="column-1"] {
+  [data-zdh-layout='true'] > [data-test-id='column-1'] {
     grid-column: 2 !important;
     grid-row: 1 !important;
     min-width: 0 !important;
-    border-left: 1px solid var(--zdh-color-rule) !important;
-    background: var(--zdh-color-surface-subtle) !important;
-    color: var(--zdh-color-ink) !important;
-    font-family: var(--zdh-font-body) !important;
-    line-height: 1.5 !important;
+    padding: var(--zdh-space-sm) !important;
+    box-sizing: border-box;
   }
-
-  [data-zdh-layout="true"] > [data-test-id="column-3"] {
+  [data-zdh-layout='true'] > [data-test-id='column-3'] {
     display: none !important;
   }
-
-  [data-zdh-layout="true"][data-zdh-context="true"] {
+  [data-zdh-layout='true'][data-zdh-context='true'] {
     grid-template-columns: minmax(0, 1fr) var(--zdh-properties-width) var(--zdh-context-width) !important;
   }
-
-  [data-zdh-layout="true"][data-zdh-context="true"] > [data-test-id="column-3"] {
+  [data-zdh-layout='true'][data-zdh-context='true'] > [data-test-id='column-3'] {
     display: flex !important;
     grid-column: 3 !important;
     grid-row: 1 !important;
     min-width: 0 !important;
-    border-left: 1px solid var(--zdh-color-rule) !important;
-    background: var(--zdh-color-surface) !important;
   }
-
-  [data-zdh-page-scroll="true"],
-  [data-zdh-page-scroll="true"] > [data-test-id^="column-"],
-  [data-zdh-page-scroll="true"] [data-test-id="conversation-log"],
-  [data-zdh-page-scroll="true"] [aria-label="Conversation log"],
-  [data-zdh-page-scroll="true"] .conversation-log {
-    height: auto !important;
-    max-height: none !important;
-    min-height: 0 !important;
-    overflow: visible !important;
+  [data-zdh-layout='true'] :has(> [data-zdh-priority-status-row='true']) {
+    grid-column: 1 / -1 !important;
+    min-width: 0;
   }
-
-  [data-zdh-page-scroll="true"] > [data-test-id="column-1"] {
-    position: static !important;
-    align-self: start !important;
+  [data-zdh-priority-status-row='true'] {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: 8px;
+    container-type: inline-size;
   }
-
-  [data-zdh-layout="true"] :is(input,textarea,select) {
-    border: 1px solid var(--zdh-color-field-edge) !important;
-    border-radius: 8px !important;
-    background: var(--zdh-color-input) !important;
-    color: var(--zdh-color-ink) !important;
-    font-family: var(--zdh-font-body) !important;
+  [data-zdh-priority-status-row='true'] > [data-zdh-priority-field] {
+    min-width: 0;
+    width: auto;
   }
-
-  [data-zdh-layout="true"] :is(input,textarea,select,button):focus-visible {
-    outline: 3px solid var(--zdh-color-focus) !important;
-    outline-offset: 2px !important;
-  }
-
-  [data-zdh-layout="true"] :is(article,.message) {
-    border-color: var(--zdh-color-rule) !important;
-    color: var(--zdh-color-ink) !important;
-  }
-
-  [data-zdh-layout="true"] [data-test-id*="composer"],
-  [data-zdh-layout="true"] .composer {
-    background: var(--zdh-color-surface-raised) !important;
-    border-color: var(--zdh-color-rule) !important;
-    border-radius: 12px !important;
-  }
-
 }
-
+[data-zdh-properties-actions] {
+  min-width: 0;
+  margin: 0 !important;
+}
+[data-zdh-save-action] {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+[data-zdh-layout='true'] [data-test-id='omnichannel-composer-toolbar'] {
+  flex-shrink: 0;
+}
+[data-zdh-composer-actions] {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 0 8px;
+}
+[data-zdh-conversation-disclosure] {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin: 4px 0 8px;
+  padding: 4px 10px;
+  min-height: 28px;
+  border: 1px solid var(--zdh-theme-control-border, #b0b8be);
+  border-radius: 4px;
+  background: var(--zdh-theme-surface, #fff);
+  color: inherit;
+  font: 600 13px/20px system-ui;
+  cursor: pointer;
+}
+[data-zdh-conversation-disclosure]:focus-visible,
+[data-zdh-additional-toggle]:focus-visible {
+  outline: 2px solid #1f73b7;
+  outline-offset: 2px;
+}
 @media (min-width: 1000px) and (max-width: 1199px) {
   :root {
-    --zdh-properties-width: 320px;
+    --zdh-properties-width: 400px;
     --zdh-context-width: 260px;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  [data-zdh-layout="true"],
-  [data-zdh-layout="true"] * {
-    scroll-behavior: auto !important;
-  }
-
+/* Preserve list spacing without recoloring native tables. */
+table[data-test-id='generic-table'] :is(th, td) {
+  padding: 12px 16px !important;
 }
 
-[data-zdh-conversation-disclosure] {
-  margin: var(--zdh-space-md) 0;
-  min-height: 34px;
-  padding: 0 var(--zdh-space-sm);
-  border: 1px solid var(--zdh-color-rule);
-  border-radius: 999px;
-  background: var(--zdh-color-surface);
-  color: var(--zdh-color-ink);
-  font: 600 0.875rem/1 var(--zdh-font-body);
-  cursor: pointer;
+[data-zdh-conversation-entry] {
+  position: relative;
 }
 
-[data-zdh-conversation-entry] { position: relative; }
-
-[data-zdh-message-image="true"] {
+[data-zdh-message-image='true'] {
   display: block !important;
   width: 84px !important;
   height: 56px !important;
   margin-top: var(--zdh-space-sm) !important;
-  object-fit: cover !important;
+  object-fit: contain !important;
   border: 1px solid var(--zdh-color-rule) !important;
   border-radius: 8px !important;
   cursor: zoom-in !important;
@@ -235,8 +149,16 @@ body {
   transition: opacity 140ms ease-out;
 }
 
-[data-zdh-image-preview] img { display: block; width: 100%; height: auto; border-radius: 8px; }
-[data-zdh-preview-trigger]:is(:hover,:focus,:focus-visible) + [data-zdh-image-preview] { visibility: visible; opacity: 1; }
+[data-zdh-image-preview] img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+[data-zdh-preview-trigger]:is(:hover, :focus, :focus-visible) + [data-zdh-image-preview] {
+  visibility: visible;
+  opacity: 1;
+}
 
 [data-zdh-image-lightbox] {
   position: fixed;
@@ -248,55 +170,573 @@ body {
   background: var(--zdh-lightbox-scrim);
 }
 
-[data-zdh-image-lightbox] img { max-width: min(1100px, 92vw); max-height: 82vh; border-radius: 12px; box-shadow: 0 24px 64px var(--zdh-lightbox-shadow); }
-[data-zdh-image-lightbox] button { position: absolute; top: 18px; right: 18px; min-height: 40px; padding: 0 16px; border: 0; border-radius: 8px; background: var(--zdh-color-surface); color: var(--zdh-color-ink); font: 600 14px/1 var(--zdh-font-body); cursor: pointer; }
-
-[data-zdh-conversation-disclosure]:active,
-[data-zdh-image-lightbox] button:active { filter: brightness(.92); }
-
-[data-test-id="views_views-pane_content"] {
-  background: var(--zdh-color-canvas) !important;
-  color: var(--zdh-color-ink) !important;
-  font-family: var(--zdh-font-body) !important;
-}
-
-[data-test-id="views_views-pane_content"] [role="region"][aria-label="Now showing tickets"] {
-  overflow: auto;
-  scrollbar-color: var(--zdh-color-field-edge) var(--zdh-color-surface-subtle);
-}
-
-table[data-test-id="generic-table"] {
-  width: 100% !important;
-  border-collapse: separate !important;
-  border-spacing: 0 !important;
-  background: var(--zdh-color-surface) !important;
-  color: var(--zdh-color-ink) !important;
-  font-family: var(--zdh-font-body) !important;
-  line-height: 1.5 !important;
-}
-
-table[data-test-id="generic-table"] :is(th, td) {
-  padding: var(--zdh-space-sm) var(--zdh-space-md) !important;
-  border-bottom: 1px solid var(--zdh-color-rule) !important;
-  text-align: left !important;
-  vertical-align: middle !important;
-}
-
-table[data-test-id="generic-table"] th {
-  position: sticky;
-  top: 0;
+[data-zdh-image-lightbox] img {
+  position: relative;
   z-index: 1;
-  background: var(--zdh-color-surface-subtle) !important;
-  color: var(--zdh-color-ink) !important;
-  font-size: 0.875rem !important;
-  font-weight: 650 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
+  max-width: min(1100px, 92vw);
+  max-height: 82vh;
+  border-radius: 12px;
+  box-shadow: 0 24px 64px var(--zdh-lightbox-shadow);
+}
+[data-zdh-image-backdrop] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-out;
+}
+[data-zdh-conversation-disclosure]:active {
+  filter: brightness(0.92);
+}
+
+@container (max-width: 230px) {
+  [data-zdh-priority-status-row='true'] > [data-zdh-priority-field],
+  [data-zdh-priority-status-row='true'] > [data-zdh-properties-actions] {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Hide native fields without replacing inputs or losing their values. */
+[data-zdh-layout='true'] [data-zdh-additional-field='true'] {
+  display: none !important;
+  order: 2;
+}
+[data-zdh-layout='true'] [data-zdh-fields-expanded='true'] [data-zdh-additional-field='true'] {
+  display: revert !important;
+}
+[data-zdh-layout='true'] [data-zdh-additional-toggle] {
+  grid-column: 1 / -1;
+  order: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 0;
+  border: 0;
+
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: 600 12px/20px system-ui;
+  text-align: left;
+  cursor: pointer;
+}
+[data-zdh-additional-toggle]::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  flex: none;
+  background: var(
+      --zdh-theme-chevron,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%2368737d' d='M12.688 5.61a.5.5 0 01.69.718l-.066.062-5 4a.5.5 0 01-.542.054l-.082-.054-5-4a.5.5 0 01.55-.83l.074.05L8 9.359l4.688-3.75z'/%3E%3C/svg%3E")
+    )
+    center/16px no-repeat;
+  transform: rotate(-90deg);
+}
+[data-zdh-additional-toggle][aria-expanded='true']::before {
+  transform: rotate(0);
+}
+/* Zendesk sets display:grid on articles, overriding the HTML hidden attribute. */
+[data-zdh-layout='true'] [data-zdh-collapsed='true'] {
+  display: none !important;
+}
+
+[data-zdh-layout='true'] [data-zdh-essential-field='true'] {
+  grid-column: 1 / -1 !important;
+}
+
+/* Harvest stays in its live native iframe, above properties in the same rail. */
+@media (min-width: 1000px) {
+  [data-zdh-layout='true'][data-zdh-harvest='true'] {
+    grid-template-columns: minmax(0, 1fr) var(--zdh-properties-width) !important;
+    grid-template-rows: minmax(0, auto) minmax(0, 1fr) !important;
+  }
+  [data-zdh-layout='true'][data-zdh-harvest='true'] > [data-test-id='column-2'] {
+    grid-column: 1 !important;
+    grid-row: 1 / 3 !important;
+  }
+  [data-zdh-layout='true'][data-zdh-harvest='true'] > [data-test-id='column-1'] {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    min-height: 0 !important;
+    padding-top: 0 !important;
+  }
+  [data-zdh-layout='true'][data-zdh-harvest='true'] > [data-test-id='column-3'] {
+    display: block !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-height: 0 !important;
+    max-height: min(440px, 52vh);
+    padding: var(--zdh-space-sm) var(--zdh-space-sm) 0 !important;
+    box-sizing: border-box;
+    overflow: auto !important;
+  }
+  [data-zdh-harvest='true'] [data-zdh-harvest-path='true'] {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  [data-zdh-harvest-path='true'] > :is([data-zdh-harvest-path], [data-zdh-harvest-panel]) {
+    order: -1;
+  }
+  [data-zdh-context='false']
+    [data-zdh-harvest-path='true']
+    > :not([data-zdh-harvest-path]):not([data-zdh-harvest-panel]) {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1000px) {
+  [data-zdh-harvest='true'] > [data-test-id='column-3'] > :not([data-zdh-harvest-path]) {
+    display: none !important;
+  }
+}
+@media (min-width: 1000px) {
+  [data-zdh-harvest='true'] :is([data-zdh-harvest-path], [data-zdh-harvest-panel]) {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+}
+
+/* Use the available width before adding scrolling or moving any native fields. */
+@media (min-width: 1000px) {
+  [data-zdh-layout='true'] [data-zdh-field-row='true'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: var(--zdh-field-gap) var(--zdh-space-sm) !important;
+    padding: var(--zdh-space-tight) !important;
+  }
+  [data-zdh-layout='true']
+    [data-zdh-field-row='true']
+    > :is(
+      [data-zdh-field-name='requester'],
+      [data-zdh-field-name='assignee'],
+      [data-zdh-field-name='tags'],
+      [data-zdh-field-name='ticket code']
+    ) {
+    grid-column: auto !important;
+    min-width: 0;
+  }
+  [data-zdh-layout='true'] [data-zdh-additional-field='true'] {
+    grid-column: 1 / -1 !important;
+  }
+  [data-zdh-layout='true'] [data-zdh-additional-toggle] {
+    padding: 4px 0;
+    min-height: 28px;
+  }
+  [data-zdh-harvest-panel='true'] > :first-child {
+    min-height: 36px !important;
+    padding: var(--zdh-space-xs) var(--zdh-space-md) !important;
+    box-sizing: border-box;
+  }
+  [data-zdh-conversation-header='true'] {
+    padding: var(--zdh-space-tight) var(--zdh-space-md) !important;
+  }
+  [data-zdh-layout='true'] [data-test-id='ticket-call-controls-action-bar']:empty {
+    display: none !important;
+  }
+  [data-zdh-history-row='true'] {
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  [data-zdh-history-row='true'] > [data-zdh-conversation-disclosure] {
+    margin: 0;
+    padding: 2px 10px;
+    min-height: 28px;
+    align-self: auto;
+    font-size: 12px;
+  }
+}
+
+/* One full-frame composer border, including native-color mode. No focus size jump. */
+html [data-zdh-layout='true'] [data-test-id='omnichannel-composer'] {
+  border: 1px solid var(--zdh-theme-control-border, var(--border-default, #d8dcde)) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+html [data-zdh-layout='true'] [data-test-id='omnichannel-composer']:focus-within {
+  border-color: var(--zdh-theme-focus, #1f73b7) !important;
+}
+
+/* Zendesk's header had -3px margins and a second top border outside our frame. */
+html
+  [data-zdh-layout='true']
+  [data-test-id='omnichannel-composer']
+  > div:first-child:has([data-test-id='omnichannel-channel-switcher-button']) {
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+/* Operate-mode rhythm: give content space without enlarging every field/control. */
+@media (min-width: 1200px) {
+  :root {
+    --zdh-field-gap: 12px;
+  }
+}
+[data-zdh-layout='true'] [data-zdh-conversation-entry] {
+  padding-block: var(--zdh-space-tight) !important;
+  margin-block: var(--zdh-space-tight) !important;
+}
+[data-zdh-layout='true'] [data-test-id='omni-log-item-message'] {
+  padding: var(--zdh-space-md) !important;
+}
+[data-zdh-layout='true'] [data-test-id='ticket-rich-text-editor'] {
+  padding: var(--zdh-space-xs) var(--zdh-space-tight) !important;
+}
+[data-zdh-layout='true'] [data-test-id='omnichannel-composer-toolbar'] {
+  padding: 6px var(--zdh-space-sm) !important;
+}
+
+/* Equal outer column insets and aligned Harvest/property inner edges. */
+@media (min-width: 1000px) {
+  [data-zdh-layout='true'] [data-zdh-harvest-panel='true'] > :first-child {
+    padding-inline: var(--zdh-space-tight) !important;
+  }
+  [data-zdh-layout='true']
+    [data-zdh-harvest-panel='true']
+    .app_view:has(> iframe[title='Harvest']) {
+    padding: 0 var(--zdh-space-tight) var(--zdh-space-tight) !important;
+    box-sizing: border-box;
+  }
+}
+
+/* Helper owns the footer action at every width; disable removes this marker. */
+[data-zdh-stay-action] {
+  display: none !important;
+}
+@media (max-width: 999px) {
+  [data-zdh-history-row='true'] {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  [data-zdh-history-row='true'] > [data-zdh-conversation-disclosure] {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    padding-inline: 6px;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Messages and the native composer share one scrolling reading/reply flow. */
+[data-zdh-layout='true'] [data-zdh-conversation-scroll='true'] {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior-y: contain;
+}
+[data-zdh-conversation-scroll='true'] > :not([data-zdh-flow-path]) {
+  flex-shrink: 0 !important;
+}
+[data-zdh-conversation-scroll='true'] [data-zdh-flow-path='true'] {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+[data-zdh-conversation-scroll='true'] [data-test-id='convopane-resizable-grid'] {
+  display: flex !important;
+  flex-direction: column !important;
+}
+[data-zdh-conversation-scroll='true'] [data-test-id='omnichannel-composer'] {
+  min-height: 280px !important;
+  margin-top: var(--zdh-space-md);
+}
+[data-zdh-conversation-scroll='true'] [data-test-id='ticket-rich-text-editor'] {
+  flex: 1 0 auto !important;
+  overflow: visible !important;
+}
+[data-zdh-conversation-scroll='true'] [data-test-id='omnicomposer-rich-text-ckeditor'] {
+  height: auto !important;
+  min-height: 160px !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+[data-zdh-conversation-scroll='true']
+  [data-test-id='convopane-resizable-grid']
+  :is([role='separator'], button[aria-label='Hide composer']),
+[data-zdh-native-history-jump='true'] {
+  display: none !important;
+}
+
+/* Small native-adjacent tools; the editor and mode selector keep ownership of state. */
+[data-zdh-mode-tools] {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-inline: 8px;
+  max-width: 100%;
+  font: 12px/1.4 system-ui;
+  min-width: 0;
+}
+[data-zdh-mode-tools] button,
+[data-zdh-copy-tools] button,
+[data-zdh-title-hint] button {
+  min-height: 28px;
+  padding: 3px 9px;
+  border: 1px solid var(--zdh-theme-control-border, #b0b8be);
+  border-radius: 4px;
+  background: var(--zdh-theme-surface, #fff);
+  color: var(--zdh-theme-text, #293239);
+  font: inherit;
+  cursor: pointer;
+}
+[data-zdh-mode-tools] button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+[data-zdh-mode-tools] label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  color: var(--zdh-theme-muted, #52616b);
+  font-size: 12px;
+}
+[data-zdh-mode-tools] input {
+  accent-color: var(--zdh-theme-accent, #1f73b7);
+}
+[data-mode-notice] {
+  flex-basis: 100%;
+  font-size: 12px;
+  max-width: 380px;
+  white-space: normal;
+}
+[data-mode-notice]:empty {
+  display: none;
+}
+[data-zdh-copy-tools] {
+  position: relative;
+  flex: 0 0 auto;
+  font: 12px/1.5 system-ui;
+  margin-inline: 4px;
+}
+[data-zdh-copy-tools] summary {
+  cursor: pointer;
+  color: var(--zdh-theme-link, #1f73b7);
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+[data-zdh-copy-tools] > div {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  top: 100%;
+  display: grid;
+  gap: 4px;
+  min-width: 180px;
+  padding: 8px;
+  background: var(--zdh-theme-surface, #fff);
+  border: 1px solid var(--zdh-theme-control-border, #b0b8be);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px var(--zdh-theme-shadow, rgb(0 0 0 / 18%));
+}
+[data-zdh-copy-tools] > div button {
+  text-align: left;
+}
+[data-zdh-copy-tools]:not([open]) > div {
+  display: none;
+}
+[data-zdh-copy-tools] > span {
+  font-size: 12px;
+}
+[data-zdh-title-hint] {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  font: 12px/1.4 system-ui;
+  padding: 4px 0;
+  color: var(--zdh-theme-muted, #52616b);
+}
+[data-zdh-activity] {
+  font: 12px/1.5 system-ui;
+  color: var(--zdh-theme-muted, #52616b);
+  padding: 6px 12px;
+  margin-top: 8px;
+}
+[data-zdh-activity][data-state='editing'] {
+  color: var(--zdh-theme-attention-text, #83491b);
+  background: var(--zdh-theme-note, #fff4e5);
+}
+[data-zdh-queue-status] {
+  font: 12px/1.5 system-ui;
+  color: var(--zdh-theme-muted, #52616b);
   white-space: nowrap;
 }
-
-table[data-test-id="generic-table"] td {
-  min-height: 48px;
-  color: var(--zdh-color-ink) !important;
+[data-zdh-mode-tools] button:focus-visible,
+[data-zdh-copy-tools] :is(summary, button):focus-visible,
+[data-zdh-title-hint] button:focus-visible {
+  outline: 2px solid var(--zdh-theme-focus, #1f73b7);
+  outline-offset: 2px;
 }
 
+[data-zdh-copy-feedback] {
+  font: 12px/1.5 system-ui;
+  color: var(--zdh-theme-muted, #52616b);
+  margin-inline: 4px;
+}
+[data-zdh-presence] {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-inline: 4px;
+  font: 12px/1.5 system-ui;
+}
+[data-zdh-presence] button {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--zdh-theme-control-border, #b0b8be);
+  border-radius: 50%;
+  background: var(--zdh-theme-surface, #fff);
+  color: var(--zdh-theme-muted, #52616b);
+  cursor: help;
+  transition:
+    background-color 140ms ease-out,
+    color 140ms ease-out,
+    transform 140ms ease-out;
+}
+[data-zdh-presence][data-state='viewing'] button {
+  color: var(--zdh-theme-link, #1f73b7);
+}
+[data-zdh-presence][data-state='editing'] button {
+  color: var(--zdh-theme-attention-text, #83491b);
+  background: var(--zdh-theme-note, #fff4e5);
+}
+[data-zdh-presence] button:is(:hover, :focus-visible) {
+  transform: scale(1.05);
+  outline: 2px solid var(--zdh-theme-focus, #1f73b7);
+  outline-offset: 2px;
+}
+[data-zdh-presence] [role='tooltip'] {
+  display: none;
+  position: absolute;
+  z-index: 30;
+  inset-block-start: calc(100% + 8px);
+  inset-inline-end: 0;
+  min-width: 180px;
+  max-width: 300px;
+  white-space: normal;
+  padding: 8px 12px;
+  border: 1px solid var(--zdh-theme-control-border, #b0b8be);
+  border-radius: 6px;
+  background: var(--zdh-theme-surface, #fff);
+  color: var(--zdh-theme-text, #293239);
+  box-shadow: 0 4px 12px var(--zdh-theme-shadow, rgb(0 0 0 / 18%));
+}
+[data-zdh-presence]:is(:hover, :focus-within) [role='tooltip'] {
+  display: block;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-zdh-presence] button {
+    transition: none;
+    transform: none !important;
+  }
+}
+
+/* Stable content scope also covers images replaced by Zendesk after the first scan. */
+[data-zdh-layout='true']
+  [data-zdh-conversation-entry]
+  [data-test-id='omni-log-message-content']
+  img:not([data-zdh-image-preview] img) {
+  max-width: 84px !important;
+  max-height: 56px !important;
+  object-fit: contain !important;
+  cursor: zoom-in;
+}
+
+[data-zdh-layout='true'] [data-zdh-email-hidden='true'] {
+  display: none !important;
+}
+[data-zdh-email-disclosure],
+[data-zdh-email-formatting] {
+  display: block;
+  margin: 12px 0;
+  padding: 4px 8px;
+  min-height: 28px;
+  font: 12px/1.5 system-ui;
+  color: var(--zdh-theme-link, #1f73b7);
+  background: var(--zdh-theme-surface, #fff);
+  border: 1px solid var(--zdh-theme-control-border, #87929d);
+  border-radius: 4px;
+  cursor: pointer;
+}
+[data-zdh-email-disclosure]:focus-visible,
+[data-zdh-email-formatting]:focus-visible {
+  outline: 2px solid var(--zdh-theme-focus, #1f73b7);
+  outline-offset: 2px;
+}
+
+[data-zdh-history-row='true'] {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+[data-zdh-history-row] [data-zdh-copy-feedback]:empty {
+  display: none;
+}
+/* Desktop column order/width is owned by this layout; native handles point outside it. */
+@media (min-width: 1000px) {
+  [data-zdh-layout='true'] [role='separator'][aria-label^='Layout column'] {
+    display: none !important;
+  }
+}
+
+/* Optional reading view for layout-heavy email. DOM, table semantics and links stay intact. */
+[data-zdh-simple-email] :is(table, tbody, tr, td, th, div, p, span, font, h1, h2, h3, h4) {
+  background-color: transparent !important;
+  color: var(--zdh-theme-text, var(--foreground-primary, #2f3941)) !important;
+  max-width: 100% !important;
+}
+[data-zdh-simple-email] :is(table, td, th, div) {
+  width: auto !important;
+}
+[data-zdh-simple-email] :is(table, td, th) {
+  padding: 0 !important;
+  height: auto !important;
+  border-color: transparent !important;
+}
+[data-zdh-simple-email] :is(div, td, th) {
+  padding-inline: 0 !important;
+}
+[data-zdh-simple-email] p {
+  margin: 0 0 8px !important;
+  line-height: 1.5 !important;
+}
+[data-zdh-simple-email] :is(h1, h2, h3, h4) {
+  font-size: 1.15em !important;
+  line-height: 1.4 !important;
+  margin: 16px 0 8px !important;
+}
+[data-zdh-simple-email] a {
+  color: var(--zdh-theme-link, var(--foreground-primary, #1f73b7)) !important;
+}
+
+/* Hidden actions must win over layout display rules, including closed-ticket fallbacks. */
+[data-zdh-composer-actions][hidden],
+[data-zdh-save-action][hidden] {
+  display: none !important;
+}
+
+/* The shared conversation panel keeps its own scroll; no vertical divider between columns. */
+@media (min-width: 1000px) {
+  [data-zdh-layout='true'] [data-editor-container='true'][data-zdh-conversation-scroll='true'] {
+    border-inline-end: 0 !important;
+  }
+}

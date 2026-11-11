@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""Build a source-only Chrome extension zip; exclude tickets, models and dev files."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import zipfile
+
+ROOT = Path(__file__).resolve().parents[1]
+FILES = '''manifest.json background.js harvest-policy.js harvest-controller.js
+harvest-theme.js harvest-theme.css themes.js theme-page.js validator.js workflow.js
+exporter.js workspace.js ticket-model.js ticket-tools.js message-display.js email-threads.js content.js content.css theme.css
+popup.html popup.js popup.css draft-bridge.js guide.html guide.js guide.css
+scripts/process_ticket.py docs/DISTRIBUTION.md docs/DOCUMENTATION_HANDOFF.md'''.split()
+
+def package(output, store=False):
+    manifest = json.loads((ROOT / 'manifest.json').read_text())
+    version = manifest['version']
+    if output.suffix != '.zip':
+        raise ValueError('Choose a .zip output filename.')
+    icons = [f'assets/icons/icon-{size}.png' for size in (16, 32, 48, 128)]
+    files = FILES + ['privacy.html'] + icons
+    if store:
+        files = [name for name in files if not name.startswith(('scripts/', 'docs/'))]
+    for name in files:
+        if not (ROOT / name).is_file():
+            raise ValueError('Missing extension file: ' + name)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    readme = f'''# Zendesk Helper {version}
+
+Unzip this folder, then open chrome://extensions in Chrome. Enable Developer mode,
+choose Load unpacked, and select this folder. Refresh Zendesk once.
+
+Open the toolbar popup. The On / Off switch controls the helper; other settings save
+automatically. Help & feature guide explains every feature. You can also open guide.html.
+
+Team install and updates: docs/DISTRIBUTION.md
+Local AI and documentation review: docs/DOCUMENTATION_HANDOFF.md
+
+The zip contains no ticket exports, account credentials, models or development dependencies.
+Ollama is optional and installed separately; the local processor is scripts/process_ticket.py.
+Organization policy may require approval before team rollout.
+'''
+    with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED) as archive:
+        for name in sorted(files):
+            archive.writestr(name, (ROOT / name).read_bytes())
+        if not store:
+            archive.writestr('README.md', readme)
+    with zipfile.ZipFile(output) as archive:
+        if archive.testzip() is not None:
+            raise RuntimeError('The release zip failed its integrity check.')
+        packaged = json.loads(archive.read('manifest.json'))
+        if packaged['version'] != version:
+            raise RuntimeError('Packaged manifest version differs.')
+    digest = hashlib.sha256(output.read_bytes()).hexdigest()
+    output.with_suffix('.sha256').write_text(digest + '  ' + output.name + '\n')
+    print(f'{output} ({output.stat().st_size} bytes; {len(files) + (0 if store else 1)} files; store={store})')
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--store', action='store_true', help='Package runtime files only for Chrome Web Store upload')
+    args = parser.parse_args()
+    package(args.output, store=args.store)

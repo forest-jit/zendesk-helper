@@ -32,10 +32,18 @@
   <section data-test-id="ticket-222-standard-layout" id="active-ticket">
     <aside data-test-id="column-1" id="properties">
       <h2>Ticket fields</h2>
-      <div class="field"><label for="requester">Requester</label><span data-test-id="ticket-system-field-requester-select"><input class="zendesk-native-control" id="requester" aria-label="Requester" value="Taylor Baxter"></span></div>
+      <div class="field" data-garden-id="grid.col"><label for="requester">Requester</label><span data-test-id="ticket-system-field-requester-select"><input class="zendesk-native-control" id="requester" aria-label="Requester" value="Taylor Baxter"></span></div>
       <div class="field"><span>Organization</span><span data-test-id="organization_id-field-test-id">Org.Beluga Sales Inc.</span></div>
       <div class="field" data-test-id="ticket-sla"><span>First response due</span><strong>In 2 hours</strong></div>
-      <div class="field"><label for="priority">Priority</label><select id="priority" aria-label="Priority"><option>Low</option><option selected>Normal</option><option>High</option><option>Urgent</option></select></div>
+      <div class="field" data-garden-id="grid.col"><label for="priority">Priority</label><select id="priority" aria-label="Priority"><option>Low</option><option selected>Normal</option><option>High</option><option>Urgent</option></select></div>
+      <div class="field" data-garden-id="grid.col"><label><input type="checkbox" aria-label="Ticket Code Prepended">Ticket Code Prepended</label></div>
+      <div class="field" data-garden-id="grid.col"><label><input type="checkbox" aria-label="Submitted Outside Business Hours">Submitted Outside Business Hours</label></div>
+      <div class="field" data-garden-id="grid.col"><label><input type="checkbox" aria-label="Disable Solved Notification?">Disable Solved Notification?</label></div>
+      <div class="field" data-garden-id="grid.col"><label>HR Request Type<select aria-label="HR Request Type"><option>-</option></select></label></div>
+      <div class="field" data-garden-id="grid.col"><label>Summary agent ID<input aria-label="Summary agent ID" disabled></label></div>
+      <div class="field" data-garden-id="grid.col"><label>Summary date and time<input aria-label="Summary date and time" disabled></label></div>
+      <div class="field" data-garden-id="grid.col"><label>Summary<input aria-label="Summary" disabled></label></div>
+      <div class="field" data-garden-id="grid.col"><label>Summary locale<input aria-label="Summary locale" disabled></label></div>
       <button id="properties-action" type="button">Update property</button>
     </aside>
     <main data-test-id="column-2" id="conversation">
@@ -56,7 +64,7 @@
     </main>
     <aside data-test-id="column-3" id="context"><div><h2>Customer context</h2><p>Beluga Sales Inc.</p><p>Fictional fixture data</p></div></aside>
   </section>
-  <footer data-test-id="ticket-footer"><span data-zdh-status>Open</span><button type="button" data-test-id="submit_button-menu-button" aria-label="Displays possible ticket submission types">Choose status</button><div data-zdh-status-menu hidden><button type="button">Open</button><button type="button">Pending</button><button type="button">On-hold</button><button type="button">Solved</button></div><button id="save" type="button" data-test-id="submit_button-button">Submit as Open</button></footer>
+  <footer data-test-id="ticket-footer"><button type="button">Stay on ticket</button><span data-zdh-status>Open</span><button type="button" data-test-id="submit_button-menu-button" aria-label="Displays possible ticket submission types">Choose status</button><div data-zdh-status-menu hidden><button type="button">Open</button><button type="button">Pending</button><button type="button">On-hold</button><button type="button">Solved</button></div><button id="save" type="button" data-test-id="submit_button-button">Submit as Open</button></footer>
   <div id="manual-fixture"><label for="manual-title">Manual title fallback</label><input id="manual-title" value="Manual issue"></div>
   <script>
     globalThis.__nativeActions={modeClicks:0,statusClicks:0,submitClicks:0};

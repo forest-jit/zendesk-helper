@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Zendesk Helper · Feature guide</title>
+    <link rel="stylesheet" href="guide.css" />
+  </head>
+  <body>
+    <header>
+      <h1>What it does, and how to use it</h1>
+      <p>Read messages, reply, save fields, and check your queue.</p>
+    </header>
+    <nav aria-label="Guide sections">
+      <a href="#start">Start here</a><a href="#read">Read a ticket</a
+      ><a href="#reply">Reply and save</a><a href="#queue">Queue and activity</a
+      ><a href="#export">Export</a>
+    </nav>
+    <main>
+      <section id="start">
+        <h2>Start here</h2>
+        <ol>
+          <li>Open the extension from Chrome’s toolbar.</li>
+          <li>
+            Use the <strong>On / Off</strong> switch. Off restores Zendesk’s native interface; your
+            settings are kept.
+          </li>
+          <li>
+            Choose a theme or open <strong>Workflow settings</strong>. Changes save immediately.
+          </li>
+        </ol>
+        <h3>Themes and previews</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Want to…</th>
+              <th>Do this</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Try a built-in theme</td>
+              <td>
+                Open Theme. Hover or move through options with arrow keys to preview the popup.
+                Click or press Enter to apply. Escape cancels.
+              </td>
+            </tr>
+            <tr>
+              <td>Follow your Mac’s appearance</td>
+              <td>Choose <strong>System light / dark</strong>.</td>
+            </tr>
+            <tr>
+              <td>Make your own theme</td>
+              <td>
+                Open <strong>Create or edit a theme</strong>. Name it and pick Page background,
+                Fields &amp; messages, Text, Buttons &amp; links, and Internal notes. Colors and hex
+                values both work.
+              </td>
+            </tr>
+            <tr>
+              <td>Try it on the ticket first</td>
+              <td>
+                Click <strong>Preview on ticket</strong>. Zendesk and enabled Harvest styling update
+                temporarily. Stop preview or close the popup to return to your saved theme.
+              </td>
+            </tr>
+            <tr>
+              <td>Keep or change it</td>
+              <td>
+                Choose <strong>Save and apply</strong>. To edit, select the saved custom theme and
+                reopen the editor. Delete removes that custom theme. Unsaved editor colors are kept
+                for the current Chrome session.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">
+          Each theme starts with five colors. Borders, hover states, and other shades are derived
+          from them. Unreadable color combinations cannot be saved; adjust text against both
+          backgrounds if the editor reports a contrast problem.
+        </p>
+        <p>
+          <strong>Harvest:</strong> use the <strong>Harvest theme</strong> control to grant the
+          optional embedded-timer access. The helper changes its styling, not timer entries. Other
+          embedded apps keep their own interface.
+        </p>
+      </section>
+      <section id="read">
+        <h2>Read a ticket</h2>
+        <ul>
+          <li>
+            <strong>One reading flow:</strong> conversation history and the reply box share the left
+            scrollbar. Scroll to the bottom to write. The right sidebar scrolls independently. The
+            desktop columns have no divider line.
+          </li>
+          <li>
+            <strong>Short history:</strong> the latest five messages appear by default.
+            <strong>Show older messages</strong> reveals the rest;
+            <strong>Show latest 5 messages</strong> collapses them again.
+          </li>
+          <li>
+            <strong>Compact fields:</strong> Requester, Assignee, Followers, Tags, Ticket Code,
+            Priority and Status stay in the main sidebar. <strong>Additional fields</strong> opens
+            the rest.
+          </li>
+          <li>
+            <strong>Images:</strong> message images fit inside compact previews without cropping.
+            Click a preview to open the full image; Escape closes it.
+          </li>
+          <li>
+            <strong>Titles:</strong> the automatic-title setting uses the selected company and
+            requester: <code>Company - Requester - Issue</code>. It keeps the issue text and avoids
+            repeated prefixes. Changes save with the ticket, not in the background.
+            <strong>Undo</strong> restores the previous title and turns automatic updates off.
+          </li>
+        </ul>
+        <p class="note">
+          If company or requester information is missing, the helper leaves the title alone. It does
+          not guess names. Keep the issue after the first two “ - ” separators when editing a
+          structured title.
+        </p>
+        <h3>Email threads and readability</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Want to…</th>
+              <th>Do this</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Shorten an email inside a message</td>
+              <td>
+                Choose <strong>Hide quoted email history</strong>.
+                <strong>Show quoted email history</strong> reveals it again. This is separate from
+                showing older ticket messages.
+              </td>
+            </tr>
+            <tr>
+              <td>Reduce a bulky email layout</td>
+              <td>
+                Choose <strong>Simplify email formatting</strong> on a formatted email.
+                <strong>Restore email formatting</strong> returns its original layout. It removes
+                fixed widths, table padding and background fills in that message. Plain paragraphs
+                may look almost unchanged; formatted content farther down may become shorter. It
+                does not collapse quoted threads.
+              </td>
+            </tr>
+            <tr>
+              <td>Check an inline answer</td>
+              <td>
+                Expand the quoted history. Replies written inside an earlier email can be part of
+                that history.
+              </td>
+            </tr>
+            <tr>
+              <td>Understand the initial view</td>
+              <td>
+                Clearly marked quotes can start collapsed when a new response exists outside them.
+                Plain forwarded chains start open because their boundaries are less certain.
+                Quote-only and unrecognized messages stay visible.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The helper changes the display only. Original text, links and images remain in place. Raw
+          exports include rendered quoted history even when collapsed. Turning the helper off
+          removes the disclosures and restores the native view.
+        </p>
+        <p>
+          With a theme selected, unreadable text against solid message backgrounds receives a
+          contrasting display color. Readable authored colors and branded email panels stay intact.
+          Complex image backgrounds remain original.
+        </p>
+        <h3>Other reading controls</h3>
+        <ul>
+          <li>
+            <strong>Closed tickets:</strong> Status shows <strong>Closed</strong> and is disabled
+            when Zendesk reports that the ticket cannot be edited. Helper Send and Save actions are
+            hidden.
+          </li>
+          <li>
+            <strong>Native SLA badge:</strong> a negative time such as
+            <strong>-23h</strong> indicates an overdue SLA target. It is separate from ticket
+            status; Zendesk’s metric details identify the target.
+          </li>
+          <li>
+            <strong>Desktop columns:</strong> the helper uses a fixed sidebar width. Turn off
+            <strong>Conversation left, ticket fields right</strong> or the helper to return to
+            native column resizing.
+          </li>
+          <li>
+            <strong>Long Harvest references:</strong> notes and reference text use bounded scroll
+            areas so the timer stays open and fields have more room. The helper does not change
+            their values.
+          </li>
+        </ul>
+      </section>
+      <section id="reply">
+        <h2>Reply and save</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>How</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Switch reply mode in one click</td>
+              <td>
+                Use <strong>Internal note</strong> or <strong>Public reply</strong> beside the
+                native selector. The native selector remains available for other channels.
+              </td>
+            </tr>
+            <tr>
+              <td>Carry your text across modes</td>
+              <td>
+                Check <strong>Carry this draft</strong>. Text and formatting carry when the other
+                draft is empty or still matches the last carried copy. A different destination draft
+                is kept, with a message explaining the conflict. Separate drafts remain the default.
+              </td>
+            </tr>
+            <tr>
+              <td>Send a reply or note</td>
+              <td>
+                Click <strong>Send</strong>, or press <kbd>⌘</kbd> + <kbd>Enter</kbd> while typing
+                in the composer. Check the displayed public/internal mode first.
+              </td>
+            </tr>
+            <tr>
+              <td>Save fields without sending</td>
+              <td>
+                Click <strong>Save changes</strong>, or press <kbd>⌘</kbd> + <kbd>Enter</kbd> while
+                focused in the sidebar. The helper protects and restores the active text draft
+                during the field save. Save stays disabled when nothing changed.
+              </td>
+            </tr>
+            <tr>
+              <td>Finish a ticket</td>
+              <td>
+                Choose <strong>Solved</strong>. Save becomes <strong>Close ticket</strong>;
+                <strong>Close and export</strong> also downloads the ticket. Both record Zendesk’s
+                Solved status, not its later Closed status.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>On other platforms, use <kbd>Ctrl</kbd> + <kbd>Enter</kbd>.</p>
+        <h3>Quiet feedback</h3>
+        <p>
+          Successful copying, draft carry, settings changes and exports do not add a confirmation
+          banner. The changed control, draft or Chrome download shows the result. Errors, draft
+          conflicts, recovery instructions, saving progress and title Undo remain visible when
+          needed.
+        </p>
+        <h3>If something interrupts a save</h3>
+        <p>
+          The helper keeps a local recovery copy. It will not overwrite a newer draft. If you see
+          <strong>Save recovery copy</strong>, use it before continuing; this saves the held
+          versions locally and keeps the current draft. Check the result before retrying an
+          unconfirmed save.
+        </p>
+        <p class="note">
+          Queued attachments must finish or be removed before carrying a draft or saving only
+          fields. Carrying a draft never sends it.
+        </p>
+      </section>
+      <section id="queue">
+        <h2>Queue and activity</h2>
+        <ul>
+          <li>
+            <strong>Copy ticket:</strong> hover over it near the title to open the choices; move
+            away to close them. Choose number, link, title/link, or Markdown link. Keyboard: Enter
+            or Space opens the choices, Tab reaches each action, Escape closes. Touch users can tap.
+          </li>
+          <li>
+            <strong>Viewing or editing:</strong> the small circle near the title shows an eye for
+            reported viewing/open-tab activity and a pencil for editing. Hover or focus it for the
+            names and status Zendesk reports.
+          </li>
+          <li>
+            <strong>Unknown activity:</strong> “not reported” means Zendesk has not supplied a
+            signal. It does not guarantee the ticket is free. Native collision reporting depends on
+            the Zendesk plan and the other agent’s session.
+          </li>
+          <li>
+            <strong>Queue refresh:</strong> Workflow settings offers 10, 15, 30 or 60 seconds, or
+            Off. The default is 15 seconds. It uses the native view refresh; ticket pages never
+            reload.
+          </li>
+          <li>
+            <strong>Refresh pauses:</strong> while you type, select tickets, open a
+            menu/filter/dialog, interact recently, go offline, or hide the tab. The queue shows
+            whether it is running or paused.
+          </li>
+        </ul>
+        <p class="note">
+          Activity uses
+          <a
+            href="https://support.zendesk.com/hc/en-us/articles/9186264597146-Avoiding-agent-collision"
+            target="_blank"
+            rel="noopener"
+            >Zendesk’s native collision reporting</a
+          >. Our eye/pencil icons summarize information read from Zendesk’s rendered indicators.
+          Zendesk normally shows agent pictures in the upper-left ticket area: regular for viewing,
+          blue outline for editing, dimmed when away. Views can show an eye. No separate presence
+          service is added. Recognition of this account’s actual indicators still needs a two-person
+          test.
+        </p>
+      </section>
+      <section id="testing">
+        <h2>Help test it</h2>
+        <p>
+          Keep real customer tickets read-only. Use <strong>#209867</strong> for draft edits, field
+          changes, saves or sends.
+        </p>
+        <ol>
+          <li>
+            With a coworker, open #209867 in separate accounts. Compare Zendesk’s native pictures
+            with the helper badge while one person views, types without sending, switches away and
+            closes the ticket. Check names and stale-state cleanup.
+          </li>
+          <li>
+            Try different public and internal drafts with Carry this draft on. A distinct
+            destination must survive; conflicts should explain what happened.
+          </li>
+          <li>
+            On the test ticket, save a sidebar field while a reply draft exists. Confirm that the
+            field saves without sending or losing either draft.
+          </li>
+          <li>
+            On messy real tickets, try quote controls, Simplify/Restore and image previews. Check
+            text, links, image access, colors and scroll position.
+          </li>
+          <li>
+            Try your usual screen size, zoom, keyboard and assistive tools. Report the ticket
+            number, theme, action and what you expected.
+          </li>
+        </ol>
+        <p>
+          Presence results remain unverified until the coworker test passes. “Not reported” means
+          unknown.
+        </p>
+      </section>
+      <section id="export">
+        <h2>Export for local AI</h2>
+        <ol>
+          <li>
+            Use <strong>Export ticket for local AI</strong> in the popup, or
+            <strong>Close and export</strong> after choosing Solved.
+          </li>
+          <li>
+            Run the local processor on the raw JSON. It uses the installed Ollama text and vision
+            models.
+          </li>
+          <li>
+            Review <code>notion-draft.md</code> and <code>processed.json</code> for remaining
+            personal information, missing media and incorrect interpretations.
+          </li>
+          <li>Import only the reviewed draft into the documentation service you choose.</li>
+        </ol>
+        <pre><code>python3 scripts/process_ticket.py "/path/to/ticket.raw.json"</code></pre>
+        <p class="note">
+          Raw exports contain ticket information. They include rendered messages, including
+          collapsed ones; unloaded history and inaccessible images are reported as outside the
+          capture. Local AI scrubbing is best-effort. Image interpretations remain unverified until
+          you review them. The helper does not publish to Notion or send ticket contents to a hosted
+          AI service.
+        </p>
+      </section>
+      <section>
+        <h2>Installation and updates</h2>
+        <p>
+          Load the unzipped extension folder through <code>chrome://extensions</code> → Developer
+          mode → Load unpacked. After an update, protect your drafts, reload the extension, and
+          refresh Zendesk once. Team installation may need your organization’s approval.
+        </p>
+        <p>
+          For detailed local-processing and team-install instructions, see
+          <code>docs/DOCUMENTATION_HANDOFF.md</code> and <code>docs/DISTRIBUTION.md</code> in the
+          project folder.
+        </p>
+      </section>
+    </main>
+    <footer>
+      <a href="privacy.html">Privacy policy</a> · Zendesk Helper <span id="guide-version"></span>.
+      Settings stay local to this Chrome profile. Turning the helper off does not delete files you
+      already downloaded.
+    </footer>
+    <script src="themes.js"></script>
+    <script src="guide.js"></script>
+  </body>
+</html>

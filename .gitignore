@@ -21,3 +21,13 @@ playwright-report/
 # OS/editor noise.
 .DS_Store
 
+
+# Raw and locally processed ticket exports.
+*.raw.json
+*-processed/
+exports/
+__pycache__/
+
+# Local audit evidence and historical working notes are not public release source.
+docs/audits/
+docs/archive/

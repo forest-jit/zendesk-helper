@@ -1,27 +1,31 @@
 {
   "manifest_version": 3,
-  "name": "Zendesk Helper \u2014 Prototype",
-  "version": "0.6.1",
-  "description": "Automatic title warnings and a reversible conversation-left layout for Jones IT Zendesk.",
-  "permissions": [
-    "storage"
-  ],
-  "host_permissions": [
-    "https://itjones.zendesk.com/agent/*"
-  ],
+  "name": "Zendesk Helper",
+  "version": "0.7.6",
+  "description": "A collection of tools and improvements for Jones IT Zendesk: conversation controls, draft protection and ticket actions.",
+  "permissions": ["storage", "downloads"],
+  "host_permissions": ["https://itjones.zendesk.com/agent/*"],
   "content_scripts": [
     {
-      "matches": [
-        "https://itjones.zendesk.com/agent/*"
-      ],
-      "css": [
-        "content.css"
-      ],
+      "matches": ["https://itjones.zendesk.com/agent/*"],
+      "js": ["draft-bridge.js"],
+      "world": "MAIN",
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://itjones.zendesk.com/agent/*"],
+      "css": ["content.css", "theme.css"],
       "js": [
+        "themes.js",
+        "theme-page.js",
         "validator.js",
         "workflow.js",
         "exporter.js",
         "workspace.js",
+        "ticket-model.js",
+        "ticket-tools.js",
+        "message-display.js",
+        "email-threads.js",
         "content.js"
       ],
       "run_at": "document_idle"
@@ -29,9 +33,24 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Zendesk Helper settings"
+    "default_title": "Zendesk Helper settings",
+    "default_icon": {
+      "16": "assets/icons/icon-16.png",
+      "32": "assets/icons/icon-32.png"
+    }
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'none'; connect-src 'none'"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "optional_permissions": ["scripting"],
+  "optional_host_permissions": ["https://platform.harvestapp.com/*"],
+  "icons": {
+    "16": "assets/icons/icon-16.png",
+    "32": "assets/icons/icon-32.png",
+    "48": "assets/icons/icon-48.png",
+    "128": "assets/icons/icon-128.png"
   }
 }

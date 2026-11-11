@@ -1,0 +1,48 @@
+name: Publish extension information pages
+
+# Run this manually after policy/contact review and GitHub Pages setup.
+# Pushing this workflow alone does not publish the site.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/configure-pages@v5
+      - name: Build reviewed static pages
+        run: |
+          python3 scripts/build_release_site.py
+          mkdir -p _site
+          # Publish only these pages, never the repo, audits or reviewer instructions.
+          install -m 644 docs/release/site/index.html _site/index.html
+          install -m 644 docs/release/site/privacy.html _site/privacy.html
+          install -m 644 docs/release/site/support.html _site/support.html
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish pages
+        id: deployment
+        uses: actions/deploy-pages@v4

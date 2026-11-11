@@ -1,0 +1,724 @@
+/* Opt-in colors only. Geometry, native state and rich-text/media content stay authoritative. */
+html[data-zdh-theme] {
+  color-scheme: var(--color-scheme);
+  background: var(--zdh-theme-page);
+  color: var(--zdh-theme-text);
+  --zdh-color-rule: var(--zdh-theme-border);
+  --zdh-color-surface: var(--zdh-theme-surface);
+  --zdh-color-ink: var(--zdh-theme-text);
+  --zdh-preview-shadow: var(--zdh-theme-shadow);
+  --zdh-lightbox-shadow: var(--zdh-theme-shadow);
+  --zdh-lightbox-scrim: var(--zdh-theme-scrim);
+}
+html[data-zdh-theme] body {
+  background-color: var(--zdh-theme-page);
+  color: var(--zdh-theme-text);
+}
+html[data-zdh-theme]
+  :is(
+    [data-test-id='header-toolbar'],
+    [data-test-id='column-1'],
+    [data-test-id='column-3'],
+    [data-test-id='ticket-footer'],
+    [data-zdh-harvest-panel]
+  ) {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text);
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] :is([role='menu'], [role='listbox'], [role='dialog']) {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+}
+html[data-zdh-theme]
+  :is([role='menuitem'], [role='menuitemcheckbox'], [role='option']):is(
+    :hover,
+    :focus-visible,
+    [aria-selected='true']
+  ) {
+  background-color: var(--zdh-theme-selected) !important;
+  color: var(--zdh-theme-selected-text) !important;
+}
+html[data-zdh-theme]
+  :is([data-zdh-conversation-disclosure], [data-zdh-additional-toggle]):focus-visible {
+  outline-color: var(--zdh-theme-focus);
+}
+/* Set one component background, including native wrappers and transparent editor layers. */
+html[data-zdh-theme] [data-zdh-composer-mode] {
+  --zdh-composer-background: var(--zdh-theme-surface);
+  --zdh-composer-text: var(--zdh-theme-text);
+  background-color: var(--zdh-composer-background) !important;
+  color: var(--zdh-composer-text) !important;
+  border: 1px solid var(--zdh-theme-control-border) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+html[data-zdh-theme] [data-zdh-composer-mode='internal'] {
+  --zdh-composer-background: var(--zdh-theme-note);
+  --zdh-composer-text: var(--zdh-theme-note-text);
+}
+html[data-zdh-theme] [data-zdh-composer-mode] > div,
+html[data-zdh-theme]
+  [data-zdh-composer-mode]
+  :is(
+    [data-test-id='ticket-rich-text-editor'],
+    [data-test-id='omnicomposer-rich-text-ckeditor'],
+    [data-test-id='omnichannel-composer-toolbar']
+  ) {
+  background-color: var(--zdh-composer-background) !important;
+  color: var(--zdh-composer-text) !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] [data-zdh-composer-mode] [data-test-id='ticket-rich-text-editor'] > div {
+  background-color: transparent !important;
+}
+html[data-zdh-theme] [data-zdh-composer-mode]:focus-within {
+  border-color: var(--zdh-theme-focus) !important;
+  box-shadow: none !important;
+}
+html[data-zdh-theme] [data-zdh-composer-mode] .ck-editor__editable {
+  caret-color: var(--zdh-theme-text);
+  box-shadow: none !important;
+}
+html[data-zdh-theme] [data-zdh-composer-mode] [data-test-id='omnichannel-channel-switcher-button'] {
+  color: var(--zdh-composer-text) !important;
+}
+html[data-zdh-theme] [data-test-id='omni-log-comment-item'] {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] [data-test-id='omni-log-comment-item'][aria-label^='Internal note'] {
+  background-color: var(--zdh-theme-note) !important;
+  color: var(--zdh-theme-note-text) !important;
+}
+/* Preserve authored rich HTML and image pixels; UI links use the shared accent. */
+html[data-zdh-theme] :is([data-test-id='column-1'], [data-test-id='header-toolbar']) a {
+  color: var(--zdh-theme-link);
+}
+/* Native Garden components also contain fixed colors outside the semantic variables. */
+html[data-zdh-theme]
+  :is(
+    header,
+    [data-garden-id^='navigation.'],
+    [data-garden-id='pane'],
+    [data-garden-id='pane.content'],
+    [data-test-id^='ticket-'][data-test-id$='-standard-layout'],
+    [data-test-id='ticket-main-conversation']
+  ) {
+  background-color: var(--zdh-theme-page) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme]
+  :is([data-zdh-conversation-header], [data-test-id='ticket-footer-open-ticket']) {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme]
+  :is(
+    header a,
+    header button,
+    header nav,
+    [data-garden-id^='navigation.'] button,
+    [data-garden-id='typography.ellipsis'],
+    [data-garden-id='forms.input_label'],
+    [data-garden-id='forms.checkbox_label'],
+    [data-garden-id='dropdowns.combobox.label']
+  ) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-test-id='tabs-section-nav-item-ticket'] {
+  background-color: var(--zdh-theme-hover) !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-garden-id='dropdowns.combobox'],
+    [data-garden-id='dropdowns.combobox.input_group'],
+    [data-garden-id='dropdowns.select'],
+    [data-garden-id='dropdowns.input'],
+    [data-garden-id='forms.faux_input'],
+    [data-garden-id='forms.input'],
+    [data-garden-id='buttons.button'],
+    [data-garden-id='dropdowns.menu']
+  ) {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-garden-id='dropdowns.combobox.input'],
+    [data-garden-id='dropdowns.multiselect_input'],
+    input[data-test-id='omni-header-subject'],
+    [data-test-id='omnichannel-composer'] input
+  ) {
+  color: var(--zdh-theme-text) !important;
+  caret-color: var(--zdh-theme-text);
+}
+html[data-zdh-theme] input::placeholder {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-garden-id='buttons.icon_button'],
+    [data-garden-id='buttons.anchor'],
+    [data-garden-id='tags.close']
+  ) {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme]
+  :is([data-garden-id='tags.tag_view'], [data-garden-id='dropdowns.multiselect_item_wrapper']) {
+  background-color: var(--zdh-theme-selected) !important;
+  color: var(--zdh-theme-selected-text) !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] [data-test-id='omni-log-item-message'] {
+  background-color: var(--zdh-theme-hover) !important;
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme]
+  [data-test-id='omni-log-comment-item']
+  :is(h4, time, [data-test-id='omni-log-comment-user-link']) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-test-id='omni-log-comment-item'] a {
+  color: var(--zdh-theme-link);
+}
+html[data-zdh-theme] {
+  scrollbar-color: var(--zdh-theme-control-border) var(--zdh-theme-page);
+}
+html[data-zdh-theme] [data-zdh-composer-mode] {
+  scrollbar-color: var(--zdh-theme-control-border) var(--zdh-composer-background);
+}
+html[data-zdh-theme] [data-zdh-composer-mode] [data-test-id='omnicomposer-rich-text-ckeditor'] {
+  border-color: transparent !important;
+  outline: none !important;
+}
+html[data-zdh-theme]
+  [data-zdh-composer-mode]
+  [data-test-id='ticket-rich-text-editor']::-webkit-scrollbar-track,
+html[data-zdh-theme]
+  [data-zdh-composer-mode]
+  [data-test-id='omnicomposer-rich-text-ckeditor']::-webkit-scrollbar-track {
+  background: var(--zdh-composer-background) !important;
+}
+/* Composite field triggers own the padding around their inputs. */
+html[data-zdh-theme] [data-garden-id='dropdowns.combobox.trigger'] {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+}
+html[data-zdh-theme] [data-garden-id='dropdowns.combobox.container'] {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-garden-id='typography.font'] {
+  color: inherit !important;
+}
+html[data-zdh-theme] [data-zdh-harvest-panel] h3 {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-test-id='omni-header-via-label'] {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme] input[data-test-id='omni-header-subject'] {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+html[data-zdh-theme] header [data-garden-id='buttons.button'] {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+/* Zendesk's four scroll-edge gradients embed white/yellow independently of background-color. */
+html[data-zdh-theme] [data-zdh-composer-mode] [data-test-id='ticket-rich-text-editor'] {
+  background-image: none !important;
+}
+html[data-zdh-theme] [data-test-id='assignee-field-selected-agent-tag'] {
+  background-color: transparent !important;
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] input[data-test-id='omni-header-subject']:focus-visible {
+  outline: 2px solid var(--zdh-theme-focus) !important;
+  outline-offset: 2px;
+}
+html[data-zdh-theme] [data-test-id='header-tab'] {
+  background-color: transparent !important;
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-test-id='header-tab'][data-entity-is-selected='true'] {
+  background-color: var(--zdh-theme-selected) !important;
+  color: var(--zdh-theme-selected-text) !important;
+}
+html[data-zdh-theme] [data-test-id='header-tab'] [data-garden-id='typography.ellipsis'] {
+  color: inherit !important;
+}
+html[data-zdh-theme] :is([role='menuitem'], [role='menuitemcheckbox'], [role='option']) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [role='menuitemcheckbox'][aria-checked='true'] {
+  background-color: var(--zdh-theme-selected) !important;
+  color: var(--zdh-theme-selected-text) !important;
+}
+html[data-zdh-theme] [role='tooltip'] {
+  background-color: var(--zdh-theme-text) !important;
+  color: var(--zdh-theme-on-text) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+}
+html[data-zdh-theme]
+  [data-test-id='omni-log-comment-item']
+  dl:not([data-test-id='omni-log-message-content'] *) {
+  color: var(--zdh-theme-muted) !important;
+}
+/* Ticket Views: headers, grouped rows, sort controls, values, selection and hover. */
+html[data-zdh-theme] [data-test-id='generic-table'] {
+  background-color: var(--zdh-theme-page) !important;
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme]
+  [data-test-id='generic-table']
+  :is(th, td, [data-garden-id='tables.sortable']) {
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] [data-garden-id='tables.header_row'],
+html[data-zdh-theme] [data-garden-id='tables.header_cell'] {
+  background-color: var(--zdh-theme-surface) !important;
+}
+html[data-zdh-theme] [data-garden-id='tables.group_row'] {
+  background-color: var(--zdh-theme-hover) !important;
+}
+html[data-zdh-theme] [data-garden-id='tables.row'] {
+  background-color: var(--zdh-theme-page) !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] [data-garden-id='tables.row']:is(:hover, [aria-selected='true']),
+html[data-zdh-theme] [data-garden-id='tables.row']:has(input[type='checkbox']:checked) {
+  background-color: var(--zdh-theme-selected) !important;
+}
+html[data-zdh-theme]
+  [data-test-id='generic-table']
+  :is(a, time, [data-garden-id='typography.ellipsis'], [data-garden-id='tables.overflow_button']) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] nav[aria-label='Views'] :is(a, button) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] nav[aria-label='Views'] a[aria-current='page'] {
+  background-color: var(--zdh-theme-selected) !important;
+  color: var(--zdh-theme-selected-text) !important;
+}
+/* Garden dialogs render outside the ticket grid and own text colors on inner sections. */
+html[data-zdh-theme]
+  [role='dialog']
+  :is(
+    [data-garden-id^='modals.'],
+    [data-garden-id='dropdowns.combobox.field'],
+    [data-garden-id='forms.field']
+  ) {
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-garden-id='modals.drawer_modal.close'],
+    [data-garden-id='modals.close'],
+    [data-garden-id='modals.tooltip_dialog.close']
+  ) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-garden-id^='modals.'][data-garden-id$='.backdrop'] {
+  background-color: var(--zdh-theme-scrim) !important;
+}
+html[data-zdh-theme] [data-garden-id='dropdowns.combobox.value'] {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] nav[aria-label='Views'] [data-garden-container-id='containers.tooltip'],
+html[data-zdh-theme] [data-test-id='views_views-list_item_count'] {
+  color: inherit !important;
+}
+html[data-zdh-theme] [data-test-id^='status-badge-'] {
+  background-color: var(--zdh-theme-hover) !important;
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-test-id='status-badge-open'],
+    [data-test-id='status-badge-new'],
+    [data-test-id='status-badge-pending']
+  ) {
+  background-color: var(--zdh-theme-accent) !important;
+  color: var(--zdh-theme-on-emphasis) !important;
+}
+html[data-zdh-theme] [data-garden-id='forms.checkbox_label']::before {
+  background-color: var(--zdh-theme-surface) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+}
+html[data-zdh-theme]
+  [data-garden-id='forms.checkbox']:is(:checked, [aria-checked='mixed'])
+  + [data-garden-id='forms.checkbox_label']::before {
+  background-color: var(--zdh-theme-accent) !important;
+  border-color: var(--zdh-theme-accent) !important;
+}
+html[data-zdh-theme]
+  [data-garden-id='forms.checkbox_label']
+  :is([data-garden-id='forms.check_svg'], [data-garden-id='forms.dash_svg']) {
+  color: var(--zdh-theme-on-emphasis) !important;
+}
+html[data-zdh-theme]
+  [data-garden-id='forms.checkbox']:focus-visible
+  + [data-garden-id='forms.checkbox_label']::before {
+  box-shadow: 0 0 0 2px var(--zdh-theme-focus) !important;
+}
+html[data-zdh-theme] [data-garden-id='pane.splitter_button_container'] button {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme]
+  [role='tooltip']
+  :is([data-garden-id='tooltip.title'], [data-garden-id='tooltip.paragraph']) {
+  color: inherit !important;
+}
+html[data-zdh-theme] [data-garden-id='buttons.icon'] {
+  color: inherit !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-garden-id='dropdowns.combobox.input_icon'],
+    [data-garden-id='tables.sortable'] svg,
+    nav[aria-label='Views'] svg
+  ) {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme]
+  [data-test-id='omnichannel-channel-switcher-menuitem-TYPE_CALL_NEW_NUMBER']
+  [data-garden-id='dropdowns.menu.item.content']
+  > div
+  > div {
+  color: var(--zdh-theme-muted) !important;
+}
+
+/* The native Internal note menu item has its own fixed peach background. */
+html[data-zdh-theme]
+  [data-test-id='omnichannel-channel-switcher-menuitem-internal'][role='menuitemcheckbox'] {
+  background-color: var(--zdh-theme-note) !important;
+  color: var(--zdh-theme-note-text) !important;
+}
+html[data-zdh-theme] [data-garden-id^='dropdowns.menu.item.'] {
+  color: inherit !important;
+}
+html[data-zdh-theme] [data-garden-id='dropdowns.menu.item.meta'] {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme] [data-garden-id='dropdowns.menu.item.icon'] path[fill]:not([fill='none']) {
+  fill: currentColor !important;
+}
+html[data-zdh-theme] [data-test-id='omnichannel-channel-switcher-menuitem-dirty'] {
+  background-color: var(--zdh-theme-accent) !important;
+}
+html[data-zdh-theme] [data-garden-id='dropdowns.menu.item.content'] > div > div {
+  color: inherit !important;
+}
+
+/* Native composer icons/recipient labels retain fixed colors outside Garden tokens. */
+html[data-zdh-theme]
+  [data-zdh-composer-mode]
+  :is(
+    [data-test-id='omnichannel-channel-switcher-button'],
+    [data-test-id='rich-text-editor-draft-mode-button']
+  )
+  svg {
+  color: var(--zdh-composer-text) !important;
+}
+html[data-zdh-theme]
+  [data-zdh-composer-mode]
+  [data-test-id='omnichannel-channel-switcher-button']
+  path[fill]:not([fill='none']) {
+  fill: currentColor !important;
+}
+html[data-zdh-theme]
+  [data-zdh-composer-mode]
+  div:has(
+    > :is([data-test-id='qa-email_ccs__email_label'], [data-test-id='qa-compose-header__to-row'])
+  )
+  > div:first-child {
+  color: var(--zdh-composer-text) !important;
+}
+
+/* Garden embeds fixed blue in combobox focus rings and selected-option icons. */
+html[data-zdh-theme]
+  [data-garden-id='dropdowns.combobox.trigger']:is(:focus, :focus-within, [aria-expanded='true']) {
+  border-color: var(--zdh-theme-focus) !important;
+  box-shadow:
+    0 0 0 1px var(--zdh-theme-surface),
+    0 0 0 3px var(--zdh-theme-focus) !important;
+}
+html[data-zdh-theme] [data-garden-id='dropdowns.combobox.option.type_icon'] {
+  color: var(--zdh-theme-selected-text) !important;
+}
+
+/* Native message frames have a fixed peach border independent of the article. */
+html[data-zdh-theme] [data-test-id='omni-log-item-message'] {
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] [data-test-id='omni-log-item-message'][type='internal'] {
+  background-color: var(--zdh-theme-note) !important;
+  color: var(--zdh-theme-note-text) !important;
+}
+html[data-zdh-theme] [data-zdh-layout='true'][data-zdh-harvest='true'] > [data-test-id='column-3'] {
+  background-color: var(--zdh-theme-page) !important;
+}
+/* Agent Home uses its own native statistics and task components. */
+html[data-zdh-theme] [data-test-id='nah-container'] {
+  background-color: var(--zdh-theme-page) !important;
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-test-id='nah-aside-csat-search'],
+    [data-test-id='nah-satisfaction-statistics'],
+    [data-test-id='nah-group-tickets'],
+    [data-test-id='nah-aside-updates']
+  ) {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-border) !important;
+  padding: 16px !important;
+  box-sizing: border-box;
+}
+html[data-zdh-theme]
+  :is(
+    [data-test-id='nah-aside-csat-search'],
+    [data-test-id='nah-satisfaction-statistics'],
+    [data-test-id='nah-group-tickets'],
+    [data-test-id='nah-aside-updates']
+  )
+  :is(h3, dd) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-test-id='nah-aside-csat-search'],
+    [data-test-id='nah-satisfaction-statistics'],
+    [data-test-id='nah-group-tickets'],
+    [data-test-id='nah-aside-updates']
+  )
+  :is(dt, h3 + div, [data-test-id='nah-aside-updates-no-results']) {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-test-id='nah-aside-csat-search'],
+    [data-test-id='nah-satisfaction-statistics'],
+    [data-test-id='nah-group-tickets']
+  )
+  dl
+  > div {
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] [data-test-id='nah-aside-updates'] > div {
+  padding: 0 !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] [data-test-id='nah-aside-updates'] > div + div {
+  margin-top: 12px;
+}
+html[data-zdh-theme] [data-test-id='nah-tasks-header'] {
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme] [data-test-id='nah-tasks-filter-dropdown'],
+html[data-zdh-theme] [data-test-id='nah-tasks-item-content-primary'] > span,
+html[data-zdh-theme] [data-test-id='nah-tasks-item-content-tertiary'] {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme] [data-test-id='nah-tasks-list'] > li {
+  border-color: var(--zdh-theme-border) !important;
+}
+
+html[data-zdh-theme] [data-test-id='nah-tasks-filter-dropdown'] > span {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme] [data-test-id='nah-container'] aside {
+  padding-block: 16px !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+
+/* Native notices are portaled outside the ticket panes. */
+html[data-zdh-theme] [data-garden-id='notifications.notification'] {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+  box-shadow: none !important;
+}
+html[data-zdh-theme]
+  [data-garden-id='notifications.notification']
+  :is([data-test-id='notification-body'], [data-garden-id='notifications.title']) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-garden-id='notifications.notification'] a {
+  color: var(--zdh-theme-link) !important;
+}
+html[data-zdh-theme]
+  :is([data-garden-id='notifications.icon'], [data-garden-id='notifications.close']) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-garden-id='forms.message'] {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme]
+  [data-garden-id='forms.field']:has([aria-invalid='true'])
+  [data-garden-id='forms.message'],
+html[data-zdh-theme] [data-garden-id='forms.input'][aria-invalid='true'] {
+  color: var(--zdh-theme-attention-text) !important;
+  border-color: var(--zdh-theme-attention-text) !important;
+}
+/* The toolbar shell and actions share the surrounding editor's palette. */
+html[data-zdh-theme] [data-test-id='rich-text-editor-toolbar-container'] {
+  background-color: var(--zdh-theme-surface) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+  box-shadow: none !important;
+  padding: 4px !important;
+  box-sizing: border-box;
+}
+html[data-zdh-theme] [role='toolbar'][aria-label='Text formatting'] > div {
+  border-color: var(--zdh-theme-border) !important;
+}
+html[data-zdh-theme]
+  [data-test-id='omnichannel-composer-toolbar']
+  [data-garden-id='buttons.icon_button'] {
+  color: var(--zdh-theme-text) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+html[data-zdh-theme]
+  [data-test-id='omnichannel-composer-toolbar']
+  [data-garden-id='buttons.icon_button']:is([aria-pressed='true'], [aria-expanded='true'], :hover) {
+  background-color: var(--zdh-theme-selected) !important;
+  color: var(--zdh-theme-selected-text) !important;
+}
+html[data-zdh-theme]
+  :is(
+    [data-test-id='omnichannel-composer-toolbar'] button,
+    [data-garden-id='notifications.close'],
+    [data-test-id='link-modal-container'] input
+  ):focus-visible {
+  outline: 2px solid var(--zdh-theme-focus) !important;
+  outline-offset: 2px;
+  box-shadow: none !important;
+}
+html[data-zdh-theme] [data-test-id='link-modal-add-button'] {
+  background-color: var(--zdh-theme-accent) !important;
+  color: var(--zdh-theme-on-emphasis) !important;
+  border-color: var(--zdh-theme-accent) !important;
+}
+/* Theme color-picker labels, never the authored swatches or their checkmarks. */
+html[data-zdh-theme]
+  [role='dialog']:has([data-test-id='rich-text-editor-toolbar-text-bg-color-swatch'])
+  > div:not([data-test-id]) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [role='dialog'][aria-label='Insert Table Button'] button {
+  background-color: var(--zdh-theme-surface) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+}
+html[data-zdh-theme]
+  [role='dialog'][aria-label='Insert Table Button']
+  button[data-zdh-table-selected='true'] {
+  background-color: var(--zdh-theme-selected) !important;
+  border-color: var(--zdh-theme-focus) !important;
+}
+
+/* Native Views keyboard row indicator embeds Zendesk blue as an inset shadow. */
+html[data-zdh-theme]
+  [data-test-id='generic-table-row']:focus-within
+  [data-test-id='generic-table-cells-selectable'] {
+  box-shadow: inset 3px 0 0 var(--zdh-theme-focus) !important;
+}
+
+/* Repair only measured low-contrast text in received messages. Authored backgrounds stay intact. */
+html[data-zdh-theme] [data-zdh-readable-ink='text'] {
+  color: var(--zdh-theme-text) !important;
+  -webkit-text-fill-color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-zdh-readable-ink='page'] {
+  color: var(--zdh-theme-page) !important;
+  -webkit-text-fill-color: var(--zdh-theme-page) !important;
+}
+html[data-zdh-theme] [data-zdh-readable-ink='surface'] {
+  color: var(--zdh-theme-surface) !important;
+  -webkit-text-fill-color: var(--zdh-theme-surface) !important;
+}
+html[data-zdh-theme] [data-zdh-readable-ink='dark'] {
+  color: rgb(0 0 0) !important;
+  -webkit-text-fill-color: rgb(0 0 0) !important;
+}
+html[data-zdh-theme] [data-zdh-readable-ink='light'] {
+  color: rgb(255 255 255) !important;
+  -webkit-text-fill-color: rgb(255 255 255) !important;
+}
+html[data-zdh-theme] [data-zdh-readable-small] {
+  font-size: 12px !important;
+}
+html[data-zdh-theme] [data-test-id='qa-compose-header__to-row'] {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-test-id='omni-log-message-content'] {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+html[data-zdh-theme] [data-test-id='omni-log-message-content'] .zd-comment {
+  max-width: 100%;
+  overflow-x: auto;
+}
+html[data-zdh-theme] [data-zdh-composer-mode] [data-test-id='qa-email_ccs__email_label'] {
+  color: var(--zdh-composer-text) !important;
+}
+
+/* Native background transitions otherwise produce stale intermediate contrast measurements. */
+html[data-zdh-theme]
+  :is(
+    [data-test-id='omni-log-comment-item'],
+    [data-test-id='omni-log-item-message'],
+    [data-test-id='omni-log-message-content']
+  ) {
+  transition: none !important;
+}
+
+/* Merge uses fixed inner text colors outside Garden's semantic variables. */
+html[data-zdh-theme]
+  [data-test-id='merge-drawer']
+  :is(div, span, h2, h3):not([data-garden-id]):not([role]) {
+  color: var(--zdh-theme-text) !important;
+}
+html[data-zdh-theme] [data-test-id='merge-drawer'] p {
+  color: var(--zdh-theme-muted) !important;
+}
+html[data-zdh-theme] [data-test-id='merge-drawer-destination-field-error'] {
+  color: var(--zdh-theme-attention-text) !important;
+  background: var(--zdh-theme-note);
+  padding: 4px 8px;
+}
+html[data-zdh-theme] [data-zdh-merge-step='active'] {
+  background-color: var(--zdh-theme-accent) !important;
+}
+html[data-zdh-theme] [data-zdh-merge-step='pending'] {
+  background-color: var(--zdh-theme-control-border) !important;
+}
+html[data-zdh-theme] [data-zdh-merge-next] {
+  color: var(--zdh-theme-on-emphasis) !important;
+  background-color: var(--zdh-theme-accent) !important;
+  border-color: var(--zdh-theme-accent) !important;
+}
+html[data-zdh-theme] [data-test-id='merge-drawer-ticket-card'] {
+  background-color: var(--zdh-theme-hover) !important;
+  color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-control-border) !important;
+}
+html[data-zdh-theme]
+  [data-test-id='merge-drawer-ticket-card']:is(:hover, :focus-visible, [aria-pressed='true']) {
+  background-color: var(--zdh-theme-selected) !important;
+  outline-color: var(--zdh-theme-focus);
+}
