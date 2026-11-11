@@ -17,9 +17,11 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 
 ## Later — external rollout
 
-- [ ] **T09 — Organization rollout.** v0.7.7 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are prepared (docs/release/START_HERE.md). Store Listing and Privacy explanations/selections are saved as drafts. Public GitHub policy URL is set; owner privacy/category review and certifications, distribution and reviewer setup remain. Publisher ownership/contact confirmation, account declarations, approved reviewer access and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
+- [ ] **T09 — Organization rollout.** v0.7.7 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are prepared (docs/release/START_HERE.md). Store Listing and Privacy explanations/selections are saved as drafts. Public GitHub policy URL is set; owner privacy/category review and certifications, distribution and reviewer setup remain. Contact email is verified and Submit for review is enabled. Final account/distribution/reviewer-access review and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
 
 ## Done
+
+- [x] **T53 — Publisher contact email.** Added forest.r.welch@gmail.com; owner completed Google’s verification link. Settings refresh shows Verified email address; returning to the item shows Submit for review enabled. Both contact-email blockers cleared. No submission or other publisher setting changes. Evidence: current chat outputs/publisher-contact.
 
 - [x] **T52 — Plain-language privacy copy.** Applied humanizer/ADHD preferences to all five editable privacy explanations and the full linked policy. Saved form and verified exact text after refresh. Regenerated site/packaged policy HTML; no data-practice or category change. Certifications remain unchecked. Prior tagged ZIPs keep their original equivalent policy wording. Local resource check passes. Evidence: current chat outputs/store-privacy/plain-*.
 

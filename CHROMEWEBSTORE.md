@@ -38,7 +38,7 @@ This is a private pilot, independently developed and not an official Zendesk or 
 
 ## Developer information and URLs
 
-Publisher display name: **forest**. Contact: **forest.r.welch@gmail.com**. Both remain proposed public values pending owner confirmation. Repository: https://github.com/forest-jit/zendesk-helper.
+Preferred publisher display name: **forest**; the dashboard currently still displays the Gmail address as the name. Contact: **forest.r.welch@gmail.com**, added and verified in publisher Settings after the owner followed Google’s verification link. Repository: https://github.com/forest-jit/zendesk-helper.
 
 Homepage: https://github.com/forest-jit/zendesk-helper. Support: https://github.com/forest-jit/zendesk-helper/issues (issues enabled). Both are saved in the listing. Privacy policy URL: https://github.com/forest-jit/zendesk-helper/blob/main/docs/release/PRIVACY.md (publicly readable without sign-in; saved in the Privacy form). See [hosting steps](docs/release/GITHUB_HOSTING.md). Account ownership, trader declaration, company-approved reviewer access and Google certifications remain owner steps.
 
@@ -144,3 +144,7 @@ No general access to other sites or browsing history.
 Selected categories: Personally identifiable information, Personal communications, User activity and Website content. User activity covers native activity indicators and interactions needed for workspace features, not general monitoring. No dedicated health, finance, credentials, location or browser-history collection is implemented; these were left unchecked in the draft. Raw messages/exports do not filter incidental sensitive content, so the owner must review applicable categories against actual pilot use before certifying.
 
 Publisher action: review the policy and category choices, then make the three declarations about sale/transfer, use limited to the single purpose, and no creditworthiness/lending use. These declarations were not accepted on the owner’s behalf. Current form did not show a separate remote-code control; packaged-code/no-remote-code details remain above. Evidence: current chat outputs/store-privacy.
+
+## Publisher contact verified, November 11, 2026
+
+Added forest.r.welch@gmail.com in Settings and requested verification. The owner completed the email link. After refresh, Google showed “Verified email address.” On returning to the item, Submit for review was enabled and the contact-email blockers were gone. No submission was made. Other account settings, declarations and access were not changed. Previous unchecked-certification observations describe earlier privacy edits; current certification/distribution contents were not re-audited in this pass. Evidence: current chat outputs/publisher-contact.
