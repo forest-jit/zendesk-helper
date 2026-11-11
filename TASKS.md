@@ -17,9 +17,11 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 
 ## Later — external rollout
 
-- [ ] **T09 — Organization rollout.** v0.7.7 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are ready locally (docs/release/START_HERE.md). Publisher ownership/contact confirmation, account setup, policy hosting, approved reviewer access and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
+- [ ] **T09 — Organization rollout.** v0.7.7 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are prepared (docs/release/START_HERE.md). Store Listing is saved in the dashboard as a draft; privacy/distribution/reviewer setup remains. Publisher ownership/contact confirmation, account setup, policy hosting, approved reviewer access and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
 
 ## Done
+
+- [x] **T50 — Fill Chrome Web Store listing.** Saved dashboard draft for bbhdbfdfidlfihbbohohdndpppibgogf; description reviewed with ADHD/humanizer preferences. Workflow & Planning, English, icon, three screenshots, small promo tile and GitHub homepage/support set. Item saved confirmation and refresh persistence checked. Title/summary inherited from package. No review submission, privacy certification, distribution or package replacement. Evidence: current chat outputs/store-listing.
 
 - [x] **T49 — Tagged GitHub releases.** v0.7.7 tag points to a7faec9. Prepare tagged release run 43077707696 passed build/preflight/checksum/draft jobs; authenticated release inspection confirms draft with both ZIPs and both checksums. Version mismatch/malformed tag tests pass. Docs explain next tags and private draft visibility. Runtime unchanged; no Web Store submission, credentials or Pages deployment.
 

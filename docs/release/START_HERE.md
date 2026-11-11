@@ -1,6 +1,6 @@
 # Private release: what is ready
 
-The files are prepared locally. Source is on GitHub. The extension has not been submitted to the Chrome Web Store, and the policy site has not been deployed.
+Source is on GitHub. Store Listing is saved as a dashboard draft with description, category/language, images and GitHub links. Privacy/distribution/reviewer setup is still pending. The extension has not been submitted for review, and the policy site has not been deployed.
 
 ## Files to use
 

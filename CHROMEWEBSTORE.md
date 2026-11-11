@@ -1,38 +1,46 @@
 # Chrome Web Store — Zendesk Helper
 
-Last updated: November 11, 2026. Version 0.7.7 is a local draft; nothing has been submitted to the store.
+Last updated: November 11, 2026. Release version 0.7.7. The Store Listing draft is saved in the dashboard; nothing has been submitted for review.
 
 ## Store listing
 
 - **Name:** Zendesk Helper
 - **Publisher display name:** forest
 - **Summary:** A collection of tools and improvements for Jones IT Zendesk: conversation controls, draft protection and ticket actions.
-- **Suggested category:** Productivity (choose the closest current dashboard category).
+- **Category:** Workflow & Planning (under Productivity).
 - **Language:** English
 
 ## Detailed description
 
 Zendesk Helper is a collection of tools and improvements for working in Jones IT Zendesk. It works only on itjones.zendesk.com agent pages and requires an authorized account.
 
-- Read messages and write replies in one scrolling column. Ticket fields scroll separately. Show the latest five messages or expand the full loaded history.
-- Open images from compact previews. Hide supported quoted email history. Use Simplify email formatting to reduce table padding and fixed widths; it does not shorten the thread or edit message content.
-- Switch between public reply and internal note in one click. Optional draft carry keeps text and formatting without replacing a different draft. Save sidebar fields while keeping your reply draft. Recovery copies help protect interrupted saves.
-- Copy a ticket number or link, refresh ticket views while idle, and export loaded messages and accessible images to a local JSON file.
-- Choose a theme or make one from five base colors. Preview it before applying. Optional Harvest styling changes the embedded timer's colors, not its entries.
+WHAT YOU CAN DO
+• Read long tickets: show the latest five messages or expand the loaded history. Collapse supported quoted email threads, simplify bulky email layouts and open images from compact previews.
+• Reply with fewer clicks: switch between public replies and internal notes in one click. Turn on Carry this draft to move text and formatting without replacing a different draft.
+• Save fields separately: update ticket properties while keeping your reply draft. Local recovery copies help protect drafts when a field save is interrupted.
+• Reuse ticket details: copy a ticket number or link, export loaded messages and accessible images, and refresh ticket views while idle.
+• Adjust your workspace: choose a theme or create one from five base colors. Preview it before applying. Optional Harvest styling matches the timer to your theme without changing its entries.
 
-Command+Enter sends when you are typing in the composer. In the sidebar, it saves fields instead. Check the reply mode before sending.
+GETTING STARTED
+1. Open a ticket in Jones IT Zendesk.
+2. Click the extension icon to turn the helper on and choose your settings.
+3. Open Help & feature guide in the popup for instructions.
 
-The activity badge shows viewing/editing information only when Zendesk supplies a recognized signal. Recognition still needs a two-person check in this private pilot. “Not reported” means unknown.
+KEYBOARD SHORTCUT
+Command+Enter sends while you are typing in the reply box. In the sidebar, it saves field changes instead. Check whether you are writing a public reply or internal note before sending.
 
-Exports contain original ticket information and may include personal data. Optional local AI processing is a separate command, not a browser feature. Its scrubbing and image interpretations need human review before sharing. The extension does not call hosted AI or publish documentation.
+DATA AND LIMITS
+Settings and recovery copies stay in your Chrome profile. Raw exports contain original ticket information and may include personal data. Optional local AI processing is a separate tool; its redaction and image interpretations need your review before sharing. The extension does not call hosted AI or publish documentation.
 
-This is a private pilot. It is independently developed, not an official Zendesk or Harvest product. Other embedded apps keep their own interface.
+The activity badge shows only information Zendesk reports. Viewing/editing recognition still needs a two-person pilot test. “Not reported” means unknown, not that nobody else is working on the ticket.
+
+This is a private pilot, independently developed and not an official Zendesk or Harvest product. Other embedded apps keep their own interface.
 
 ## Developer information and URLs
 
 Publisher display name: **forest**. Contact: **forest.r.welch@gmail.com**. Both remain proposed public values pending owner confirmation. Repository: https://github.com/forest-jit/zendesk-helper.
 
-Privacy, homepage and support URLs are not live/verified yet. See [hosting steps](docs/release/GITHUB_HOSTING.md). Account ownership, trader declaration, company-approved reviewer access and Google certifications remain owner steps.
+Homepage: https://github.com/forest-jit/zendesk-helper. Support: https://github.com/forest-jit/zendesk-helper/issues (issues enabled). Both are saved in the listing. The privacy policy URL is not hosted/verified yet. See [hosting steps](docs/release/GITHUB_HOSTING.md). Account ownership, trader declaration, company-approved reviewer access and Google certifications remain owner steps.
 
 ## Single purpose and permission justifications
 
@@ -80,7 +88,7 @@ Private pilot for designated trusted testers. Do not substitute Unlisted for acc
 
 ## Release automation
 
-Pushing a version tag runs the automated checks, validates matching manifest/package/lockfile versions, builds store/development ZIPs and checksums, then creates a draft GitHub release. See [tagged release instructions](docs/release/TAGGED_RELEASES.md). The first v0.7.7 tagged build passed on GitHub and its draft contains both ZIPs and checksums. No Chrome Web Store upload/submission credentials are configured. The first store item still requires dashboard setup; future API submission can be connected after that.
+Pushing a version tag runs the automated checks, validates matching manifest/package/lockfile versions, builds store/development ZIPs and checksums, then creates a draft GitHub release. See [tagged release instructions](docs/release/TAGGED_RELEASES.md). The first v0.7.7 tagged build passed on GitHub and its draft contains both ZIPs and checksums. No Chrome Web Store upload/submission credentials are configured. The first store item now exists. Future API submission still needs authorized credentials and completion of the required dashboard fields.
 
 ## Version history
 
@@ -92,3 +100,11 @@ Pushing a version tag runs the automated checks, validates matching manifest/pac
 ## Review notes
 
 No Google rejection history. Open acceptance: real second-agent presence recognition and screen-reader walkthrough. Other third-party frames remain outside the Harvest adapter. Local privacy scrubbing and vision interpretations always need review. Reviewer account/SSO instructions belong in the dashboard's restricted field, never the public repo. See [reviewer instructions](docs/release/REVIEWER.md).
+
+## Dashboard draft, November 11, 2026
+
+Store item ID: `bbhdbfdfidlfihbbohohdndpppibgogf`. Publisher ID in the dashboard URL: `5b7649a9-a4f0-44ce-acc9-f9f0d4d8d6ff`. These identify the item; they are not API credentials. The dashboard is signed into the supplied Gmail account. Publisher display name/account declarations remain owner decisions.
+
+Saved and reloaded: the detailed description above, Workflow & Planning category, English, store icon, three screenshots, small promo tile and GitHub homepage/support links. Title and summary come from the uploaded package and already match this record. No promo video, marquee tile or verified Official URL was invented. Save confirmation read “Item saved.”
+
+Only Store Listing was completed. Privacy disclosures/certifications, policy hosting, Distribution and reviewer access remain outside this pass. The uploaded package itself was not replaced or audited during listing edits. The item remains a draft; Submit for review was not clicked. Evidence is local to the current chat outputs/store-listing.
