@@ -2,6 +2,8 @@ name: Check extension source
 
 on:
   push:
+    branches:
+      - '**'
   pull_request:
 
 permissions:

@@ -20,6 +20,8 @@ Origin is `https://github.com/forest-jit/zendesk-helper.git`; source is public. 
 
 v0.7.7 store and development packages/checksums are prepared in the chat outputs folder. Store preflight checks runtime files, limited permissions, icons, screenshot sizes and checksum. Screenshots use actual popup/guide code with synthetic preferences, not live customer tickets. No Web Store submission or Pages deployment. The Pages workflow is manual and separate from source checks.
 
+Tagged-release automation is implemented: version-matched tags run checks, build both ZIPs/checksums and create a draft GitHub release. Local checks and tag mismatch regressions pass; the first v0.7.7 GitHub run is being verified. No store API credentials are configured. See docs/release/TAGGED_RELEASES.md. Runtime remains v0.7.7; this is release tooling only.
+
 Owner steps remain publisher ownership/public contact confirmation, account setup and declarations, approved policy hosting, secure reviewer access, tester/company approval and final dashboard submission. Proposed display name forest/contact are not verified publisher identity.
 
 ## Working boundaries

@@ -4,7 +4,7 @@
   "private": true,
   "description": "Local development and synthetic tests for the Zendesk Helper Chrome extension.",
   "scripts": {
-    "check": "npm run check:syntax && npm run lint && npm run test:resources && npm run test:manifest && npm run test:workflow && npm run test:local && npm run test:downloads && npm run test:themes && npm run test:harvest",
+    "check": "npm run check:syntax && npm run lint && npm run test:resources && npm run test:manifest && npm run test:workflow && npm run test:local && npm run test:downloads && npm run test:themes && npm run test:harvest && npm run test:release",
     "check:syntax": "node scripts/check_source.mjs",
     "test:manifest": "node tests/manifest.cjs",
     "test:workflow": "node tests/workflow.cjs && node tests/draft-bridge.cjs && node tests/draft-recovery.cjs && node tests/conversation-flow.cjs && node tests/ticket-model.cjs && node tests/mode-transfer.cjs && node tests/workspace-status.cjs && node tests/conversation-header.cjs && node tests/message-display.cjs && node tests/email-threads.cjs && node tests/image-bindings.cjs && node tests/title-warning.cjs && node tests/closed-actions.cjs",
@@ -17,7 +17,8 @@
     "format": "prettier --write 'src/**/*.{js,css,html}' 'tests/*.cjs' 'scripts/*.mjs' '*.mjs' 'manifest.json' 'package.json'",
     "format:check": "prettier --check 'src/**/*.{js,css,html}' 'tests/*.cjs' 'scripts/*.mjs' '*.mjs' 'manifest.json' 'package.json'",
     "lint": "eslint src scripts/*.mjs eslint.config.mjs",
-    "test:resources": "node tests/resources.cjs"
+    "test:resources": "node tests/resources.cjs",
+    "test:release": "python3 -B tests/release_version.py"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

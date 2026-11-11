@@ -72,3 +72,8 @@ Theme adaptation repairs measured unreadable text on solid message backgrounds a
 Desktop sidebar widths follow the helper layout. Native column handles return when that layout is off. Long Harvest notes and reference text scroll within their own areas; project/task and timer controls remain open. The guide has the full feature instructions.
 
 Routine copy, draft-carry, settings/theme and export success notices are silent. Errors, conflicts, recovery instructions, progress and title Undo remain visible. Closed tickets hide helper Send/Save actions. The guide includes coworker testing steps. Documentation changes follow the ADHD and humanizer skills under AGENTS.md.
+
+
+## Release files
+
+Push a version tag to prepare tested ZIPs and checksums in a draft GitHub release. Follow [the tagged release steps](docs/release/TAGGED_RELEASES.md). Chrome Web Store submission remains separate.

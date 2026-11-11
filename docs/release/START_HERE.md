@@ -25,6 +25,8 @@ Use the matching `zendesk-helper-0.7.7-store.zip` and checksum in this chat's ou
 
 ## Later updates
 
+[Tagged GitHub releases](TAGGED_RELEASES.md) explains how a version tag runs checks and prepares ZIPs in a draft release. This stage needs no Google credentials; Web Store submission is not connected yet.
+
 Keep the same store item. Test the change, increase the version, build the ZIP and submit an update for review. Chrome distributes approved updates automatically on its own schedule. A Zendesk tab can retain old page code until refreshed; protect drafts first. Do not force-refresh working tickets. A move between different extension IDs does not promise settings/recovery migration.
 
 ## Official sources, checked November 11, 2026

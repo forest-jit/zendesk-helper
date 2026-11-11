@@ -10,7 +10,7 @@ Use Node 24+ or Node 22.13+, Python 3 and Chrome 114+. Node is only needed for d
 4. Reload this same project folder in `chrome://extensions`, then refresh an authorized test ticket after protecting its drafts.
 5. Verify the changed behavior in Chrome and update the guide/current state. A passing fixture is not live Zendesk acceptance.
 
-GitHub's Check extension source workflow runs formatting and the local checks on pushes/PRs. It has read-only repository access and does not deploy anything. The Pages workflow remains a separate manual action.
+GitHub's Check extension source workflow runs formatting and the local checks on pushes/PRs. It has read-only repository access and does not deploy anything. The Pages workflow remains a separate manual action. Version tags use the separate [release workflow](release/TAGGED_RELEASES.md) to prepare ZIPs and a draft GitHub release.
 
 ## What the checks mean
 

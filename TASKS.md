@@ -4,7 +4,7 @@
 
 ## In progress
 
-None.
+- [ ] **T49 — Tagged GitHub releases.** Version-matched tags run checks, build ZIPs/checksums and create a draft release. Verify the first v0.7.7 run. Chrome Web Store upload remains separate until a listing and credentials exist.
 
 ## Next — needs another person
 

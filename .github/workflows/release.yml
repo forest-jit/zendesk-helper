@@ -1,0 +1,86 @@
+name: Prepare tagged release
+
+# A tag marks the exact source being packaged. Ordinary pushes only run checks.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Check tag against manifest, package and lockfile
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python3 scripts/check_release_version.py "$RELEASE_TAG"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - run: npm ci --ignore-scripts
+      - run: npm run format:check
+      - run: npm run check
+      - name: Install image validator
+        run: python3 -m pip install Pillow==11.3.0
+      - name: Build and validate packages
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          version=$(python3 scripts/check_release_version.py "$RELEASE_TAG")
+          python3 scripts/package_extension.py --store --output "dist/zendesk-helper-$version-store.zip"
+          python3 scripts/package_extension.py --output "dist/zendesk-helper-$version-development.zip"
+          python3 scripts/check_release.py "dist/zendesk-helper-$version-store.zip"
+          cd dist
+          shasum -a 256 -c ./*.sha256
+      - uses: actions/upload-artifact@v7
+        with:
+          name: extension-release
+          path: |
+            dist/*.zip
+            dist/*.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+  draft:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Only this job can write releases. No dependency installation runs here.
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: extension-release
+          path: dist
+      - name: Create draft release with validated files
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          cat > release-notes.md <<'NOTES'
+          ZIPs and checksums were built from this tag after automated checks.
+
+          - **store.zip:** runtime only; use this for Chrome Web Store upload.
+          - **development.zip:** includes the optional local AI processor and instructions.
+          - **sha256:** checksums for the matching ZIPs.
+
+          This is a GitHub draft, not a Chrome Web Store submission. Automated checks do not replace live Chrome testing. See docs/release/TAGGED_RELEASES.md in the tagged source for next steps.
+          NOTES
+          gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256 --verify-tag --draft --title "Zendesk Helper $RELEASE_TAG" --notes-file release-notes.md

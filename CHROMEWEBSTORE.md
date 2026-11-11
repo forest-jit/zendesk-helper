@@ -78,6 +78,10 @@ Private pilot for designated trusted testers. Do not substitute Unlisted for acc
 
 128×128 store icon and three 1280×800 screenshots are prepared. The first explains the collection of ticket tools; the theme editor is secondary. The screenshots use actual popup/guide code with synthetic settings and no customer ticket data. [Files, dimensions and provenance](docs/release/ASSETS.md).
 
+## Release automation
+
+Pushing a version tag runs the automated checks, validates matching manifest/package/lockfile versions, builds store/development ZIPs and checksums, then creates a draft GitHub release. See [tagged release instructions](docs/release/TAGGED_RELEASES.md). No Chrome Web Store upload/submission credentials are configured. The first store item still requires dashboard setup; future API submission can be connected after that.
+
 ## Version history
 
 | Version | Date | Change | Store status |

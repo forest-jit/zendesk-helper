@@ -31,3 +31,6 @@ __pycache__/
 # Local audit evidence and historical working notes are not public release source.
 docs/audits/
 docs/archive/
+
+# Generated extension release packages.
+dist/
