@@ -13,6 +13,8 @@
 
 ## Inbox
 
+- [ ] **T57 — Native Zendesk Dark-mode compatibility.** Current supported setup is native Light mode with any helper theme. Add explicit adaptation for both native appearances without changing the user’s Zendesk setting. Check lists, headers, menus, dialogs, public/internal editor transitions, Harvest, navigation and Off cleanup in both native modes with light/dark helper palettes; verify readable text and no leftover colors. Remove the Light-only note only after real Chrome checks pass.
+
 Add a line: `- [ ] Short request — what should be different when it works.`
 
 ## Later — external rollout

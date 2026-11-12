@@ -14,6 +14,8 @@ Release preparation and updates: [docs/release/START_HERE.md](docs/release/START
 
 ## Install
 
+**Use Zendesk Light mode:** click your Zendesk profile picture → **Appearance → Light mode**. Choose Light mode explicitly rather than Match system appearance. Native Zendesk Dark mode is not supported by the helper yet and can leave mismatched colors. You can still use the helper’s own dark themes; your Mac’s appearance can stay as it is.
+
 1. [Install from the Chrome Web Store](https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf).
 2. Open a Jones IT Zendesk agent page.
 3. Open the popup and use the **On / Off** switch. Settings save immediately.

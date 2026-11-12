@@ -1,5 +1,7 @@
 # Small-team installation
 
+**Use Zendesk Light mode:** click your Zendesk profile picture → **Appearance → Light mode**. Choose Light mode explicitly rather than Match system appearance. Native Zendesk Dark mode is not supported by the helper yet and can leave mismatched colors. You can still use the helper’s own dark themes; your Mac’s appearance can stay as it is.
+
 For the prepared private store release, start with [release/START_HERE.md](release/START_HERE.md). It links the listing, policy, disclosures, reviewer instructions, screenshots and remaining owner steps.
 
 This is a local prototype for Jones IT Zendesk. The release zip contains the extension only: no raw tickets, browser profile data, local AI models, credentials, or development dependencies.

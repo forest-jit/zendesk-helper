@@ -22,6 +22,7 @@ WHAT YOU CAN DO
 • Adjust your workspace: choose a theme or create one from five base colors. Preview it before applying. Optional Harvest styling matches the timer to your theme without changing its entries.
 
 GETTING STARTED
+Set Zendesk itself to Light mode first: profile picture > Appearance > Light mode. Native Zendesk Dark mode is not supported yet and can leave mismatched colors. You can still choose any dark theme in the extension; your Mac appearance can stay as it is.
 1. Open a ticket in Jones IT Zendesk.
 2. Click the extension icon to turn the helper on and choose your settings.
 3. Open Help & feature guide in the popup for instructions.

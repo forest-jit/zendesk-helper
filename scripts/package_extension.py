@@ -34,6 +34,9 @@ choose Load unpacked, and select this folder. Refresh Zendesk once.
 Open the toolbar popup. The On / Off switch controls the helper; other settings save
 automatically. Help & feature guide explains every feature. You can also open src/guide/guide.html.
 
+Set Zendesk itself to Light mode: profile picture > Appearance > Light mode.
+Native Zendesk Dark mode is not supported yet. The helper’s own dark themes remain available.
+
 Team install and updates: docs/DISTRIBUTION.md
 Local AI and documentation review: docs/DOCUMENTATION_HANDOFF.md
 

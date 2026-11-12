@@ -1,5 +1,11 @@
 # Theme foundation
 
+## Supported Zendesk appearance
+
+**Use Zendesk Light mode:** click your Zendesk profile picture → **Appearance → Light mode**. Choose Light mode explicitly rather than Match system appearance. Native Zendesk Dark mode is not supported by the helper yet and can leave mismatched colors. You can still use the helper’s own dark themes; your Mac’s appearance can stay as it is.
+
+This is the supported setup for the current release. Prior theme coverage does not establish compatibility with Zendesk’s native Dark mode. Support for both native modes remains in TASKS.md.
+
 Status: v0.7.1 fixes closed/short-ticket coverage, received-message contrast and merge-drawer validation. v0.7.0 added custom five-role themes, popup-only hover/focus previews, temporary ticket/Harvest previews with rollback and System light/dark. Built-in palettes remain unchanged. Live forced-colors, cached navigation, width and zoom evidence is recorded in docs/CURRENT_STATE.md. TASKS.md retains unvisited native states; this document does not certify every Zendesk surface.
 
 ## Five base colors

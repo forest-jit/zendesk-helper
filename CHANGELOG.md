@@ -4,7 +4,9 @@ Changes to Jones IT Zendesk Helper, written for the people using it.
 
 ## Unreleased
 
-No user-facing changes queued for the next release.
+### Documentation
+
+- Added the supported setup: keep Zendesk’s own appearance in Light mode. The helper’s dark themes remain available; native Zendesk Dark mode compatibility is still pending.
 
 ## 0.7.8 - 2026-11-12
 
