@@ -2,7 +2,7 @@
 
 ## Report something that went wrong
 
-Staff reports belong in [Internal Tools: problems and fixes](https://app.notion.com/p/41618a28418d8148b816ec7c3bd7d641). The board supports screenshots, ownership, status and minutes spent. The reporting form is still a closed draft; use your usual company channel to contact Forest until its questions and company-only sharing are checked.
+Staff reports belong in [Internal Tools: problems and fixes](https://app.notion.com/p/41618a28418d8148b816ec7c3bd7d641). Click **Submit a ticket** to open a card. Give it a short title, write what happened and add screenshots directly in the card. The prompts are optional. New cards default to Jones IT Zendesk Helper; choose another Tool if needed. If you cannot access the page, contact Forest through your usual company channel.
 
 A useful report answers four questions:
 
