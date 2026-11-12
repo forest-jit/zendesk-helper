@@ -69,6 +69,8 @@ Current live scope includes the ticket shell, fields, composer, theme studio, li
 | Other editors/widgets | Grammarly and browser-native select/file UI, autofill, spellcheck | Separate ownership; inventory exceptions rather than claiming full control |
 | Media/accessibility | Attachment images, logos, rich-text colors, forced-colors, selection, zoom | Preserve content colors; honor OS high-contrast choices |
 
+The popup sends the Harvest enable click directly to the background. It starts the optional permission request synchronously, then saves the enable preference and registers the adapter only after approval. Completion does not rely on the popup staying open; denied access and unrelated permission events never enable styling. The sender must be this extension’s exact popup page.
+
 Harvest contents now use an opt-in frame adapter. Required access remains Zendesk agent pages; optional scripting + https://platform.harvestapp.com/* access is requested explicitly. Registration matches only /platform/timer*, and runtime guards require the exact timer path, Zendesk app/service parameters and Jones IT Zendesk as the top ancestor. No access to 3.apps.zdusercontent.com or Harvest account subdomains is requested. The adapter styles the document and reads extension preferences; it does not read/change timer fields. Native, Off, disabled Harvest support and forced-colors remove owned theme variables. Same-origin iframes also require styles inside their own document.
 
 ## Wider acceptance still open

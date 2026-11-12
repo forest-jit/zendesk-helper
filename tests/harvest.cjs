@@ -100,6 +100,9 @@ assert.equal(styles.length, 0);
     installed,
     changed,
     removed,
+    messageListener,
+    resolvePermission,
+    permissionRequests = 0,
     registerCount = 0,
     updateCount = 0;
   const controller = {
@@ -107,6 +110,13 @@ assert.equal(styles.length, 0);
     chrome: {
       permissions: {
         contains: async () => permitted,
+        request(access) {
+          assert.equal(access, policy.access);
+          permissionRequests++;
+          return new Promise((resolve) => {
+            resolvePermission = resolve;
+          });
+        },
         onAdded: { addListener() {} },
         onRemoved: {
           addListener(fn) {
@@ -148,7 +158,13 @@ assert.equal(styles.length, 0);
           }
         },
         onStartup: { addListener() {} },
-        onMessage: { addListener() {} }
+        id: 'test-extension',
+        getURL: (name) => 'chrome-extension://test-extension/' + name,
+        onMessage: {
+          addListener(fn) {
+            messageListener = fn;
+          }
+        }
       }
     }
   };
@@ -157,7 +173,8 @@ assert.equal(styles.length, 0);
     controller
   );
   async function flush() {
-    for (let i = 0; i < 15; i++) await Promise.resolve();
+    // Drain the permission/storage/registration microtasks without a wall-clock sleep.
+    await new Promise(setImmediate);
   }
   prefs = { enabled: true, harvestTheme: true };
   installed();
@@ -185,8 +202,52 @@ assert.equal(styles.length, 0);
   await removed();
   await flush();
   assert.equal(prefs.harvestTheme, false);
+  const popup = {
+    id: 'test-extension',
+    url: 'chrome-extension://test-extension/src/popup/popup.html'
+  };
+  const enable = { type: 'zdh-harvest-enable' };
+  let response;
+  // No popup callback remains. Granting still persists the preference and registers the adapter.
+  messageListener(enable, popup, () => {});
+  assert.equal(permissionRequests, 1, 'request must start synchronously from the click message');
+  assert.equal(prefs.harvestTheme, false, 'asking is not approval');
+  permitted = true;
+  resolvePermission(true);
+  await flush();
+  assert.equal(prefs.harvestTheme, true, 'grant completes without a live popup');
+  assert.equal(registered.length, 1);
+
+  messageListener(enable, { ...popup, url: 'https://itjones.zendesk.com/agent/' }, (r) => {
+    response = r;
+  });
+  assert.equal(permissionRequests, 1, 'a content page must not request optional access');
+  assert.ok(response?.error);
+  messageListener(enable, { ...popup, id: 'another-extension' }, () => {});
+  assert.equal(permissionRequests, 1, 'another extension cannot request access');
+
+  prefs.harvestTheme = false;
+  changed({ harvestTheme: {} }, 'local');
+  await flush();
+  assert.equal(registered.length, 0);
+  permitted = false;
+  messageListener(enable, popup, (r) => {
+    response = r;
+  });
+  resolvePermission(false);
+  await flush();
+  assert.equal(response.granted, false);
+  assert.equal(prefs.harvestTheme, false, 'denial must not enable styling');
+  assert.equal(registered.length, 0);
+
+  // Unrelated grant events still reconcile preferences; they never turn the feature on.
+  permitted = true;
+  installed();
+  await flush();
+  assert.equal(prefs.harvestTheme, false);
+  assert.equal(registered.length, 0);
   console.log(
-    'PASS: optional Harvest registration, exact embedded context, theme switching, Native/Off/revoke cleanup and forced-colors.'
+    'PASS: optional Harvest registration, exact embedded context, theme switching, Native/Off/revoke cleanup, consent without a live popup, denial and forced-colors.'
   );
 })().catch((error) => {
   console.error(error);

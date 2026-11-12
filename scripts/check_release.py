@@ -43,7 +43,7 @@ def check(package):
     checksum = package.with_suffix('.sha256').read_text().split()[0]
     assert hashlib.sha256(package.read_bytes()).hexdigest() == checksum
     print(f'PASS: store ZIP {manifest["version"]}, references, limited permissions, icon sizes, screenshots and checksum.')
-    print('External steps remain: publisher/account decision, policy hosting, reviewer access, certifications and submission.')
+    print('Local package checks passed. Confirm current Store dashboard requirements and submit separately; this check does not upload or publish.')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)

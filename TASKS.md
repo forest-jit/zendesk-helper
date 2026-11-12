@@ -4,9 +4,11 @@
 
 ## In progress
 
-- [ ] **T58 — Release workflow and published-build checks, v0.7.9.** Workflow and prominent Harvest setup are documented in repository/Notion. Packaged Chromium checks and nine reviewed macOS snapshots pass; original Appearance CSS fails the new regression. Scoped menu fix checked on real Zendesk; temporary preview removed. Store v0.7.8 Harvest matches Deep Purple after opt-in; timer/draft/status unchanged. Local aggregate, formatting and ZIP preflight pass. Finish GitHub CI checks and record results; new Store package is prepared but not uploaded/submitted. Arc focus and permission-prompt follow-up remain T60/T61.
+No implementation currently in progress; the checks below distinguish prepared changes from external acceptance.
 
 ## Next — needs another person
+
+- [ ] **T61 — First Harvest grant in Arc/Chrome.** v0.7.9 now starts optional permission approval from the authorized popup click in the background, then saves/registers after approval even if the popup closes. New consent/closed-popup/denial/sender regressions, aggregate checks, formatting and packaged browser tests pass. Before release, test a fresh real permission prompt in Arc and Chrome, including cancellation, popup closure, reopening and permission removal. Existing Store access is already granted; do not claim the new path has had a live first-grant check.
 
 - [ ] **T62 — Publish and verify the next Store update.** v0.7.9 ZIP, setup instructions and changelog are prepared. Before tagging, finalize the matching version entry and review release notes. Use the tagged build, submit the Store package and updated description, then verify a fresh Store installation after Google approval. Do not replace v0.7.8 assets or claim a source push updates users.
 
@@ -19,8 +21,6 @@
 
 - [ ] **T60 — Arc popup changes browser focus.** Owner reports opening the toolbar popup switches from Arc to Chrome. Opening from Arc’s Extensions menu stayed in Arc; Chrome was closed, so the reported two-browser case is not reproduced. Source uses the current browser’s extension APIs and contains no Chrome-launch command. A local AeroSpace rule moves every new Arc window to workspace 1; this is a possible cause, not a confirmed diagnosis. Reproduce the exact toolbar path with both browsers open before changing extension or window-manager settings.
 
-- [ ] **T61 — Harvest permission-prompt completion.** After the first permission prompt, the reopened Store popup still showed Match Harvest to theme; another click enabled it. Investigate whether Arc closes the popup before the enable preference is saved. Setup docs include checking Harvest theme on and retrying if needed. Add a first-grant/denial/popup-close regression before changing consent handling; do not turn on styling from unrelated permission changes.
-
 - [ ] **T59 — Explain unknown agent activity.** Review “Agent activity · not reported” and “Agent activity not reported by Zendesk.” Explain that the helper has not found a native viewing/editing signal; this does not confirm nobody else is on the ticket. Guide/README/Notion now explain the unknown state. Decide whether its visible label should be quieter or clearer, then and verify viewing/editing transitions with a second agent under T35.
 
 - [ ] **T57 — Native Zendesk Dark-mode compatibility.** Current supported setup is native Light mode with any helper theme. Add explicit adaptation for both native appearances without changing the user’s Zendesk setting. Check lists, headers, menus, dialogs, public/internal editor transitions, Harvest, navigation and Off cleanup in both native modes with light/dark helper palettes; verify readable text and no leftover colors. Remove the Light-only note only after real Chrome checks pass.
@@ -32,6 +32,8 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 - [ ] **T09 — Organization rollout.** Owner reports Chrome Web Store publication on November 12, 2026. Store item and release packet are prepared; managed installation, company approval/allowlisting and clean-profile rollout checks remain administrator/owner work. Do not treat publication as organization-wide deployment.
 
 ## Done
+
+- [x] **T58 — Release workflow and published-build checks, v0.7.9.** Workflow and prominent Harvest setup documented in repository/Notion. Four packaged Chromium tests and nine reviewed macOS snapshots pass; old Appearance CSS fails the new regression. Scoped menu fix checked on real Zendesk and temporary preview removed. Store v0.7.8 Harvest matches Deep Purple after opt-in; draft/status/timer retained, no saves/sends. Aggregate, format, ZIP preflight and GitHub check/browser jobs pass (run 43301886663). New Store package is prepared, not uploaded/submitted; T62 tracks publication. Arc focus and permission completion remain T60/T61.
 
 - [x] **T56 — Notion extension guide.** Created Jones IT Zendesk Helper under Internal Tools with three task-based child guides. Reviewed against current guide/policy/release docs using the requested writing preferences; matched Figma runbook styling after reading it in Chrome. Main hub and navigation read back; live colors/layout and org Can view verified. Reference page unchanged. No extension runtime change or new Store release.
 

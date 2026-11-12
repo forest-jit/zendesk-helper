@@ -427,16 +427,15 @@ $('harvest-theme').addEventListener('click', () => {
     });
     return;
   }
-  chrome.permissions
-    .request(harvestAccess)
-    .then(async (granted) => {
-      if (!granted) {
+  // Send directly from the click so the background can request access and finish if this closes.
+  chrome.runtime
+    .sendMessage({ type: 'zdh-harvest-enable' })
+    .then((result) => {
+      if (result?.error) throw Error(result.error);
+      if (!result?.granted) {
         setStatus('Harvest access was not granted.');
         return;
       }
-      await writePreferences({ harvestTheme: true });
-      const result = await chrome.runtime.sendMessage({ type: 'zdh-harvest-sync' });
-      if (result?.error) throw Error(result.error);
       harvestEnabled = true;
       paintHarvestButton();
       setStatus('Harvest theme on. Reload the Harvest panel to apply it.');

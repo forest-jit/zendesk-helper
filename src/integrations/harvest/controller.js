@@ -34,6 +34,13 @@
     queue = queue.catch(() => {}).then(reconcile);
     return queue;
   }
+  // The permission prompt may close the popup. Finish consent and persistence here instead.
+  // Accept the already-started request: awaiting anything before request() loses the click gesture.
+  async function finishEnable(permissionRequest) {
+    if (!(await permissionRequest)) return { granted: false, active: false };
+    await chrome.storage.local.set({ harvestTheme: true });
+    return { granted: true, ...(await sync()) };
+  }
   const run = () => sync().catch(() => {});
   chrome.runtime.onInstalled.addListener(run);
   chrome.runtime.onStartup.addListener(run);
@@ -47,7 +54,7 @@
     if (area === 'local' && (changes.harvestTheme || changes.enabled)) run();
   });
   chrome.runtime.onMessage.addListener((message, sender, reply) => {
-    if (message?.type !== 'zdh-harvest-sync') return;
+    if (!['zdh-harvest-sync', 'zdh-harvest-enable'].includes(message?.type)) return;
     if (
       sender.id !== chrome.runtime.id ||
       sender.url !== chrome.runtime.getURL('src/popup/popup.html')
@@ -55,7 +62,16 @@
       reply({ error: 'Open the extension popup to configure Harvest styling.' });
       return;
     }
-    sync().then(reply, (error) => reply({ error: error.message }));
+    if (message.type === 'zdh-harvest-enable') {
+      // No await before this call. Chrome carries the popup click through this message hop.
+      try {
+        const permissionRequest = chrome.permissions.request(policy.access);
+        finishEnable(permissionRequest).then(reply, (error) => reply({ error: error.message }));
+      } catch (error) {
+        reply({ error: error.message });
+        return false;
+      }
+    } else sync().then(reply, (error) => reply({ error: error.message }));
     return true;
   });
 })();
