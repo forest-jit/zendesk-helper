@@ -34,7 +34,7 @@ These checks build the Store ZIP, extract it, and load the real extension in a d
 4. If a deliberate design change needs new images, run `npm run test:visual:update`, inspect every changed image, and commit only the intended differences.
 5. Repeat the affected behavior in real Zendesk, then check the published installation after Google approves the update.
 
-Current cases: Appearance radio-option labels/icons, checked and keyboard-focus states, popup preview colors, hover preview without changing the page, Escape rollback, Off cleanup, and preferences after a browser restart. The small Appearance page reproduces observed native markup; it is not a copy of Zendesk. Draft/save failure cases remain in the separate behavior tests and live acceptance workflow.
+Current cases: Appearance radio-option labels/icons, checked and keyboard-focus states, popup preview colors, hover preview without changing the page, Escape rollback, Off cleanup, preferences after a browser restart, simulated viewing/editing/unknown transitions, and Closed status with stale composer controls and an unsent draft. Simulated activity is not a real two-person presence check. The small Appearance page reproduces observed native markup; it is not a copy of Zendesk. Draft/save failure cases remain in the separate behavior tests and live acceptance workflow.
 
 Nine synthetic baselines live in `tests/visual-baselines/darwin/`. They were reviewed with Playwright 1.56.1 / Chromium 141.0.7390.37 on macOS 26.7.3, at a 900 × 720 viewport and default scale. Use the same environment when comparing pixels. The GitHub browser job runs the semantic checks on Linux with `--ignore-snapshots`; it does not claim Linux/macOS pixels are interchangeable.
 

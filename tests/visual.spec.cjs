@@ -8,7 +8,7 @@ const os = require('node:os');
 const { execFileSync } = require('node:child_process');
 
 const root = path.resolve(__dirname, '..');
-let context, worker, extensionId, profile, extension;
+let context, worker, extensionId, profile, extension, ticketHTML;
 // These stable hooks and the fixed foreground were observed in Zendesk's live Appearance menu.
 const choices = [
   { label: 'Light mode', id: 'light-mode' },
@@ -60,11 +60,25 @@ async function launchPackagedBrowser() {
       return route.continue();
     if (route.request().url() === 'https://itjones.zendesk.com/agent/zdh-visual-test')
       return route.fulfill({ contentType: 'text/html', body: appearance });
+    if (route.request().url() === 'https://itjones.zendesk.com/agent/tickets/222')
+      return route.fulfill({ contentType: 'text/html', body: ticketHTML });
     return route.abort();
   });
 }
 
 test.beforeAll(async () => {
+  // Reuse fictional ticket content; add the current native composer wrapper for activity placement.
+  ticketHTML = (await fs.readFile(path.join(__dirname, 'fixtures/zendesk-ticket.html'), 'utf8'))
+    .replace(
+      '<section class="composer">',
+      '<section class="composer" data-test-id="omnichannel-composer">'
+    )
+    // Native footer actions have separate containers; hiding them must not hide the Closed notice.
+    .replace(
+      '<button type="button">Stay on ticket</button>',
+      '<span><button type="button">Stay on ticket</button></span><div id="native-submit-controls">'
+    )
+    .replace('</footer>', '</div></footer>');
   const zip = path.join(root, 'test-results/visual-extension.zip');
   if (!process.env.ZDH_TEST_PACKAGE)
     execFileSync('python3', ['scripts/package_extension.py', '--store', '--output', zip], {
@@ -145,5 +159,73 @@ test('browser restart reloads the packaged extension and retains preferences', a
   await page.goto('https://itjones.zendesk.com/agent/zdh-visual-test');
   await expect(page.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
   await expect(page.getByRole('menuitemradio').nth(1)).toHaveCSS('color', 'rgb(245, 237, 255)');
+  await page.close();
+});
+
+// Simulated native labels check our rendering only; a real second-agent test is still required.
+test('activity distinguishes unknown, viewing and editing without submitting', async () => {
+  await preferences({ enabled: true, theme: 'purple', layout: true, autoTitle: false });
+  const page = await context.newPage();
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto('https://itjones.zendesk.com/agent/tickets/222');
+  const badge = page.locator('[data-zdh-presence] button');
+  const activity = page.locator('[data-zdh-activity]');
+  await expect(badge).toHaveAccessibleName('Other agents: activity unknown');
+  await expect(badge).toHaveText('?');
+  await expect(activity).toHaveText('Other agents · unknown');
+  await badge.focus();
+  await expect(page.locator('[data-zdh-presence] [role=tooltip]')).toContainText(
+    'Someone may still have this ticket open'
+  );
+  await page.evaluate(() => {
+    const signal = document.createElement('span');
+    signal.id = 'native-collision-test';
+    signal.dataset.testId = 'agent-collision';
+    signal.setAttribute('aria-label', 'Morgan is viewing this ticket');
+    signal.textContent = 'Morgan';
+    document.querySelector('#active-ticket').prepend(signal);
+  });
+  await expect(badge).toHaveAccessibleName('Morgan is viewing this ticket');
+  await expect(page.locator('[data-zdh-presence]')).toHaveAttribute('data-state', 'viewing');
+  await page
+    .locator('#native-collision-test')
+    .evaluate((e) => e.setAttribute('aria-label', 'Morgan is editing this ticket'));
+  await expect(badge).toHaveAccessibleName('Morgan is editing this ticket');
+  await expect(page.locator('[data-zdh-presence]')).toHaveAttribute('data-state', 'editing');
+  await page.locator('#native-collision-test').evaluate((e) => {
+    e.hidden = true;
+  });
+  await expect(badge).toHaveAccessibleName('Other agents: activity unknown');
+  await expect(badge).toHaveText('?');
+  expect(await page.evaluate(() => globalThis.__nativeActions.submitClicks)).toBe(0);
+  await preferences({ enabled: false });
+  await expect(badge).toHaveCount(0);
+  await expect(activity).toHaveCount(0);
+  await page.close();
+});
+
+// A native Closed notice must beat stale Open controls and an old composer in the same workspace.
+test('closed ticket keeps an unsent draft and hides Send and Save', async () => {
+  await preferences({ enabled: true, theme: 'purple', layout: true, autoTitle: false });
+  const page = await context.newPage();
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto('https://itjones.zendesk.com/agent/tickets/222');
+  const draft = page.locator('#reply');
+  await draft.fill('Keep this unsent.');
+  await page.evaluate(() => {
+    const notice = document.createElement('p');
+    notice.dataset.testId = 'ticket-footer-helper-text';
+    notice.textContent = 'This ticket is closed and cannot be edited.';
+    document.querySelector('[data-test-id="ticket-footer"]').append(notice);
+  });
+  const status = page.getByRole('combobox', { name: 'Status', exact: true });
+  await expect(status).toHaveText('Closed');
+  await expect(status).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Send', exact: true })).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Save changes', exact: true })).toBeHidden();
+  await draft.focus();
+  await page.keyboard.press('Meta+Enter');
+  expect(await page.evaluate(() => globalThis.__nativeActions.submitClicks)).toBe(0);
+  await expect(draft).toHaveValue('Keep this unsent.');
   await page.close();
 });

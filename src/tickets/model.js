@@ -73,7 +73,7 @@
     if (editing.length) return { kind: 'editing', text: editing.join(' · ') };
     const viewing = unique.filter((s) => /\b(viewing|viewed|away)\b/i.test(s) && !/^no\b/i.test(s));
     if (viewing.length) return { kind: 'viewing', text: viewing.join(' · ') };
-    return { kind: 'unknown', text: 'Activity not reported' };
+    return { kind: 'unknown', text: 'Activity unknown' };
   }
   return { identityTitle, transferDecision, copyText, queueAllowed, activity };
 });

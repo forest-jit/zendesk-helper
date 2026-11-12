@@ -164,4 +164,4 @@ CHANGELOG.md supplies the user-facing notes. The tagged release generates store-
 
 ## Next update — v0.7.9, prepared locally
 
-Appearance-menu labels now follow the selected helper theme. Harvest permission approval completes in the background if the popup closes. Harvest setup is clearer in the popup and guide: it is off by default and needs its own optional access and panel reload. Store-description source above includes these steps. Package and listing changes have not been uploaded or submitted to Google.
+Unknown activity uses a question mark and clearer help text. Appearance-menu labels now follow the selected helper theme. Harvest permission approval completes in the background if the popup closes. Harvest setup is clearer in the popup and guide: it is off by default and needs its own optional access and panel reload. Store-description source above includes these steps. Package and listing changes have not been uploaded or submitted to Google.

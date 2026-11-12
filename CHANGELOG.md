@@ -6,15 +6,15 @@ Changes to Jones IT Zendesk Helper, written for the people using it.
 
 ### Fixes and setup
 
+- Unknown activity now uses a question mark and **Other agents · unknown**. Its help text says someone may still have the ticket open; an eye is reserved for reported viewing activity.
 - Harvest setup now finishes in the background after permission approval, even if the popup closes during the prompt. Access is still requested only when you click **Match Harvest to theme**.
-
 - Light mode, Dark mode and Match system appearance labels now follow the helper theme in Zendesk’s Appearance menu, including the selected option and keyboard focus.
 - Harvest setup is explicit: styling starts off. Click **Match Harvest to theme**, allow access, check **Harvest theme on**, then reload the Harvest panel. Each browser/profile and Store/unpacked installation needs its own setup.
 - The popup explains the Harvest setup beside the control. The installation and theme guides include troubleshooting when the timer stays white.
 
 ### Development
 
-- Added a change/test/documentation/release workflow and packaged-extension browser checks. Focused screenshot comparisons cover the Appearance menu and popup preview in Daylight, Deep Purple and Blush, plus Off cleanup and browser restart. These do not replace real Zendesk checks.
+- Added a change/test/documentation/release workflow and packaged-extension browser checks. Focused screenshot comparisons cover the Appearance menu and popup preview in Daylight, Deep Purple and Blush, plus Off cleanup and browser restart. Packaged checks also cover simulated activity states and Closed-ticket Send guards. These do not replace real Zendesk checks.
 
 ### Documentation
 

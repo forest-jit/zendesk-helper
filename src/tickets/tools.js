@@ -425,22 +425,24 @@
       copy.insertAdjacentElement('afterend', activityBadge);
     const badge = activityBadge.querySelector('button'),
       tooltip = activityBadge.querySelector('[role="tooltip"]');
-    const label = a.kind === 'unknown' ? 'Agent activity not reported by Zendesk' : a.text;
+    const unknownHelp =
+      'The helper has not found a native Zendesk viewing or editing signal. Someone may still have this ticket open.';
+    const label = a.kind === 'unknown' ? 'Other agents: activity unknown' : a.text;
     if (activityBadge.dataset.state !== a.kind) {
       activityBadge.dataset.state = a.kind;
       badge.innerHTML =
-        a.kind === 'editing'
-          ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m10.5 2 3.5 3.5-7.8 7.8-4.2.7.7-4.2L10.5 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="m9 3.5 3.5 3.5" stroke="currentColor" stroke-width="1.3"/></svg>'
-          : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M1 8s2.5-4.5 7-4.5S15 8 15 8s-2.5 4.5-7 4.5S1 8 1 8Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.3"/></svg>';
+        a.kind === 'unknown'
+          ? '<span aria-hidden="true">?</span>'
+          : a.kind === 'editing'
+            ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m10.5 2 3.5 3.5-7.8 7.8-4.2.7.7-4.2L10.5 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="m9 3.5 3.5 3.5" stroke="currentColor" stroke-width="1.3"/></svg>'
+            : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M1 8s2.5-4.5 7-4.5S15 8 15 8s-2.5 4.5-7 4.5S1 8 1 8Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.3"/></svg>';
     }
     if (badge.getAttribute('aria-label') !== label) badge.setAttribute('aria-label', label);
-    text(tooltip, label);
+    text(tooltip, a.kind === 'unknown' ? label + '. ' + unknownHelp : label);
     activityBar.dataset.state = a.kind;
-    text(activityBar, a.kind === 'unknown' ? 'Agent activity · not reported' : a.text);
+    text(activityBar, a.kind === 'unknown' ? 'Other agents · unknown' : a.text);
     activityBar.title =
-      a.kind === 'unknown'
-        ? 'Zendesk is not reporting another agent here. This does not guarantee nobody else is working on the ticket.'
-        : 'Reported by Zendesk’s native collision indicator.';
+      a.kind === 'unknown' ? unknownHelp : 'Reported by Zendesk’s native collision indicator.';
   }
   function overlayOpen() {
     return [...document.querySelectorAll('[role="dialog"],[role="menu"],[role="listbox"]')].some(

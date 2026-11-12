@@ -75,7 +75,7 @@ Choose a built-in theme or **System light / dark** in the extension popup. Hover
 - **Internal note / Public reply** beside the native selector switches in one click. Optional **Carry this draft** preserves text/formatting across modes; a distinct destination draft is never silently overwritten. Queued attachments block carrying. Native separate drafts remain the default.
 - **Update company and requester in ticket titles** uses the selected native identity and preserves the issue suffix. Changes stay in the ticket draft until Save or Send; Undo also turns off automatic title updates.
 - **Copy ticket** opens on hover and closes when the pointer leaves. Enter/Space and touch tap also work; Escape closes. Choose number, link, title/link or Markdown.
-- The reply activity line mirrors Zendesk’s native collision reporting. “Agent activity · not reported” means the helper has not found a native viewing or editing signal. It does not mean nobody else has the ticket open.
+- The reply activity line mirrors Zendesk’s native collision reporting. A question mark and **Other agents · unknown** mean the helper has not found a native viewing or editing signal. Hover or focus the badge for an explanation. Older versions call this **not reported**; neither label means nobody else has the ticket open.
 - Views refresh every 15 seconds by default (10/15/30/60 seconds or Off). Refresh pauses for typing, selection, menus, hidden/offline tabs and recent interaction. It uses Zendesk’s native refresh action, not page reloads.
 
 [Team installation](docs/DISTRIBUTION.md) · [Reviewed documentation handoff](docs/DOCUMENTATION_HANDOFF.md)

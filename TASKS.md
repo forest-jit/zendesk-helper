@@ -4,7 +4,7 @@
 
 ## In progress
 
-No implementation currently in progress; the checks below distinguish prepared changes from external acceptance.
+No implementation currently in progress; external acceptance remains listed below.
 
 ## Next — needs another person
 
@@ -21,8 +21,6 @@ No implementation currently in progress; the checks below distinguish prepared c
 
 - [ ] **T60 — Arc popup changes browser focus.** Owner reports opening the toolbar popup switches from Arc to Chrome. Opening from Arc’s Extensions menu stayed in Arc; Chrome was closed, so the reported two-browser case is not reproduced. Source uses the current browser’s extension APIs and contains no Chrome-launch command. A local AeroSpace rule moves every new Arc window to workspace 1; this is a possible cause, not a confirmed diagnosis. Reproduce the exact toolbar path with both browsers open before changing extension or window-manager settings.
 
-- [ ] **T59 — Explain unknown agent activity.** Review “Agent activity · not reported” and “Agent activity not reported by Zendesk.” Explain that the helper has not found a native viewing/editing signal; this does not confirm nobody else is on the ticket. Guide/README/Notion now explain the unknown state. Decide whether its visible label should be quieter or clearer, then and verify viewing/editing transitions with a second agent under T35.
-
 - [ ] **T57 — Native Zendesk Dark-mode compatibility.** Current supported setup is native Light mode with any helper theme. Add explicit adaptation for both native appearances without changing the user’s Zendesk setting. Check lists, headers, menus, dialogs, public/internal editor transitions, Harvest, navigation and Off cleanup in both native modes with light/dark helper palettes; verify readable text and no leftover colors. Remove the Light-only note only after real Chrome checks pass.
 
 Add a line: `- [ ] Short request — what should be different when it works.`
@@ -32,6 +30,8 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 - [ ] **T09 — Organization rollout.** Owner reports Chrome Web Store publication on November 12, 2026. Store item and release packet are prepared; managed installation, company approval/allowlisting and clean-profile rollout checks remain administrator/owner work. Do not treat publication as organization-wide deployment.
 
 ## Done
+
+- [x] **T59 — Clarify unknown activity, v0.7.9.** Replaced not-reported UI wording with Other agents · unknown, added a question mark instead of the viewing eye and explained that someone may still have the ticket open. Guide/README retain the older label’s meaning. The actual packaged extension passes simulated unknown/viewing/editing/unknown and Off cleanup checks without submission. Aggregate and formatting pass. Real coworker recognition remains T35; the new wording is prepared, not yet in the Store.
 
 - [x] **T58 — Release workflow and published-build checks, v0.7.9.** Workflow and prominent Harvest setup documented in repository/Notion. Four packaged Chromium tests and nine reviewed macOS snapshots pass; old Appearance CSS fails the new regression. Scoped menu fix checked on real Zendesk and temporary preview removed. Store v0.7.8 Harvest matches Deep Purple after opt-in; draft/status/timer retained, no saves/sends. Aggregate, format, ZIP preflight and GitHub check/browser jobs pass (run 43301886663). New Store package is prepared, not uploaded/submitted; T62 tracks publication. Arc focus and permission completion remain T60/T61.
 
