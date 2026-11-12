@@ -34,9 +34,33 @@ const appearance = `<!doctype html>
   [data-garden-id='dropdowns.menu.item.content'] { color:rgb(41,50,57) }
   li[aria-checked=true] { background:#eee }
   svg { width:20px; height:20px; margin-right:12px; vertical-align:middle }
+  /* Observed Polaris roots reset semantic variables below html in both native appearances. */
+  html[data-theme=light] .polaris-react-component, [data-test-id=ticket-main-conversation][data-theme=light] {
+    --background-default: rgba(255,255,255,1); --foreground-default: rgba(41,50,57,1); --color-scheme: light;
+  }
+  html[data-theme=dark] .polaris-react-component, [data-test-id=ticket-main-conversation][data-theme=dark] {
+    --background-default: rgba(21,26,30,1); --foreground-default: rgba(216,220,222,1); --color-scheme: dark;
+  }
+  .polaris-react-component { color-scheme: var(--color-scheme) only; }
+  /* Native controls also set a literal scheme, independently of the semantic color variables. */
+  html[data-theme=light] [data-test-id=ticket-system-field-requester-select] { color-scheme:light only; }
+  html[data-theme=dark] [data-test-id=ticket-system-field-requester-select] { color-scheme:dark only; }
+  html[data-theme=light] :is([data-zdh-field-row],[data-test-id=header-tab]) { border-bottom:1px solid rgb(216,220,222); }
+  html[data-theme=dark] :is([data-zdh-field-row],[data-test-id=header-tab]) { border-bottom:1px solid rgb(57,67,75); }
+  #native-disabled { background:var(--background-disabled); color:var(--foreground-disabled); }
+  #native-control, #native-theme-boundary { background: var(--background-default); color: var(--foreground-default); }
+
 </style></head><body>
   <h1>Appearance</h1>
   <ul role="menu" aria-label="Appearance">${rows}</ul>
+  <section id="native-theme-boundary" data-test-id="ticket-main-conversation" data-theme="light">
+    <div class="polaris-react-component"><button id="native-control" data-test-id="ticket-system-field-requester-select">Native component</button>
+      <button id="native-disabled" disabled>Unavailable action</button>
+      <p id="authored-inside" style="background:rgb(255,240,220);color:rgb(20,40,60)">Authored email panel</p>
+    </div>
+  </section>
+  <div id="native-field-row" data-zdh-field-row="true">Ticket fields</div>
+  <a id="native-workspace-tab" data-test-id="header-tab">Ticket tab</a>
   <p id="authored" style="color:rgb(41,50,57)">Authored message colors stay outside menu rules.</p>
 </body></html>`;
 
@@ -229,3 +253,111 @@ test('closed ticket keeps an unsent draft and hides Send and Save', async () => 
   await expect(draft).toHaveValue('Keep this unsent.');
   await page.close();
 });
+
+for (const theme of ['daylight', 'purple', 'blush']) {
+  test(`${theme}: nested Polaris colors follow the helper through native appearance changes`, async () => {
+    await preferences({ enabled: true, theme });
+    const page = await context.newPage();
+    await page.goto('https://itjones.zendesk.com/agent/zdh-visual-test');
+    await expect(page.locator('html')).toHaveAttribute('data-zdh-theme', theme);
+    for (const native of ['light', 'dark', 'light', 'dark']) {
+      await page.evaluate((native) => {
+        document.documentElement.dataset.theme = native;
+        document.documentElement.dataset.colorScheme = native;
+        document.querySelector('#native-theme-boundary').dataset.theme = native;
+      }, native);
+      for (const component of await page.locator('#native-control,#native-theme-boundary').all()) {
+        const colors = await component.evaluate((e) => {
+          const resolve = (name) => {
+            const probe = document.createElement('span');
+            probe.style.color = `var(${name})`;
+            document.body.append(probe);
+            const color = getComputedStyle(probe).color;
+            probe.remove();
+            return color;
+          };
+          const actual = getComputedStyle(e);
+          return {
+            background: actual.backgroundColor,
+            text: actual.color,
+            // The conversation canvas is Page; its input/card surface is Surface.
+            expectedBackground: resolve(
+              e.id === 'native-theme-boundary' ? '--zdh-theme-page' : '--zdh-theme-surface'
+            ),
+            nativeBase: actual.getPropertyValue('--background-default'),
+            compiledBase: actual.getPropertyValue('--zdh-theme-surface'),
+            ink: resolve('--zdh-theme-text'),
+            scheme: actual.colorScheme.split(' ')[0],
+            expectedScheme: getComputedStyle(document.documentElement)
+              .getPropertyValue('--color-scheme')
+              .trim()
+          };
+        });
+        expect(colors.background).toBe(colors.expectedBackground);
+        expect(colors.text).toBe(colors.ink);
+        expect(colors.nativeBase).toBe(colors.compiledBase);
+        expect(colors.scheme).toBe(colors.expectedScheme);
+      }
+      for (const selector of ['#native-field-row', '#native-workspace-tab']) {
+        const border = await page.locator(selector).evaluate((e) => {
+          const probe = document.createElement('span');
+          probe.style.color = 'var(--zdh-theme-border)';
+          document.body.append(probe);
+          const expected = getComputedStyle(probe).color;
+          probe.remove();
+          return { actual: getComputedStyle(e).borderBottomColor, expected };
+        });
+        expect(border.actual).toBe(border.expected);
+      }
+      // Both native appearances must produce the same helper-colored component image.
+      await expect(page.locator('#native-theme-boundary')).toHaveScreenshot(
+        `native-boundary-${theme}.png`
+      );
+      await expect(page.locator('#authored-inside')).toHaveCSS('color', 'rgb(20, 40, 60)');
+      await expect(page.locator('#authored-inside')).toHaveCSS(
+        'background-color',
+        'rgb(255, 240, 220)'
+      );
+    }
+    const disabled = await page.locator('#native-disabled').evaluate((e) => {
+      const style = getComputedStyle(e);
+      const probe = document.createElement('span');
+      document.body.append(probe);
+      probe.style.color = 'var(--zdh-theme-page)';
+      const background = getComputedStyle(probe).color;
+      probe.style.color = 'var(--zdh-theme-muted)';
+      const text = getComputedStyle(probe).color;
+      probe.remove();
+      return { background, text, actualBackground: style.backgroundColor, actualText: style.color };
+    });
+    expect(disabled.actualBackground).toBe(disabled.background);
+    expect(disabled.actualText).toBe(disabled.text);
+    expect(disabled.actualText).not.toBe(disabled.actualBackground);
+    // New native roots should inherit the scoped stylesheet without another initialization pass.
+    await page.evaluate(() => {
+      const root = document.createElement('section');
+      root.id = 'late-theme-root';
+      root.dataset.testId = 'ticket-main-conversation';
+      root.dataset.theme = 'dark';
+      document.body.append(root);
+    });
+    const late = await page.locator('#late-theme-root').evaluate((e) => ({
+      actual: getComputedStyle(e).getPropertyValue('--background-default'),
+      expected: getComputedStyle(e).getPropertyValue('--zdh-theme-surface')
+    }));
+    expect(late.actual).toBe(late.expected);
+    await page.emulateMedia({ forcedColors: 'active' });
+    await expect(page.locator('html')).not.toHaveAttribute('data-zdh-theme');
+    await expect(page.locator('#zdh-theme-variables')).toHaveCount(0);
+    await page.emulateMedia({ forcedColors: 'none' });
+    await expect(page.locator('html')).toHaveAttribute('data-zdh-theme', theme);
+
+    // Turning the helper off must restore native Dark, rather than changing the user's setting.
+    await preferences({ enabled: false });
+    await expect(page.locator('html')).not.toHaveAttribute('data-zdh-theme');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(page.locator('#native-control')).toHaveCSS('background-color', 'rgb(21, 26, 30)');
+    await expect(page.locator('#native-control')).toHaveCSS('color', 'rgb(216, 220, 222)');
+    await page.close();
+  });
+}

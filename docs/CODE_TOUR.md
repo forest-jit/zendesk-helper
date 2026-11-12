@@ -34,7 +34,7 @@ The tricky part is timing: Zendesk can replace a ticket grid or load a draft lat
 
 ## Follow a theme
 
-`src/popup/popup.js` saves a theme ID or custom five-role palette. `src/shared/themes.js` derives readable component colors. `src/themes/native.js` applies owned variables; `src/themes/native.css` covers observed native exceptions. Harvest uses the same palette in its own frame through `src/integrations/harvest/theme.js`. Its controller starts optional access from the popup’s click message and finishes saving/registering in the background, so closing the popup during approval does not interrupt setup.
+`src/popup/popup.js` saves a theme ID or custom five-role palette. `src/shared/themes.js` derives readable component colors. `src/themes/native.js` applies one owned variable stylesheet at the document and nested native theme boundaries; `src/themes/native.css` covers observed native exceptions, including literal control color schemes and field-row borders. Zendesk’s saved appearance is never changed by this adapter. Harvest uses the same palette in its own frame through `src/integrations/harvest/theme.js`. Its controller starts optional access from the popup’s click message and finishes saving/registering in the background, so closing the popup during approval does not interrupt setup.
 
 Five base colors do not mean five rendered colors. Borders, washes, focus and label inks are derived. Native authored content has its own colors; `src/conversations/message-display.js` repairs measured unreadable text without editing the composer.
 

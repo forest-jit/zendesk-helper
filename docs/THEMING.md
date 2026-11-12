@@ -8,6 +8,16 @@ This is the supported setup for the current release. Prior theme coverage does n
 
 Status: v0.7.1 fixes closed/short-ticket coverage, received-message contrast and merge-drawer validation. v0.7.0 added custom five-role themes, popup-only hover/focus previews, temporary ticket/Harvest previews with rollback and System light/dark. Built-in palettes remain unchanged. Live forced-colors, cached navigation, width and zoom evidence is recorded in docs/CURRENT_STATE.md. TASKS.md retains unvisited native states; this document does not certify every Zendesk surface.
 
+## Native appearance work — prepared v0.7.10
+
+Zendesk redeclares its palette inside native Light/Dark roots and Polaris components. The adapter now supplies the same helper variables at those boundaries using one owned stylesheet. Native controls use the helper’s light/dark scheme; sidebar separators and ticket-tab borders use the helper border. Disabled controls pair muted text with the Page background. The five base colors are unchanged.
+
+A temporary preview on real Zendesk in Arc passed all 12 combinations of Daylight/Deep Purple/Blush, native Light/Dark and Public reply/Internal note. Both draft HTML buffers matched their private backups. Harvest stayed themed and idle; Off restored native Dark without changing its saved preference. The preview was removed and the original settings restored.
+
+The Arc preview also passed All tickets list, Filter drawer and Add link dialog checks in Daylight/Deep Purple over both native appearances. Priority menus were checked in the crossing cases (Daylight/native Dark and Purple/native Light). Sampled opaque UI text pairs reached at least 12.37:1; this sample does not establish page-wide accessibility. List navigation retained the draft. At 1100×850, Purple/native Dark and Daylight/native Light had no horizontal overflow; Status stayed visible and the conversation scrolled independently to a fully visible Send button. Filters and link insertion were canceled.
+
+The packaged extension passes controlled native-appearance regressions and 12 reviewed component snapshots. This remains partial acceptance: the actual new build still needs the live Chrome appearance matrix. Chrome’s separate unpacked v0.7.8 was identified, but its console security warning blocked draft backup; no reload was attempted. Keep the Light-mode setup instruction until T57 passes. No new package has reached Store users.
+
 ## Five base colors
 
 | Role | Daylight | Midnight | Blush | Forest | Purple | Magenta | Jones IT | Teal & Pink | Pink & Teal |
@@ -29,7 +39,7 @@ Strict five-color themes intentionally consolidate Zendesk's red/green/orange st
 `five base colors → derived semantic tokens → surface adapters → state/interaction acceptance`
 
 - `src/shared/themes.js` is the single palette/derivation library; `src/themes/native.js` applies/removes owned variable styles and classifies native composer mode; `src/themes/native.css` covers observed native exceptions. `compile(palette)` returns helper tokens and candidate Zendesk/CKEditor variable overrides. `tests/themes.cjs` checks representative foreground/background pairs, all eight mapped status pairs and invalid palettes.
-- Native adapter: scope an opt-in theme on the agent document; map the observed `--background-*`, `--foreground-*`, `--border-*` variables. Use that document scope for native menus/dialogs mounted outside the ticket grid. Exclude unrelated embedded documents.
+- Native adapter: scope an opt-in theme on the agent document; map the observed `--background-*`, `--foreground-*`, `--border-*` variables. Apply the same variables at observed nested `[data-theme="light"]`, `[data-theme="dark"]` and `.polaris-react-component` boundaries. Use that document scope for native menus/dialogs mounted outside the ticket grid. Exclude unrelated embedded documents.
 - Editor adapter: map `--ck-color-*`, then handle authoritative Public reply / Internal note state across wrapper, editable area, header, toolbar, borders and focus ring as one component. Root editor variables alone do not cover every inline/nested color. Never change rich-text formatting stored in the draft.
 - Helper adapter: use inherited semantic variables inside each owned shadow root; replace fixed foregrounds/backgrounds/borders/outline colors, warning CSS and the Status SVG arrow. Keep native fallbacks when no theme is active. The existing Priority-style copier must retain geometry/typography while respecting theme colors.
 - Popup adapter: consume the same selected palette and compiler in its own document. Persist one theme ID separately from layout/enabled preferences; apply it immediately on page load, navigation and refreshed native components. Native mode/disable removes owned overrides and attributes without resetting Zendesk preferences.

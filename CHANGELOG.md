@@ -6,6 +6,8 @@ Changes to Jones IT Zendesk Helper, written for the people using it.
 
 ### Fixes and setup
 
+- Themes now reach ticket sections that could revert to Zendesk’s own colors. Browser controls follow the selected helper palette too. The helper leaves your Zendesk appearance preference alone. Full native Dark-mode acceptance is still pending; keep Zendesk on Light mode for now.
+- Sidebar dividers and ticket-tab borders use the helper theme instead of fixed native gray. Disabled labels now have distinct text and background colors.
 - Unknown activity now uses a question mark and **Other agents · unknown**. Its help text says someone may still have the ticket open; an eye is reserved for reported viewing activity.
 - Harvest setup now finishes in the background after permission approval, even if the popup closes during the prompt. Access is still requested only when you click **Match Harvest to theme**.
 - Light mode, Dark mode and Match system appearance labels now follow the helper theme in Zendesk’s Appearance menu, including the selected option and keyboard focus.
@@ -15,6 +17,7 @@ Changes to Jones IT Zendesk Helper, written for the people using it.
 ### Development
 
 - Added a change/test/documentation/release workflow and packaged-extension browser checks. Focused screenshot comparisons cover the Appearance menu and popup preview in Daylight, Deep Purple and Blush, plus Off cleanup and browser restart. Packaged checks also cover simulated activity states and Closed-ticket Send guards. These do not replace real Zendesk checks.
+- Added theme regressions for nested Light/Dark containers, native control schemes, dividers and disabled labels. They also check newly added components, preserved email colors and high-contrast cleanup.
 
 ### Documentation
 

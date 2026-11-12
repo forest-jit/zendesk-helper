@@ -162,6 +162,6 @@ Current product name is Jones IT Zendesk Helper. Runtime-only v0.7.8 was uploade
 
 CHANGELOG.md supplies the user-facing notes. The tagged release generates store-update-notes.txt and store-description.txt; the latter includes the base description above plus the latest update. Copy that text into the dashboard description when preparing an update. GitHub does not sync it to the Store automatically. See docs/release/TAGGED_RELEASES.md.
 
-## Next update — v0.7.9, prepared locally
+## Next update — v0.7.10, prepared locally
 
-Unknown activity uses a question mark and clearer help text. Appearance-menu labels now follow the selected helper theme. Harvest permission approval completes in the background if the popup closes. Harvest setup is clearer in the popup and guide: it is off by default and needs its own optional access and panel reload. Store-description source above includes these steps. Package and listing changes have not been uploaded or submitted to Google.
+Unknown activity uses a question mark and clearer help text. Appearance-menu labels, nested native theme containers, control schemes, sidebar dividers and ticket-tab borders follow the selected helper theme. Full native Dark-mode acceptance is pending; the listing retains the Light-mode requirement. Harvest permission approval completes in the background if the popup closes. Harvest setup is clearer in the popup and guide: it is off by default and needs its own optional access and panel reload. Store-description source above includes these steps. Package and listing changes have not been uploaded or submitted to Google.

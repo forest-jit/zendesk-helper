@@ -28,6 +28,10 @@ for (const id of Object.keys(palettes)) {
     [t.focus, t.surface, 3]
   ])
     assert.ok(contrast(fg, bg) >= min, `${fg} on ${bg} must reach ${min}:1`);
+  assert.ok(
+    contrast(v['--foreground-disabled'], v['--background-disabled']) >= 4.5,
+    'disabled labels need distinct readable foreground and background tokens'
+  );
   assert.notEqual(v['--background-warning'], v['--background-default']);
   assert.equal(v['--ck-color-input-background'], t.surface);
   assert.equal(v['--foreground-onEmphasis'], t.onEmphasis);

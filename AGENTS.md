@@ -1,6 +1,7 @@
 # Working protocol
 
 ## Start
+- Load `docs/WORKFLOW.md` at the start of implementation or release work; reuse the loaded copy during that work. It is the canonical procedure. The Notion workflow is its team-facing summary, not a second task queue. Sync deliberate procedure changes between them.
 - Read `docs/CURRENT_STATE.md` and the relevant item in `TASKS.md`; check `git status --short` and the relevant dirty diff. Preserve existing work.
 - `TASKS.md` is the only queue. New requests go in Inbox; keep one item In progress. Do not duplicate tasks in state notes or plans.
 - For UI refinements, use `DESIGN.md` as the visual baseline and the relevant Impeccable guidance.

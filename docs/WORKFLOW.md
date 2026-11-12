@@ -2,6 +2,8 @@
 
 A change is finished when it works in the browser people use, its regression checks pass, and its instructions match the released version. Passing local tests alone does not establish that.
 
+This repository document is the canonical procedure for code and release work. AGENTS.md requires loading it when that work starts. The Notion workflow is the team-facing summary; it does not need reopening for every edit or test. Keep both aligned when the procedure changes. TASKS.md is the only implementation queue.
+
 ## 1. Record the change
 
 Staff reports go in the Internal Tools ticket board. Keep the expected result, actual result, screenshots and follow-up notes in the card body. TASKS.md is the maintainer’s implementation queue; link related work rather than copying every task between systems. Keep one task In progress.

@@ -89,7 +89,12 @@
     const { variables } = root.zdhThemes.compileTheme(selected);
     style = document.createElement('style');
     style.id = 'zdh-theme-variables';
-    style.textContent = `html[data-zdh-theme="${selected}"]{${Object.entries(variables)
+    // Native theme roots and Polaris components redeclare tokens below html in both appearances.
+    // Scope the same palette at those boundaries; do not change Zendesk's appearance preference.
+    const scope = `html[data-zdh-theme="${selected}"]`;
+    style.textContent = `${scope},${scope} :is(.polaris-react-component,[data-theme="light"],[data-theme="dark"]){${Object.entries(
+      variables
+    )
       .map(([name, val]) => `${name}:${val}!important`)
       .join(';')}}`;
     (document.head || document.documentElement).append(style);

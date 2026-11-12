@@ -14,6 +14,33 @@ html[data-zdh-theme] body {
   background-color: var(--zdh-theme-page);
   color: var(--zdh-theme-text);
 }
+/* Garden sets a literal native scheme on controls and panes. Keep browser widgets aligned with
+   the selected helper palette without changing Zendesk's saved Light/Dark preference. */
+html[data-zdh-theme]
+  :is(
+    input,
+    textarea,
+    select,
+    button,
+    [role='combobox'],
+    [role='menu'],
+    [role='listbox'],
+    [role='dialog'],
+    [contenteditable='true'],
+    [data-garden-id='pane'],
+    [data-garden-id='pane.content'],
+    [data-test-id='column-1'],
+    [data-test-id='column-2'],
+    [data-test-id='column-3'],
+    [data-test-id='ticket-system-field-requester-select'],
+    [data-test-id='ticket-rich-text-editor'],
+    [data-test-id='omnichannel-composer'],
+    [data-zdh-properties-actions],
+    [data-zdh-composer-actions],
+    [data-zdh-save-action]
+  ) {
+  color-scheme: var(--color-scheme) !important;
+}
 html[data-zdh-theme]
   :is(
     [data-test-id='header-toolbar'],
@@ -246,6 +273,11 @@ html[data-zdh-theme] input[data-test-id='omni-header-subject']:focus-visible {
 html[data-zdh-theme] [data-test-id='header-tab'] {
   background-color: transparent !important;
   color: var(--zdh-theme-text) !important;
+  border-color: var(--zdh-theme-border) !important;
+}
+/* These row separators otherwise keep a fixed gray from Zendesk's native appearance. */
+html[data-zdh-theme] [data-zdh-field-row] {
+  border-color: var(--zdh-theme-border) !important;
 }
 html[data-zdh-theme] [data-test-id='header-tab'][data-entity-is-selected='true'] {
   background-color: var(--zdh-theme-selected) !important;

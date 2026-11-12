@@ -1,6 +1,6 @@
 {
   "name": "zendesk-helper",
-  "version": "0.7.9",
+  "version": "0.7.10",
   "private": true,
   "description": "Local development and synthetic tests for the Jones IT Zendesk Helper Chrome extension.",
   "scripts": {

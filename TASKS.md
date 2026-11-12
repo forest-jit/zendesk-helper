@@ -4,13 +4,13 @@
 
 ## In progress
 
-No implementation currently in progress; external acceptance remains listed below.
+- [ ] **T57 — Native Zendesk Dark-mode compatibility.** v0.7.10 implements nested theme boundaries, native control schemes, disabled colors and sidebar/tab borders. Nine packaged browser cases and 12 reviewed synthetic snapshots pass. In Arc, a temporary CSS preview passed the 12 theme/appearance/reply combinations, Daylight/Purple lists and dialogs over both native appearances, crossing Priority-menu cases, navigation and 1100×850 scrolling. Both drafts and original settings were preserved; preview removed. Details: docs/THEMING.md and docs/CURRENT_STATE.md. **Remaining:** actual new-build Chrome acceptance, including the live appearance matrix. Chrome retains a separate unpacked v0.7.8; its console security warning blocked draft backup, so it was not reloaded. The owner must handle that warning before console-based backup resumes. Keep the Light-mode instruction until acceptance passes.
 
 ## Next — needs another person
 
 - [ ] **T61 — First Harvest grant in Arc/Chrome.** v0.7.9 now starts optional permission approval from the authorized popup click in the background, then saves/registers after approval even if the popup closes. New consent/closed-popup/denial/sender regressions, aggregate checks, formatting and packaged browser tests pass. Before release, test a fresh real permission prompt in Arc and Chrome, including cancellation, popup closure, reopening and permission removal. Existing Store access is already granted; do not claim the new path has had a live first-grant check.
 
-- [ ] **T62 — Publish and verify the next Store update.** v0.7.9 ZIP, setup instructions and changelog are prepared. Before tagging, finalize the matching version entry and review release notes. Use the tagged build, submit the Store package and updated description, then verify a fresh Store installation after Google approval. Do not replace v0.7.8 assets or claim a source push updates users.
+- [ ] **T62 — Publish and verify the next Store update.** v0.7.10 ZIP, setup instructions and changelog are prepared. Before tagging, finalize the matching version entry and review release notes. Use the tagged build, submit the Store package and updated description, then verify a fresh Store installation after Google approval. Do not replace v0.7.8 assets or claim a source push updates users.
 
 - [ ] **T55 — Reporting rollout and store notes.** Shared Internal Tools page now uses a prominent Submit a ticket button that creates and opens a freeform card. New ticket template is default for all views, with Zendesk Helper/New defaults and optional behavior/screenshot prompts; seven unwanted tracking properties removed; behavior and screenshots go in the ticket body. Browser create/open and defaults passed; clearly labeled example card retained. Original form stays closed and is superseded. Internal Tools remains org view-only; database now allows view/create plus Created by → Can edit. Test creation, creator attribution, own-card editing and screenshot upload from a coworker account before rollout. Store update notes are generated, not saved/published in the dashboard.
 
@@ -19,9 +19,7 @@ No implementation currently in progress; external acceptance remains listed belo
 
 ## Inbox
 
-- [ ] **T60 — Arc popup changes browser focus.** Owner reports opening the toolbar popup switches from Arc to Chrome. Opening from Arc’s Extensions menu stayed in Arc; Chrome was closed, so the reported two-browser case is not reproduced. Source uses the current browser’s extension APIs and contains no Chrome-launch command. A local AeroSpace rule moves every new Arc window to workspace 1; this is a possible cause, not a confirmed diagnosis. Reproduce the exact toolbar path with both browsers open before changing extension or window-manager settings.
-
-- [ ] **T57 — Native Zendesk Dark-mode compatibility.** Current supported setup is native Light mode with any helper theme. Add explicit adaptation for both native appearances without changing the user’s Zendesk setting. Check lists, headers, menus, dialogs, public/internal editor transitions, Harvest, navigation and Off cleanup in both native modes with light/dark helper palettes; verify readable text and no leftover colors. Remove the Light-only note only after real Chrome checks pass.
+- [ ] **T60 — Arc popup changes browser focus.** Owner reports Arc’s toolbar popup switches to Chrome. With both browsers open, two clicks on Arc’s actual toolbar icon opened the Store-ID popup in Arc and stayed there. Its original hidden-toolbar setting was restored. Extensions-menu opening also stayed in Arc. Source contains no Chrome-launch command. The local AeroSpace rule moving new Arc windows to workspace 1 remains a possible cause, not a diagnosis; no configuration changed. Keep open for an intermittent reproduction with the owner’s exact window/workspace state.
 
 Add a line: `- [ ] Short request — what should be different when it works.`
 
