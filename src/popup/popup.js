@@ -439,7 +439,7 @@ $('harvest-theme').addEventListener('click', () => {
       if (result?.error) throw Error(result.error);
       harvestEnabled = true;
       paintHarvestButton();
-      setStatus('Harvest theme on. Refresh once if needed.');
+      setStatus('Harvest theme on. Reload the Harvest panel to apply it.');
     })
     .catch((e) => setStatus(e.message));
 });

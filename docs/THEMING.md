@@ -36,6 +36,18 @@ Strict five-color themes intentionally consolidate Zendesk's red/green/orange st
 
 Do not use universal `*` recoloring, page inversion, image filters, generated Zendesk class names, continuous whole-document computed-style scans, DOM reparenting, or accumulating per-node inline styles. Stable hooks plus semantic variables form the normal path; narrowly scoped overrides cover observed exceptions. A coverage gap remains open until inspected and tested.
 
+## Turn on Harvest styling
+
+**Harvest styling is off by default.** Choosing a theme does not turn it on.
+
+1. Open Jones IT Zendesk Helper from your browser’s toolbar.
+2. Click **Match Harvest to theme**.
+3. Allow access to **platform.harvestapp.com** when your browser asks.
+4. Check that the button says **Harvest theme on**. If the permission prompt closed the popup, reopen it; if it still says **Match Harvest to theme**, click it again.
+5. Reload the **Harvest panel** using its reload icon. You can also refresh Zendesk after protecting your drafts.
+
+Harvest should now match your selected helper theme. It changes colors only; it does not start a timer or change time entries. Set this up separately in each browser/profile and when switching between Store and unpacked installations; their settings and permissions do not automatically carry over. If Harvest stays white, check both **Harvest theme on** and the browser’s allowed site access before reporting a theme bug.
+
 ## Coverage contract
 
 Current live scope includes the ticket shell, fields, composer, theme studio, lists, Filter, reply menus, Add link, and merge drawer with required-field feedback. Widths, zoom, cached navigation and forced-colors have separate recorded checks. The table is an inventory, not a claim that every state has been visited. Compiler tests alone do not establish live coverage.

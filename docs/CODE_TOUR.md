@@ -78,6 +78,8 @@ The separate Python command in `scripts/process_ticket.py` reads that file. It s
 4. For UI behavior, verify in actual Chrome. Only #209867 is authorized for edits/saves/sends in this project workflow.
 5. Update the guide, TASKS.md and current state with what actually passed.
 
+`tests/visual.spec.cjs` loads the actual Store ZIP with real extension storage in a disposable browser profile. Start with its small observed Appearance case, then the theme loop and restart check. `playwright.config.cjs` fixes the runner and snapshot locations; [the development guide](DEVELOPMENT.md#packaged-browser-and-screenshot-checks) explains how to run and review them.
+
 `npm run test:fixtures` is optional synthetic browser coverage. It cannot establish that live Zendesk works. Some focused tests execute sections of the actual content script; if you move a function, update those boundaries and keep the scenario assertions.
 
 ## Review scope for v0.7.3

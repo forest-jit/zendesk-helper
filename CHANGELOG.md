@@ -4,6 +4,16 @@ Changes to Jones IT Zendesk Helper, written for the people using it.
 
 ## Unreleased
 
+### Fixes and setup
+
+- Light mode, Dark mode and Match system appearance labels now follow the helper theme in Zendesk’s Appearance menu, including the selected option and keyboard focus.
+- Harvest setup is explicit: styling starts off. Click **Match Harvest to theme**, allow access, check **Harvest theme on**, then reload the Harvest panel. Each browser/profile and Store/unpacked installation needs its own setup.
+- The popup explains the Harvest setup beside the control. The installation and theme guides include troubleshooting when the timer stays white.
+
+### Development
+
+- Added a change/test/documentation/release workflow and packaged-extension browser checks. Focused screenshot comparisons cover the Appearance menu and popup preview in Daylight, Deep Purple and Blush, plus Off cleanup and browser restart. These do not replace real Zendesk checks.
+
 ### Documentation
 
 - Added the supported setup: keep Zendesk’s own appearance in Light mode. The helper’s dark themes remain available; native Zendesk Dark mode compatibility is still pending.

@@ -10,7 +10,13 @@ function collect(folder) {
   });
 }
 
-const files = [...collect('src'), ...collect('tests'), ...collect('scripts'), 'eslint.config.mjs'];
+const files = [
+  ...collect('src'),
+  ...collect('tests'),
+  ...collect('scripts'),
+  'eslint.config.mjs',
+  'playwright.config.cjs'
+];
 for (const file of files) {
   const result = spawnSync(process.execPath, ['--check', file], { stdio: 'inherit' });
   if (result.status !== 0) process.exit(result.status ?? 1);

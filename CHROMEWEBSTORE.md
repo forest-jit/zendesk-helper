@@ -27,6 +27,9 @@ Set Zendesk itself to Light mode first: profile picture > Appearance > Light mod
 2. Click the extension icon to turn the helper on and choose your settings.
 3. Open Help & feature guide in the popup for instructions.
 
+OPTIONAL HARVEST SETUP
+Harvest styling is off by default. Open the extension, click Match Harvest to theme, and allow access to platform.harvestapp.com. Check that the button says Harvest theme on, then reload the Harvest panel using its reload icon. If the permission prompt closed the popup, reopen it and click Match Harvest to theme again if needed. Set this up separately in each browser/profile or when switching from an unpacked copy.
+
 KEYBOARD SHORTCUT
 Command+Enter sends while you are typing in the reply box. In the sidebar, it saves field changes instead. Check whether you are writing a public reply or internal note before sending.
 
@@ -158,3 +161,7 @@ Current product name is Jones IT Zendesk Helper. Runtime-only v0.7.8 was uploade
 ## Update notes
 
 CHANGELOG.md supplies the user-facing notes. The tagged release generates store-update-notes.txt and store-description.txt; the latter includes the base description above plus the latest update. Copy that text into the dashboard description when preparing an update. GitHub does not sync it to the Store automatically. See docs/release/TAGGED_RELEASES.md.
+
+## Next update — v0.7.9, prepared locally
+
+Appearance-menu labels now follow the selected helper theme. Harvest setup is clearer in the popup and guide: it is off by default and needs its own optional access and panel reload. Store-description source above includes these steps. Package and listing changes have not been uploaded or submitted to Google.

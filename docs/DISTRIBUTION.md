@@ -9,8 +9,20 @@ This is a local prototype for Jones IT Zendesk. The release zip contains the ext
 1. Unzip the release to a stable folder. Each person keeps their own Chrome preferences and custom themes.
 2. In Chrome, open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select the unzipped folder.
 3. Refresh Zendesk once. Pin **Jones IT Zendesk Helper settings** if desired. The popup's single **On / Off** switch controls the helper; settings save immediately.
-4. Harvest theming is optional. Enabling it asks for access to its embedded timer origin. Without that choice, Harvest keeps its own colors.
+4. **Want Harvest to match? It is off by default.** Follow the setup steps below; choosing a theme alone does not enable it.
 5. To update, replace files in that folder, reload the extension in Chrome, and refresh Zendesk after protecting any drafts. Verify the loaded version. To roll back, load the preceding release folder and refresh.
+
+### Set up Harvest styling
+
+**Harvest styling is off by default.** Choosing a theme does not turn it on.
+
+1. Open Jones IT Zendesk Helper from your browser’s toolbar.
+2. Click **Match Harvest to theme**.
+3. Allow access to **platform.harvestapp.com** when your browser asks.
+4. Check that the button says **Harvest theme on**. If the permission prompt closed the popup, reopen it; if it still says **Match Harvest to theme**, click it again.
+5. Reload the **Harvest panel** using its reload icon. You can also refresh Zendesk after protecting your drafts.
+
+Harvest should now match your selected helper theme. It changes colors only; it does not start a timer or change time entries. Set this up separately in each browser/profile and when switching between Store and unpacked installations; their settings and permissions do not automatically carry over. If Harvest stays white, check both **Harvest theme on** and the browser’s allowed site access before reporting a theme bug.
 
 For a team pilot, use an authorized test ticket first: check public/internal mode, draft carry/conflict handling, property saves, an actual queue refresh, and Harvest before daily use. Each agent should review whether optional draft carry suits their workflow. Automatic title changes update the native draft; they are saved with the ticket, not submitted in the background. Queue refresh uses Zendesk's existing view refresh, pauses around interaction, and never reloads a ticket page.
 

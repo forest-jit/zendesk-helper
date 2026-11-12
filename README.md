@@ -22,12 +22,26 @@ Release preparation and updates: [docs/release/START_HERE.md](docs/release/START
 
 For development, load this repository root unpacked through `chrome://extensions` → Developer mode → Load unpacked. After source changes, reload that extension and refresh Zendesk after protecting drafts. Do not run Store and unpacked copies together. The manifest identifies the source version; confirm Chrome’s loaded version separately.
 
+### Match Harvest to your theme
+
+**Harvest styling is off by default.** Choosing a theme does not turn it on.
+
+1. Open Jones IT Zendesk Helper from your browser’s toolbar.
+2. Click **Match Harvest to theme**.
+3. Allow access to **platform.harvestapp.com** when your browser asks.
+4. Check that the button says **Harvest theme on**. If the permission prompt closed the popup, reopen it; if it still says **Match Harvest to theme**, click it again.
+5. Reload the **Harvest panel** using its reload icon. You can also refresh Zendesk after protecting your drafts.
+
+Harvest should now match your selected helper theme. It changes colors only; it does not start a timer or change time entries. Set this up separately in each browser/profile and when switching between Store and unpacked installations; their settings and permissions do not automatically carry over. If Harvest stays white, check both **Harvest theme on** and the browser’s allowed site access before reporting a theme bug.
+
 ## Where things go
+
+- **[Change, test and release](docs/WORKFLOW.md):** how implementation, browser checks, documentation and Store releases fit together.
 - **[TASKS.md](TASKS.md):** add requests here; this is the only task queue.
 - **[Current state](docs/CURRENT_STATE.md):** latest evidence, limitations, and next step.
 - **[AGENTS.md](AGENTS.md):** instructions for working in this repository.
 
-Development: use Node24+ (or22.13+) and run `npm ci --ignore-scripts`, then `npm run check`. That checks syntax, ESLint, runtime resources and behavior regressions. `npm run format` / `npm run format:check` maintain layout. [Development guide](docs/DEVELOPMENT.md) explains the standards, CI and live Chrome checks.
+Development: use Node 24+ (or 22.13+) and run `npm ci --ignore-scripts --omit=optional`, then `npm run check`. That checks syntax, ESLint, runtime resources and behavior regressions. `npm run format` / `npm run format:check` maintain layout. [Development guide](docs/DEVELOPMENT.md) explains the standards, CI and live Chrome checks.
 
 Historical docs are in [docs/archive/](docs/archive/). They may describe superseded behavior and are not current instructions or proof of completion. Design-skill provenance remains in [docs/design-skills.md](docs/design-skills.md).
 
@@ -53,7 +67,7 @@ For missing images, place local copies named `image-001.png`, `image-002.jpg`, e
 
 Ollama must be running at `127.0.0.1:11434`. Processing uses local models; this command does not write to Notion or call a hosted AI service. Privacy removal is best-effort and review remains necessary. Add `--redact-term "Additional name or organization"` for identifying terms found during review; repeat the option as needed. Review image interpretations against the actual image: the tested local vision model confused Pending membership with Active. A model summary is not proof of a resolution.
 
-Choose a built-in theme or **System light / dark** in the extension popup. Hover/focus previews the popup; selecting applies the theme. Create a custom theme with five color controls, preview it temporarily on the ticket/Harvest, then Save and apply. Preview ends when the popup closes; unsaved palette edits remain available for the current Chrome session. Themes apply immediately and persist across refresh; turning the overlay off restores native colors. Use **Enable Harvest theme** once to grant optional access to platform.harvestapp.com, then refresh Zendesk. Harvest follows the selected theme; other embedded apps keep their own colors. Turning Harvest styling off restores its native colors; Chrome site access can be managed in the extension details. Coverage and verification: [docs/THEMING.md](docs/THEMING.md).
+Choose a built-in theme or **System light / dark** in the extension popup. Hover/focus previews the popup; selecting applies the theme. Create a custom theme with five color controls, preview it temporarily on the ticket/Harvest, then Save and apply. Preview ends when the popup closes; unsaved palette edits remain available for the current Chrome session. Themes apply immediately and persist across refresh; turning the overlay off restores native colors. Harvest styling needs its own setup; follow **Match Harvest to your theme** above. Harvest follows the selected theme; other embedded apps keep their own colors. Turning Harvest styling off restores its native colors; Chrome site access can be managed in the extension details. Coverage and verification: [docs/THEMING.md](docs/THEMING.md).
 
 
 ## Ticket tools
@@ -61,7 +75,7 @@ Choose a built-in theme or **System light / dark** in the extension popup. Hover
 - **Internal note / Public reply** beside the native selector switches in one click. Optional **Carry this draft** preserves text/formatting across modes; a distinct destination draft is never silently overwritten. Queued attachments block carrying. Native separate drafts remain the default.
 - **Update company and requester in ticket titles** uses the selected native identity and preserves the issue suffix. Changes stay in the ticket draft until Save or Send; Undo also turns off automatic title updates.
 - **Copy ticket** opens on hover and closes when the pointer leaves. Enter/Space and touch tap also work; Escape closes. Choose number, link, title/link or Markdown.
-- The reply activity line mirrors Zendesk’s native collision reporting. Unknown activity is explicitly labeled; it is not a guarantee the ticket is free.
+- The reply activity line mirrors Zendesk’s native collision reporting. “Agent activity · not reported” means the helper has not found a native viewing or editing signal. It does not mean nobody else has the ticket open.
 - Views refresh every 15 seconds by default (10/15/30/60 seconds or Off). Refresh pauses for typing, selection, menus, hidden/offline tabs and recent interaction. It uses Zendesk’s native refresh action, not page reloads.
 
 [Team installation](docs/DISTRIBUTION.md) · [Reviewed documentation handoff](docs/DOCUMENTATION_HANDOFF.md)

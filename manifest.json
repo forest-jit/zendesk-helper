@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Jones IT Zendesk Helper",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "A collection of tools and improvements for Jones IT Zendesk: conversation controls, draft protection and ticket actions.",
   "permissions": ["storage", "downloads"],
   "host_permissions": ["https://itjones.zendesk.com/agent/*"],

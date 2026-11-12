@@ -32,7 +32,7 @@ html[data-zdh-theme] :is([role='menu'], [role='listbox'], [role='dialog']) {
   border-color: var(--zdh-theme-control-border) !important;
 }
 html[data-zdh-theme]
-  :is([role='menuitem'], [role='menuitemcheckbox'], [role='option']):is(
+  :is([role='menuitem'], [role='menuitemcheckbox'], [role='menuitemradio'], [role='option']):is(
     :hover,
     :focus-visible,
     [aria-selected='true']
@@ -254,10 +254,12 @@ html[data-zdh-theme] [data-test-id='header-tab'][data-entity-is-selected='true']
 html[data-zdh-theme] [data-test-id='header-tab'] [data-garden-id='typography.ellipsis'] {
   color: inherit !important;
 }
-html[data-zdh-theme] :is([role='menuitem'], [role='menuitemcheckbox'], [role='option']) {
+html[data-zdh-theme]
+  :is([role='menuitem'], [role='menuitemcheckbox'], [role='menuitemradio'], [role='option']) {
   color: var(--zdh-theme-text) !important;
 }
-html[data-zdh-theme] [role='menuitemcheckbox'][aria-checked='true'] {
+/* Appearance uses radio menu items; include them alongside checkbox-style choices. */
+html[data-zdh-theme] :is([role='menuitemcheckbox'], [role='menuitemradio'])[aria-checked='true'] {
   background-color: var(--zdh-theme-selected) !important;
   color: var(--zdh-theme-selected-text) !important;
 }
