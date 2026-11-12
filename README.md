@@ -1,21 +1,24 @@
 # Jones IT Zendesk Helper
 
-A local Chrome extension that adjusts the Jones IT Zendesk interface. It loads automatically on `https://itjones.zendesk.com/agent/*`.
+A Chrome extension with tools and improvements for the Jones IT Zendesk interface. It loads automatically on `https://itjones.zendesk.com/agent/*`.
 
 **[Feature guide](src/guide/guide.html)** explains what the extension offers and how to use it. The same guide is available through **Help & feature guide** in the popup.
+
+[Team guide in Notion](https://app.notion.com/p/41618a28418d81e5a7e6c239ce3d3899) covers installation, daily use, themes, Harvest and optional exports. Jones IT workspace access is required.
 
 **Reading the source? Start with [the code tour](docs/CODE_TOUR.md).** Each runtime file has a short reading path; `npm run format` keeps it readable.
 
 Store fields: [CHROMEWEBSTORE.md](CHROMEWEBSTORE.md).
 
-Private release preparation: [docs/release/START_HERE.md](docs/release/START_HERE.md). These materials are local drafts, not a published store listing.
+Release preparation and updates: [docs/release/START_HERE.md](docs/release/START_HERE.md). The extension is published in the Chrome Web Store.
 
-## Install or reload
-1. Open `chrome://extensions`, enable Developer mode, and load this folder unpacked.
-2. After code changes, reload the extension and refresh the Zendesk tab.
-3. Use the extension popup’s single **On / Off** switch. Settings save immediately.
+## Install
 
-The version in `manifest.json` identifies the local build. Confirm Chrome's loaded version separately.
+1. [Install from the Chrome Web Store](https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf).
+2. Open a Jones IT Zendesk agent page.
+3. Open the popup and use the **On / Off** switch. Settings save immediately.
+
+For development, load this repository root unpacked through `chrome://extensions` → Developer mode → Load unpacked. After source changes, reload that extension and refresh Zendesk after protecting drafts. Do not run Store and unpacked copies together. The manifest identifies the source version; confirm Chrome’s loaded version separately.
 
 ## Where things go
 - **[TASKS.md](TASKS.md):** add requests here; this is the only task queue.

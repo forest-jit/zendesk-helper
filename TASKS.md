@@ -4,7 +4,7 @@
 
 ## In progress
 
-- [ ] **T55 — Reporting rollout and store notes.** Shared Internal Tools page now uses a prominent Submit a ticket button that creates and opens a freeform card. New ticket template is default for all views, with Zendesk Helper/New defaults and optional behavior/screenshot prompts; seven unwanted tracking properties removed; behavior and screenshots go in the ticket body. Browser create/open and defaults passed; clearly labeled example card retained. Original form stays closed and is superseded. Verify coworker page/database access and screenshot upload before rollout. Store update notes are generated, not saved/published in the dashboard.
+- [ ] **T55 — Reporting rollout and store notes.** Shared Internal Tools page now uses a prominent Submit a ticket button that creates and opens a freeform card. New ticket template is default for all views, with Zendesk Helper/New defaults and optional behavior/screenshot prompts; seven unwanted tracking properties removed; behavior and screenshots go in the ticket body. Browser create/open and defaults passed; clearly labeled example card retained. Original form stays closed and is superseded. Internal Tools remains org view-only; database now allows view/create plus Created by → Can edit. Test creation, creator attribution, own-card editing and screenshot upload from a coworker account before rollout. Store update notes are generated, not saved/published in the dashboard.
 
 ## Next — needs another person
 
@@ -20,6 +20,8 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 - [ ] **T09 — Organization rollout.** Owner reports Chrome Web Store publication on November 12, 2026. Store item and release packet are prepared; managed installation, company approval/allowlisting and clean-profile rollout checks remain administrator/owner work. Do not treat publication as organization-wide deployment.
 
 ## Done
+
+- [x] **T56 — Notion extension guide.** Created Jones IT Zendesk Helper under Internal Tools with three task-based child guides. Reviewed against current guide/policy/release docs using the requested writing preferences; matched Figma runbook styling after reading it in Chrome. Main hub and navigation read back; live colors/layout and org Can view verified. Reference page unchanged. No extension runtime change or new Store release.
 
 - [x] **T54 — Jones IT Zendesk Helper, v0.7.8.** Renamed current UI, policy, guides, release copy/tooling and artwork; internal identifiers/storage keys unchanged. Aggregate and format checks, store preflight and tagged GitHub build 43083408272 pass. Chrome source/version/Reloaded and live popup verified. Uploaded runtime-only v0.7.8 to existing store item; title, description, three screenshots and promo tile saved and retained after refresh. Store Package confirms 0.7.8; Submit for review enabled, not clicked. Image removals explicitly approved. Prior tags/history retain original names. No ticket edits/saves/sends. Evidence: current chat outputs/rename-078.
 
