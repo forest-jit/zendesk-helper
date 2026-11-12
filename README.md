@@ -77,3 +77,6 @@ Routine copy, draft-carry, settings/theme and export success notices are silent.
 ## Release files
 
 Push a version tag to prepare tested ZIPs and checksums in a draft GitHub release. Follow [the tagged release steps](docs/release/TAGGED_RELEASES.md). Chrome Web Store submission remains separate.
+
+
+[Install from Chrome Web Store](https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf) · [What changed](CHANGELOG.md) · [Contribute a fix](CONTRIBUTING.md)

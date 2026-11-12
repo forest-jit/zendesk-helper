@@ -1,6 +1,6 @@
-# Private release: what is ready
+# Chrome Web Store release
 
-Source is on GitHub. Store Listing is saved as a dashboard draft with description, category/language, images and GitHub links. Privacy explanations, data selections and the public GitHub policy URL are also saved. Publisher certifications, distribution and reviewer setup remain pending. The extension has not been submitted for review, and the policy site has not been deployed.
+The owner reported publication on November 12, 2026. [Install Jones IT Zendesk Helper](https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf). The first Store package prepared here was v0.7.8.
 
 ## Files to use
 
@@ -15,13 +15,11 @@ Source is on GitHub. Store Listing is saved as a dashboard draft with descriptio
 
 Use the matching `zendesk-helper-0.7.8-store.zip` and checksum in this chat's outputs folder for the dashboard. The separate development ZIP also includes local-processing instructions/tooling. Store artwork and policy pages are outside the extension ZIP. The runtime icon files are inside it. `docs/CODE_TOUR.md` is the reading guide for the source.
 
-## You need to handle these five things
+## What remains outside this release packet
 
-1. **Ownership/account:** confirm “forest” as display name, whether your or the company's publisher account owns the extension, and whether the supplied Gmail should be public. Register/verify the account, pay the registration fee and make the truthful trader declaration. Legal information may be public depending on the required verification.
-2. **Policy review:** the existing GitHub policy page is publicly readable and saved as the policy URL. Review its content, the selected data categories and the three publisher certifications. A separate Pages website remains optional. Keep the policy URL public and update CHROMEWEBSTORE.md if it changes.
-3. **Reviewer access:** arrange a company-approved synthetic Zendesk environment/account and MFA/access instructions. Fill REVIEWER.md through the dashboard's secure field. Never add passwords to GitHub or this release packet.
-4. **Pilot sign-off:** choose tester Google accounts; arrange the outstanding coworker presence and assistive-technology checks from TASKS.md. Confirm company approval for this authenticated tool and its local data practices.
-5. **Submit:** upload the ZIP/assets, copy the listing/disclosures, choose Private and submit for review. Review all certifications yourself. After approval, install the store copy in a clean test profile; plan migration and disable duplicate unpacked copies.
+- Company rollout and managed installation need the appropriate administrator.
+- The real two-person presence check and screen-reader walkthrough remain in TASKS.md.
+- Test the Store installation in a separate profile before disabling an unpacked copy. Different extension IDs do not share settings or recovery data automatically.
 
 ## Later updates
 

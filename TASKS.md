@@ -4,7 +4,7 @@
 
 ## In progress
 
-None.
+- [ ] **T55 — Finish reporting intake.** Changelog generation, contributor instructions and shared Internal Tools board are implemented and checked. Closed Notion form scaffold has only Summary; add Tool, What happened, Steps and version, Screenshots, verify company-only sharing and test one submission/attachment before opening it. Browser needs a signed-in Notion session. Store update notes are generated locally, not saved/published in the dashboard.
 
 ## Next — needs another person
 
@@ -17,7 +17,7 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 
 ## Later — external rollout
 
-- [ ] **T09 — Organization rollout.** v0.7.8 runtime-only store ZIP, checksum, icons, screenshots, listing/policy/disclosures/reviewer drafts and hosting pages are prepared (docs/release/START_HERE.md). Store Listing and Privacy explanations/selections are saved as drafts. Public GitHub policy URL is set; owner privacy/category review and certifications, distribution and reviewer setup remain. Contact email is verified and Submit for review is enabled. Final account/distribution/reviewer-access review and submission remain with the owner. Managed deployment, publication, allowlisting and organizational approval require an administrator. Nothing published.
+- [ ] **T09 — Organization rollout.** Owner reports Chrome Web Store publication on November 12, 2026. Store item and release packet are prepared; managed installation, company approval/allowlisting and clean-profile rollout checks remain administrator/owner work. Do not treat publication as organization-wide deployment.
 
 ## Done
 

@@ -1,0 +1,36 @@
+name: Report a bug with a sanitized example
+description: Public technical reports only. Use company channels for real ticket content.
+title: "Bug: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue will be public. Staff: use the Internal Tools reporting channel for customer screenshots or ticket details. Never paste customer messages, raw exports, account information or credentials here.
+  - type: input
+    id: version
+    attributes:
+      label: Extension version and theme
+      placeholder: "For example: 0.7.8, Midnight"
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What happened?
+      description: Include what you expected. Use made-up details.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can we reproduce it?
+      description: Use a synthetic example. If it happens only sometimes, say so.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before posting
+      options:
+        - label: I removed customer data, private ticket links and credentials.
+          required: true

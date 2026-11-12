@@ -1,4 +1,4 @@
-# Current state — 2026-11-11
+# Current state — 2026-11-12
 
 ## Installed build
 
@@ -18,11 +18,13 @@ Earlier acceptance still covers Closed/Unavailable status, short headers, receiv
 
 Current name: Jones IT Zendesk Helper. v0.7.8 metadata/package/lock versions match. Current UI, policy, guides, release tooling and artwork use the name; internal IDs, storage keys, repo and ZIP prefixes are unchanged. Historical evidence and prior tags retain their original names. Aggregate, format checks and store preflight pass. Actual Chrome source/version/Reloaded and renamed popup verified. No ticket edits/saves/sends. Local preview closed, viewport reset and preview server stopped. Evidence: current chat outputs/rename-078.
 
-Origin is https://github.com/forest-jit/zendesk-helper (public). The v0.7.8 tag points to ecdc33f; GitHub run43083408272 passed checks, packaging, checksums and draft-release creation. Store/development ZIPs are in chat outputs and the GitHub draft. The earlier v0.7.7 tag stays at a7faec9. No store API credentials or automatic submission are configured. See docs/release/TAGGED_RELEASES.md. Exclude ignored customer audits, raw exports and historical private evidence from uploads.
+Origin is https://github.com/forest-jit/zendesk-helper (public). The v0.7.8 tag points to ecdc33f; GitHub run43083408272 passed checks, packaging, checksums and draft-release creation. The existing v0.7.8 release is now public with reviewed changelog notes and generated store-text attachments; its original tagged ZIPs are unchanged. The earlier v0.7.7 tag stays at a7faec9. No store API credentials or automatic submission are configured. See docs/release/TAGGED_RELEASES.md. Exclude ignored customer audits, raw exports and historical private evidence from uploads.
 
-Store item bbhdbfdfidlfihbbohohdndpppibgogf now has the runtime-only v0.7.8 package. Package confirms version; title/description, three refreshed screenshots and promo tile persisted after Save draft and refresh. Image replacement explicitly approved. Workflow & Planning, English, icon and GitHub homepage/support links retained. Submit for review enabled, not clicked. Screenshots use actual popup/guide code with synthetic preferences, not customer tickets.
+The owner reports Chrome Web Store publication on November 12, 2026: https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf. The prepared package was v0.7.8; this turn did not independently inspect the live listing/package. Earlier dashboard draft/submission notes are historical. Company rollout, second-agent presence and screen-reader checks remain open. Publisher display name was not changed in this turn. No Pages deployment.
 
-Privacy purpose/permission explanations, four data categories and the public GitHub policy URL are saved. Plain-language policy is included in v0.7.8. Publisher contact forest.r.welch@gmail.com is verified after the owner followed Google's email link. Publisher certifications were left to the owner at the last privacy edit; current certification/distribution choices were not re-audited. Preferred publisher display name forest has not been applied; Settings still shows the Gmail address. Final account/policy/distribution/reviewer-access review, tester/company approval and submission remain owner steps. No Pages deployment; that workflow stays manual.
+CHANGELOG.md now supplies GitHub notes and plain-text store update copy. Future tags validate a matching nonempty entry before packaging. dist/store-description.txt includes the current base description plus latest notes; this text has not been saved or published in the Store dashboard. No Google API submission credentials are configured. Contributions guide and a public sanitized bug template are included; customer evidence belongs in company Notion.
+
+Internal Tools now links to https://app.notion.com/p/41618a28418d8148b816ec7c3bd7d641. Its report database has an inline five-stage board, screenshot property, owner/priority and manual Minutes spent; the Time spent view is separate. The closed form draft contains only Summary: SHOW did not create the other questions. Complete its questions and company-only audience in Notion before opening/sharing it. Browser attempt reached a sign-in page and then lost attachment, so no form submission, sharing configuration or attachment upload was tested. No timer/Harvest synchronization is implemented.
 
 CHROMEWEBSTORE.md is the store-field/readiness record; TASKS.md is the only queue. Start at docs/release/START_HERE.md for owner steps.
 

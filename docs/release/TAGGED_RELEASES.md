@@ -2,7 +2,7 @@
 
 A **tag** is a name attached to one exact Git commit. Pushing `v0.7.7` asks GitHub to package that commit as version `0.7.7`.
 
-The workflow creates a **draft GitHub release** with a store ZIP, a development ZIP and their checksums. It does not submit to Chrome Web Store or deploy the privacy site. No Google credentials are needed for this stage.
+The workflow creates a **draft GitHub release** with a store ZIP, a development ZIP, checksums and release notes from CHANGELOG.md. It also builds store-update-notes.txt and store-description.txt for the dashboard. It does not submit to Chrome Web Store or deploy the privacy site. No Google credentials are needed for this stage.
 
 ## First release
 
@@ -15,7 +15,7 @@ A draft is visible to repository collaborators, not ordinary visitors. Clicking 
 ## Next release: five steps
 
 1. **Update the version.** For example, set `manifest.json` to `0.7.9`, then run `npm version 0.7.9 --no-git-tag-version`. npm updates `package.json` and `package-lock.json`. Use the same three-number version everywhere.
-2. **Test and document the change.** Run `npm run format:check` and `npm run check`; test changed behavior in Chrome. Update the guide, TASKS.md and CHROMEWEBSTORE.md as relevant. A green automated check is not live UI acceptance.
+2. **Test and document the change.** Run `npm run format:check` and `npm run check`; test changed behavior in Chrome. Update the guide, TASKS.md and CHROMEWEBSTORE.md as relevant. Add plain-language changes to CHANGELOG.md under Unreleased, then move them into a section such as `## 0.7.9 - 2026-11-12` before tagging. Missing or empty version notes stop the release. A green automated check is not live UI acceptance.
 3. **Review and commit.** Use `git status` and `git diff`. Commit the intended source/version/documentation files. Keep customer data, exports and credentials out of Git.
 4. **Push the commit and tag.** From this repository, with the example version:
 
@@ -43,3 +43,13 @@ Google requires the first item to be created in its dashboard. Once it exists, w
 Chrome automatically distributes approved store updates on its own schedule, subject to organization policy. A local unpacked installation does not turn into the store installation or promise settings/draft migration.
 
 References: [GitHub tag triggers](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpushbranchestagsbranches-ignoretags-ignore), [draft creation](https://cli.github.com/manual/gh_release_create), [Chrome publishing API](https://developer.chrome.com/docs/webstore/using-api).
+
+## Keep one changelog
+
+CHANGELOG.md is the source for user-facing release notes. Keep each group to five bullets when practical. Say what the user will notice; avoid commit IDs, internal implementation details, vague “improvements” and unsupported claims. Put a fix under Fixed, a new capability under Added, and a change to existing behavior under Changed. Include known limits that affect use. Do not invent empty sections.
+
+Every tag extracts only its matching entry. GitHub gets formatted notes; the store gets plain text appended to the base description from CHROMEWEBSTORE.md. Paste store-description.txt into Store Listing → Description when preparing the next store update, then Save draft. The store uses the long description for update logs; do not assume a separate release-notes field or automatic GitHub synchronization.
+
+A normal source push runs checks. A version tag prepares a draft release. Publish that GitHub draft when the notes/assets are ready for users. Upload the store ZIP to the existing store item and submit each new version for Google review, even for a small code or CSS change. Google may automate parts of review; it does not promise instant approval. Batch related fixes into one tested release when practical. API automation can upload/submit future updates, but cannot bypass review; it is not configured here.
+
+The owner reported the first Chrome Web Store publication on November 12, 2026. Current listing: https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf. Do not treat a later GitHub release as confirmation of a later store approval.

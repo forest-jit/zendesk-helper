@@ -42,6 +42,7 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
           version=$(python3 scripts/check_release_version.py "$RELEASE_TAG")
+          python3 scripts/build_release_notes.py --tag "$RELEASE_TAG" --output-dir dist
           python3 scripts/package_extension.py --store --output "dist/zendesk-helper-$version-store.zip"
           python3 scripts/package_extension.py --output "dist/zendesk-helper-$version-development.zip"
           python3 scripts/check_release.py "dist/zendesk-helper-$version-store.zip"
@@ -53,6 +54,8 @@ jobs:
           path: |
             dist/*.zip
             dist/*.sha256
+            dist/release-notes.md
+            dist/store-*.txt
           if-no-files-found: error
           retention-days: 14
 
@@ -74,13 +77,4 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          cat > release-notes.md <<'NOTES'
-          ZIPs and checksums were built from this tag after automated checks.
-
-          - **store.zip:** runtime only; use this for Chrome Web Store upload.
-          - **development.zip:** includes the optional local AI processor and instructions.
-          - **sha256:** checksums for the matching ZIPs.
-
-          This is a GitHub draft, not a Chrome Web Store submission. Automated checks do not replace live Chrome testing. See docs/release/TAGGED_RELEASES.md in the tagged source for next steps.
-          NOTES
-          gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256 --verify-tag --draft --title "Jones IT Zendesk Helper $RELEASE_TAG" --notes-file release-notes.md
+          gh release create "$RELEASE_TAG" dist/*.zip dist/*.sha256 dist/store-*.txt --verify-tag --draft --title "Jones IT Zendesk Helper $RELEASE_TAG" --notes-file dist/release-notes.md

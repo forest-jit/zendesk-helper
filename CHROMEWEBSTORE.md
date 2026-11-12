@@ -1,6 +1,6 @@
 # Chrome Web Store — Jones IT Zendesk Helper
 
-Last updated: November 11, 2026. Release version 0.7.8. The Store Listing draft is saved in the dashboard; nothing has been submitted for review.
+Last updated: November 12, 2026. Release version 0.7.8. The owner reports that the extension is now published in the Chrome Web Store. [Open the listing](https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf). Future package updates require review.
 
 ## Store listing
 
@@ -153,3 +153,7 @@ Added forest.r.welch@gmail.com in Settings and requested verification. The owner
 ## Name update, version 0.7.8
 
 Current product name is Jones IT Zendesk Helper. Runtime-only v0.7.8 was uploaded to the existing item; Package confirms the version. Store title and description use the name, with refreshed three screenshots and small promo tile. Save confirmation and refresh persistence passed. Chrome loaded source/version/Reloaded and the renamed popup were checked. Aggregate, format, preflight and tagged-release run 43083408272 pass. Submit for review is enabled; it was not clicked. Previous tagged releases and their names stay unchanged. No data practices, permissions, internal IDs or storage keys changed.
+
+## Update notes
+
+CHANGELOG.md supplies the user-facing notes. The tagged release generates store-update-notes.txt and store-description.txt; the latter includes the base description above plus the latest update. Copy that text into the dashboard description when preparing an update. GitHub does not sync it to the Store automatically. See docs/release/TAGGED_RELEASES.md.
