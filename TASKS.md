@@ -4,7 +4,7 @@
 
 ## In progress
 
-- [ ] **T55 — Reporting rollout and store notes.** Shared Internal Tools page now uses a prominent Submit a ticket button that creates and opens a freeform card. New ticket template is default for all views, with Zendesk Helper/New defaults and optional behavior/screenshot prompts; eight tracking properties hidden on cards. Browser create/open and defaults passed; clearly labeled example card retained. Original form stays closed and is superseded. Verify coworker page/database access and screenshot upload before rollout. Store update notes are generated, not saved/published in the dashboard.
+- [ ] **T55 — Reporting rollout and store notes.** Shared Internal Tools page now uses a prominent Submit a ticket button that creates and opens a freeform card. New ticket template is default for all views, with Zendesk Helper/New defaults and optional behavior/screenshot prompts; seven unwanted tracking properties removed; behavior and screenshots go in the ticket body. Browser create/open and defaults passed; clearly labeled example card retained. Original form stays closed and is superseded. Verify coworker page/database access and screenshot upload before rollout. Store update notes are generated, not saved/published in the dashboard.
 
 ## Next — needs another person
 
