@@ -4,7 +4,7 @@
 
 ## In progress
 
-- [ ] **T55 — Finish reporting intake.** Changelog generation, contributor instructions and shared Internal Tools board are implemented and checked. Closed Notion form scaffold has only Summary; add Tool, What happened, Steps and version, Screenshots, verify company-only sharing and test one submission/attachment before opening it. Browser needs a signed-in Notion session. Store update notes are generated locally, not saved/published in the dashboard.
+- [ ] **T55 — Finish reporting intake.** Changelog generation, contributor instructions and shared Internal Tools board are implemented and checked. Closed Notion form scaffold has only Summary; add Tool, What happened, Steps and version, Screenshots; default Tool to Jones IT Zendesk Helper while allowing other Internal Tools; verify company-only sharing and test one submission/attachment before opening it. Browser needs a signed-in Notion session. Store update notes are generated locally, not saved/published in the dashboard.
 
 ## Next — needs another person
 
