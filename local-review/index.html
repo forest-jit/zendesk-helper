@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Local ticket review</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Turn a ticket export into a review</h1>
+        <p>
+          Choose an exported ticket. Local models create a summary, conclusion and notes you can
+          review for Notion.
+        </p>
+        <p id="health" role="status">Checking Ollama…</p>
+      </header>
+      <section aria-labelledby="choose-heading">
+        <h2 id="choose-heading">Choose the export</h2>
+        <label for="ticket-file">Ticket JSON file</label>
+        <input id="ticket-file" type="file" accept=".json,application/json" />
+        <label class="check"
+          ><input id="read-images" type="checkbox" checked />Read included images too</label
+        >
+        <p class="secondary">
+          Images go to the local vision model with their original pixels. Unavailable images are
+          reported.
+        </p>
+        <button id="start" disabled>Create summary</button>
+        <p id="progress" role="status"></p>
+        <p id="error" role="alert" hidden></p>
+      </section>
+      <section id="review" aria-labelledby="review-heading" hidden>
+        <h2 id="review-heading">Review the result</h2>
+        <p class="review-note">
+          This is an AI draft. Check the conclusion, image interpretations and remaining personal
+          information before sharing it.
+        </p>
+        <h3 id="result-title"></h3>
+        <h4>Summary</h4>
+        <p id="summary"></p>
+        <h4>Conclusion</h4>
+        <p id="conclusion"></p>
+        <p id="resolution" class="secondary"></p>
+        <h4>What the messages show</h4>
+        <ul id="actions"></ul>
+        <h4>Reported verification</h4>
+        <ul id="verification"></ul>
+        <div id="review-checks" hidden>
+          <h4>Check during review</h4>
+          <ul id="review-notes"></ul>
+        </div>
+        <h4>Notes worth documenting</h4>
+        <div id="knowledge"></div>
+        <h4>Questions still open</h4>
+        <ul id="questions"></ul>
+        <details id="source-messages">
+          <summary>Check cited messages</summary>
+          <p class="secondary">
+            These are redacted copies of the exported messages. Check excerpts and interpretations
+            before sharing.
+          </p>
+          <div id="message-evidence"></div>
+        </details>
+        <details id="images">
+          <summary>Image observations to verify</summary>
+          <div id="image-notes"></div>
+        </details>
+        <p id="coverage" class="secondary"></p>
+        <div class="actions">
+          <button id="markdown">Download Notion draft</button>
+          <button id="copy" class="secondary-button">Copy Markdown</button>
+          <button id="json" class="secondary-button">Download review data</button>
+        </div>
+        <p class="secondary">
+          Download or copy the draft after reviewing it, then import it into your chosen Notion
+          page. Nothing is uploaded to Notion automatically.
+        </p>
+      </section>
+      <footer>
+        <p>
+          The chosen file stays on this Mac. Only the local server and downloaded Ollama models
+          process it.
+        </p>
+        <p>Raw input is not saved by the reviewer. Review files stay on your computer.</p>
+        <p>
+          Keep Ollama and this local server running until the review finishes. Closing the browser
+          tab does not cancel a running review.
+        </p>
+      </footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

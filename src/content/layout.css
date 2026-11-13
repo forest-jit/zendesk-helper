@@ -460,7 +460,7 @@ html
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin-inline: 8px;
+  margin-inline: 0;
   max-width: 100%;
   font: 12px/1.4 system-ui;
   min-width: 0;
@@ -494,7 +494,7 @@ html
   background: var(--zdh-theme-page, #f8f9f9);
 }
 [data-mode-choices] [data-mode-choice] {
-  min-height: 28px;
+  min-height: 32px;
   border: 0;
   border-radius: 3px;
   background: transparent;
@@ -547,22 +547,18 @@ html
   color: var(--zdh-theme-muted, #52616b);
   margin-inline: 4px;
 }
-/* Stable content scope also covers images replaced by Zendesk after the first scan. */
+/* Short banners remain inline. Only the JS height decision adds thumbnail geometry. */
 [data-zdh-layout='true']
   [data-zdh-conversation-entry]
   [data-test-id='omni-log-message-content']
-  img:not([data-zdh-image-preview] img) {
-  max-width: 84px !important;
-  max-height: 56px !important;
-  object-fit: contain !important;
-  cursor: zoom-in;
+  img:not([data-zdh-message-image]):not([data-zdh-image-preview] img) {
+  max-width: 100%;
 }
 
 [data-zdh-layout='true'] [data-zdh-email-hidden='true'] {
   display: none !important;
 }
-[data-zdh-email-disclosure],
-[data-zdh-email-formatting] {
+[data-zdh-email-disclosure] {
   display: block;
   margin: 12px 0;
   padding: 4px 8px;
@@ -574,8 +570,7 @@ html
   border-radius: 4px;
   cursor: pointer;
 }
-[data-zdh-email-disclosure]:focus-visible,
-[data-zdh-email-formatting]:focus-visible {
+[data-zdh-email-disclosure]:focus-visible {
   outline: 2px solid var(--zdh-theme-focus, #1f73b7);
   outline-offset: 2px;
 }
@@ -596,36 +591,6 @@ html
   }
 }
 
-/* Optional reading view for layout-heavy email. DOM, table semantics and links stay intact. */
-[data-zdh-simple-email] :is(table, tbody, tr, td, th, div, p, span, font, h1, h2, h3, h4) {
-  background-color: transparent !important;
-  color: var(--zdh-theme-text, var(--foreground-primary, #2f3941)) !important;
-  max-width: 100% !important;
-}
-[data-zdh-simple-email] :is(table, td, th, div) {
-  width: auto !important;
-}
-[data-zdh-simple-email] :is(table, td, th) {
-  padding: 0 !important;
-  height: auto !important;
-  border-color: transparent !important;
-}
-[data-zdh-simple-email] :is(div, td, th) {
-  padding-inline: 0 !important;
-}
-[data-zdh-simple-email] p {
-  margin: 0 0 8px !important;
-  line-height: 1.5 !important;
-}
-[data-zdh-simple-email] :is(h1, h2, h3, h4) {
-  font-size: 1.15em !important;
-  line-height: 1.4 !important;
-  margin: 16px 0 8px !important;
-}
-[data-zdh-simple-email] a {
-  color: var(--zdh-theme-link, var(--foreground-primary, #1f73b7)) !important;
-}
-
 /* Hidden actions must win over layout display rules, including closed-ticket fallbacks. */
 [data-zdh-composer-actions][hidden],
 [data-zdh-save-action][hidden] {
@@ -634,7 +599,41 @@ html
 
 /* The shared conversation panel keeps its own scroll; no vertical divider between columns. */
 @media (min-width: 1000px) {
-  [data-zdh-layout='true'] [data-editor-container='true'][data-zdh-conversation-scroll='true'] {
+  [data-zdh-layout='true'] [data-editor-container='true'][data-ticket-id] {
     border-inline-end: 0 !important;
   }
+}
+
+/* The quote boundary belongs to the message, with its own readable explanation. */
+[data-zdh-email-controls] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-block: 16px;
+  padding-block: 8px;
+  font: 12px/1.5 system-ui;
+  color: var(--zdh-theme-muted, #52616b);
+}
+[data-zdh-email-controls] > span {
+  flex: 1 1 220px;
+}
+[data-zdh-email-controls] > p {
+  flex-basis: 100%;
+  margin: 0;
+}
+[data-zdh-email-controls] [hidden] {
+  display: none !important;
+}
+[data-zdh-email-controls] button {
+  min-height: 32px;
+  padding: 6px 12px;
+}
+/* Keep the mode selector and recipient row away from all four composer edges. */
+html
+  [data-zdh-layout='true']
+  [data-test-id='omnichannel-composer']
+  > div:first-child:has([data-zdh-native-mode]) {
+  padding: 12px 16px !important;
+  box-sizing: border-box;
 }

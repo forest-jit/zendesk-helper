@@ -13,9 +13,13 @@ Operate mode: scan the ticket, read messages, reply, adjust properties. Zendesk'
 
 - Column insets: each bar gets 12px outer spacing on all exposed edges. The right rail shares its outer inset across Harvest and properties; 8px inner field/header/app padding aligns controls at 20px from both sides. Avoid asymmetric compensating left/right paddings.
 
-- Received email: preserve readable authored content and branded panels; repair measured low-contrast text on solid backgrounds. Quote controls stay within the message and do not replace the whole-history disclosure. Ambiguous forwards start open.
+- Received email: preserve readable authored content and branded panels; repair measured low-contrast text on solid backgrounds. Quote controls stay within the message and do not replace the whole-history disclosure. Every recognized quote starts open; folding is manual, and a boundary explanation identifies the affected section.
 - Desktop rail: fixed 400/440px widths own the layout; hide native column handles that point outside it. Layout Off restores native resizing. Harvest stays open while long notes/reference text use bounded internal scroll areas.
 
-- Feedback: make ordinary success quiet. Use the resulting state or Chrome download as feedback. Keep errors, conflicts, recovery instructions, progress and actionable title Undo. Copy choices open on pointer hover, close on leave and retain keyboard/touch access. Closed tickets have no helper Send/Save affordance.
+- Feedback: make ordinary success quiet. Use the resulting state or Chrome download as feedback. Keep errors, conflicts, recovery instructions, progress and actionable title Undo. Copy ticket is a single linked-number action with no format menu. Closed tickets have no helper Send/Save affordance.
 
 - The desktop conversation/sidebar join has no vertical divider. Keep the composer frame and independent scrolling intact; layout Off restores native borders.
+
+## Acceptance for added controls
+
+Use the spacing and style checklist in docs/WORKFLOW.md for every control. Check all four sides, alignment with native content, long labels, keyboard focus, disabled/error states, a smaller viewport, both reply modes and light/dark helper themes. Keep visual changes display-only and verify Off cleanup. Record actual Zendesk evidence separately from synthetic snapshots.

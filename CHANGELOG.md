@@ -4,6 +4,20 @@ Changes to Jones IT Zendesk Helper, written for the people using it.
 
 ## Unreleased
 
+Local v0.7.12; deployment and listing changes are on hold.
+
+### Changed
+
+- Export the current ticket directly from the toolbar popup. The request can finish after the popup closes; non-ticket pages disable the button. Settings keeps its target chooser for temporary previews and the manual title tool.
+- Quoted emails start open. A boundary explanation, Hide/Show quoted email button and hidden-section excerpt make the affected content clear. The helper does not identify duplicates; quotes may contain essential context.
+- Removed Simplify email formatting. Resetting widths, table spacing and fills could make emails taller without improving readability.
+- Short banners, logos and wide, short screenshots stay inline. Only images taller than 320 CSS pixels at their normal displayed size become previews.
+- Added breathing room around the reply-mode control and a four-sided spacing/style acceptance checklist for future controls. Native See oldest/newest cleanup and removal of the column divider also cover Closed tickets without a composer.
+
+### Added
+
+- A separate local review app: choose an export, process it with downloaded Ollama models, then review a summary/conclusion, referenced actions, reported verification and reusable notes. Image observations remain unverified. No automatic Notion upload.
+
 ## 0.7.11 - 2026-11-12
 
 ### Changed

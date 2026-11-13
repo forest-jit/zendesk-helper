@@ -74,6 +74,7 @@ async function launchPackagedBrowser() {
     executablePath: process.env.ZDH_TEST_BROWSER || undefined,
     headless: true,
     viewport: { width: 900, height: 720 },
+    downloadsPath: path.join(profile, 'downloads'),
     args: [`--disable-extensions-except=${extension}`, `--load-extension=${extension}`]
   });
   worker = context.serviceWorkers()[0] || (await context.waitForEvent('serviceworker'));
@@ -227,7 +228,9 @@ test('segmented reply control follows native state and restores the original sel
     // Production mounts the mode controls inside a header with important native ink.
     const trigger = document.querySelector('[data-test-id=omnichannel-channel-switcher-button]');
     const header = document.createElement('header');
-    trigger.before(header);
+    const inset = document.createElement('div');
+    trigger.before(inset);
+    inset.append(header);
     header.append(trigger);
     const old = document.querySelector('#reply');
     const editor = document.createElement('div');
@@ -247,6 +250,18 @@ test('segmented reply control follows native state and restores the original sel
   const inactiveInk = await internalChoice.evaluate((e) => getComputedStyle(e).color);
   const activeInk = await publicChoice.evaluate((e) => getComputedStyle(e).color);
   expect(inactiveInk).not.toBe(activeInk);
+  const spacing = await publicChoice.evaluate((e) => {
+    const composer = e.closest('[data-test-id=omnichannel-composer]').getBoundingClientRect();
+    const group = e.closest('[role=radiogroup]').getBoundingClientRect();
+    return {
+      top: group.top - composer.top,
+      left: group.left - composer.left,
+      height: e.getBoundingClientRect().height
+    };
+  });
+  expect(spacing.top).toBeGreaterThanOrEqual(12);
+  expect(spacing.left).toBeGreaterThanOrEqual(16);
+  expect(spacing.height).toBeGreaterThanOrEqual(32);
   await expect(native).toBeHidden();
   await expect(page.getByRole('checkbox', { name: 'Carry this draft' })).toHaveCount(0);
   await internalChoice.click();
@@ -418,7 +433,7 @@ test('Settings does not guess a preview target when multiple Zendesk tabs are op
   await expect(settings.locator('#target-ticket')).toHaveValue('');
   await settings.getByRole('button', { name: 'Preview on ticket', exact: true }).click();
   await expect(settings.locator('#status')).toHaveText(
-    'Choose the Zendesk tab to preview or export.'
+    'Choose a Zendesk tab for the preview or title tool.'
   );
   await expect(first.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
   await expect(second.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
@@ -433,6 +448,124 @@ test('Settings does not guess a preview target when multiple Zendesk tabs are op
   await expect(second.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
   await first.close();
   await second.close();
+});
+
+test('short email images stay inline; tall images preview and restore after source changes', async () => {
+  await preferences({
+    enabled: true,
+    layout: true,
+    autoTitle: false,
+    collapseHistory: false,
+    theme: 'blush'
+  });
+  const page = await context.newPage();
+  await page.setViewportSize({ width: 1280, height: 850 });
+  await page.goto('https://itjones.zendesk.com/agent/tickets/222');
+  await page.evaluate(() => {
+    const body = document.createElement('div');
+    body.dataset.testId = 'omni-log-message-content';
+    body.id = 'image-height-case';
+    for (const [id, w, h] of [
+      ['short-banner', 751, 71],
+      ['wide-screen', 1600, 240],
+      ['tall-screen', 800, 1200],
+      ['portrait-screen', 400, 1600]
+    ]) {
+      const image = document.createElement('img');
+      image.id = id;
+      image.style.width = '100%';
+      image.style.height = 'auto';
+      image.alt = id;
+      image.src =
+        'data:image/svg+xml,' +
+        encodeURIComponent(
+          `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="#ddd"/></svg>`
+        );
+      body.append(image);
+    }
+    document.querySelector('article').append(body);
+  });
+  await expect(page.locator('#tall-screen')).toHaveAttribute('data-zdh-message-image', 'true');
+  for (const id of ['short-banner', 'wide-screen']) {
+    await expect(page.locator('#' + id)).not.toHaveAttribute('data-zdh-message-image');
+    expect((await page.locator('#' + id).boundingBox()).width).toBeGreaterThan(100);
+  }
+  await expect(page.locator('#portrait-screen')).toHaveAttribute('data-zdh-message-image', 'true');
+  // A portrait thumbnail itself can be smaller than 64×64. Recheck its authored size,
+  // rather than mistaking our thumbnail for a native icon during reconciliation.
+  await page.locator('#portrait-screen').evaluate((e) => {
+    e.style.width = '60px';
+    dispatchEvent(new Event('resize'));
+  });
+  await expect(page.locator('#portrait-screen')).not.toHaveAttribute('data-zdh-message-image');
+  await page.locator('#portrait-screen').evaluate((e) => {
+    e.style.width = '100%';
+    dispatchEvent(new Event('resize'));
+  });
+  await expect(page.locator('#portrait-screen')).toHaveAttribute('data-zdh-message-image', 'true');
+  await page.locator('#portrait-screen').evaluate((e) => {
+    e.style.width = '32px';
+    e.style.height = '32px';
+    e.src =
+      'data:image/svg+xml,' +
+      encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"/>');
+  });
+  await expect(page.locator('#portrait-screen')).not.toHaveAttribute('data-zdh-message-image');
+  await expect(page.locator('#portrait-screen')).not.toHaveAttribute('role', 'button');
+  await page.locator('#tall-screen').click();
+  await expect(page.locator('[data-zdh-image-lightbox]')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await page
+    .locator('#tall-screen')
+    .evaluate((e) => (e.src = document.querySelector('#short-banner').src));
+  await expect(page.locator('#tall-screen')).not.toHaveAttribute('data-zdh-message-image');
+  await expect(page.locator('#tall-screen')).not.toHaveAttribute('role', 'button');
+  await preferences({ enabled: false });
+  await expect(page.locator('[data-zdh-image-preview]')).toHaveCount(0);
+  expect(await page.evaluate(() => globalThis.__nativeActions.submitClicks)).toBe(0);
+  await page.close();
+});
+
+test('quoted email starts open, explains its boundary, and exports original hidden content', async () => {
+  await preferences({ enabled: true, layout: true, autoTitle: false, collapseHistory: false });
+  const page = await context.newPage();
+  await page.goto('https://itjones.zendesk.com/agent/tickets/222');
+  await page.evaluate(() => {
+    const body = document.createElement('div');
+    body.id = 'quote-case';
+    body.dataset.testId = 'omni-log-message-content';
+    body.innerHTML =
+      '<p>New answer: the test now passes.</p><blockquote type="cite"><p>Earlier question: which setting changed?</p><blockquote type="cite">An important inline answer.</blockquote></blockquote>';
+    document.querySelector('article [data-zdh-body]').replaceWith(body);
+  });
+  const control = page.locator('#quote-case [data-zdh-email-disclosure]');
+  await expect(control).toHaveText('Hide quoted email');
+  await expect(page.getByText('An important inline answer.', { exact: true })).toBeVisible();
+  await expect(page.locator('[data-zdh-email-formatting]')).toHaveCount(0);
+  await control.click();
+  await expect(control).toHaveText('Show quoted email');
+  await expect(page.locator('[data-zdh-email-peek]')).toContainText(
+    'Earlier question: which setting changed?'
+  );
+  await expect(page.getByText('An important inline answer.', { exact: true })).toBeHidden();
+  // The export collector removes only helper explanation/preview nodes, including while folded.
+  const result = await worker.evaluate(async () => {
+    const [tab] = await chrome.tabs.query({ url: 'https://itjones.zendesk.com/agent/tickets/222' });
+    return chrome.tabs.sendMessage(tab.id, { type: 'zdh-export' });
+  });
+  expect(result.exported).toBe(true);
+  const filename = await worker.evaluate(
+    async () => (await chrome.downloads.search({ orderBy: ['-startTime'], limit: 1 }))[0].filename
+  );
+  const exported = JSON.parse(await fs.readFile(filename, 'utf8'));
+  expect(exported.comments[0].body).toContain('An important inline answer.');
+  expect(exported.comments[0].body).not.toContain('Earlier email included');
+  await control.click();
+  await expect(page.getByText('An important inline answer.', { exact: true })).toBeVisible();
+  await preferences({ enabled: false });
+  await expect(control).toHaveCount(0);
+  await expect(page.getByText('An important inline answer.', { exact: true })).toBeVisible();
+  await page.close();
 });
 
 // A native Closed notice must beat stale Open controls and an old composer in the same workspace.
@@ -568,3 +701,48 @@ for (const theme of ['daylight', 'purple', 'blush']) {
     await page.close();
   });
 }
+
+test('popup exports the captured active ticket after the popup closes', async () => {
+  await preferences({ enabled: true, autoTitle: false });
+  const page = await context.newPage();
+  await page.goto('https://itjones.zendesk.com/agent/tickets/222');
+  await expect(page.locator('[data-zdh-mode-tools]')).toBeAttached();
+  const popup = await context.newPage();
+  await popup.goto(`chrome-extension://${extensionId}/src/popup/popup.html`);
+  await page.bringToFront();
+  await popup.reload();
+  await expect(popup.locator('#export-context')).toHaveText('Current ticket: #222');
+  await expect(popup.locator('#export-ticket')).toBeEnabled();
+  const oldIds = await worker.evaluate(async () =>
+    (await chrome.downloads.search({})).map((d) => d.id)
+  );
+  // The real toolbar popup is destroyed when focus moves away. Close this test surface
+  // immediately after the synchronous handoff, before any asynchronous export completes.
+  await popup.evaluate(() => document.querySelector('#export-ticket').click());
+  await popup.close();
+  let completed;
+  await expect
+    .poll(async () => {
+      completed = await worker.evaluate(
+        async (oldIds) =>
+          (await chrome.downloads.search({})).find(
+            (d) => !oldIds.includes(d.id) && d.state === 'complete'
+          ),
+        oldIds
+      );
+      return Boolean(completed);
+    })
+    .toBe(true);
+  const raw = JSON.parse(await fs.readFile(completed.filename, 'utf8'));
+  expect(String(raw.ticketId)).toBe('222');
+  expect(await page.evaluate(() => globalThis.__nativeActions.submitClicks)).toBe(0);
+  await page.goto('https://itjones.zendesk.com/agent/zdh-visual-test');
+  const other = await context.newPage();
+  await other.goto(`chrome-extension://${extensionId}/src/popup/popup.html`);
+  await page.bringToFront();
+  await other.reload();
+  await expect(other.locator('#export-ticket')).toBeDisabled();
+  await expect(other.locator('#export-context')).toContainText('Open a ticket');
+  await other.close();
+  await page.close();
+});

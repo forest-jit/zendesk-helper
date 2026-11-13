@@ -2,6 +2,8 @@
 
 The owner reported publication on November 12, 2026. [Install Jones IT Zendesk Helper](https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf). The first Store package prepared here was v0.7.8.
 
+**Deployment hold:** no uploads, submissions, image replacements, tags or publication until the owner lifts the hold. Local preparation can continue.
+
 ## Files to use
 
 | Need | File |
@@ -13,7 +15,7 @@ The owner reported publication on November 12, 2026. [Install Jones IT Zendesk H
 | Icons, screenshot provenance and image sizes | ASSETS.md |
 | Company GitHub / Pages setup | GITHUB_HOSTING.md |
 
-Use the matching Store ZIP and checksum from the version-tagged GitHub release for an update. The prepared source version is 0.7.11; the currently published Store version is 0.7.8. The separate development ZIP also includes local-processing instructions/tooling. Store artwork and policy pages are outside the extension ZIP. The runtime icon files are inside it. `docs/CODE_TOUR.md` is the reading guide for the source.
+Use the matching Store ZIP and checksum from the version-tagged GitHub release for an update. Local source is 0.7.12; the existing Store/GitHub drafts are 0.7.11 and the published Store version is 0.7.8. Local 0.7.12 packages have not been uploaded. The separate development ZIP also includes local-processing instructions/tooling. Store artwork and policy pages are outside the extension ZIP. The runtime icon files are inside it. `docs/CODE_TOUR.md` is the reading guide for the source.
 
 ## What remains outside this release packet
 

@@ -58,6 +58,11 @@ assert.equal(
   undefined,
   'do not hide a reused native button'
 );
+// Closed tickets have no composer, but delayed history jumps must still disappear.
+pane.querySelector = (selector) => (selector.includes('omni-log-container') ? log : null);
+buttons.push(button('See newest'));
+context.syncConversationScroll(conversation);
+assert.equal(buttons.at(-1).dataset.zdhNativeHistoryJump, 'true');
 // Run actual Off cleanup over owned nodes; empty selectors represent unrelated UI.
 const owned = [root, ...path, ...buttons];
 context.document = {

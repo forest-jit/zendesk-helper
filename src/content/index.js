@@ -1295,6 +1295,7 @@
     backdrop.setAttribute('aria-label', 'Close image preview');
     backdrop.addEventListener('click', closeImageLightbox);
     const full = image.cloneNode();
+    full.removeAttribute('id');
     full.removeAttribute('data-zdh-message-image');
     full.removeAttribute('data-zdh-preview-id');
     full.removeAttribute('tabindex');
@@ -1304,9 +1305,36 @@
     lightbox.focus();
   }
   const imageBindings = new Map();
+  let imageMeasurements = new WeakMap();
+  const imageHeightLimit = 320;
+  function inlineImageHeight(image) {
+    const body = image.closest('[data-test-id="omni-log-message-content"]');
+    const key = [
+      image.currentSrc || image.getAttribute('src'),
+      image.naturalWidth,
+      image.naturalHeight,
+      body?.clientWidth || image.parentElement?.clientWidth || 0,
+      image.getAttribute('width'),
+      image.getAttribute('height'),
+      image.getAttribute('style'),
+      image.className,
+      globalThis.innerWidth || 0
+    ].join('|');
+    const previous = imageMeasurements.get(image);
+    if (previous?.key === key) return previous.height;
+    // Measure the authored inline size, not our existing 84×56 thumbnail.
+    // Cache it until source, layout width or authored sizing changes.
+    const marked = image.dataset.zdhMessageImage === 'true';
+    if (marked) delete image.dataset.zdhMessageImage;
+    const height = image.getBoundingClientRect().height;
+    if (marked) image.dataset.zdhMessageImage = 'true';
+    imageMeasurements.set(image, { key, height });
+    return height;
+  }
   function clearImageBindings() {
     for (const record of imageBindings.values()) record.restore();
     imageBindings.clear();
+    imageMeasurements = new WeakMap();
   }
   function syncImages(log) {
     for (const [image, record] of imageBindings)
@@ -1320,9 +1348,20 @@
       if (
         image.closest('[data-zdh-image-preview],[data-zdh-image-lightbox]') ||
         image.matches('.avatar,[class*="avatar" i],[data-test-id*="avatar" i]') ||
-        ((image.width || image.naturalWidth) <= 64 && (image.height || image.naturalHeight) <= 64)
-      )
+        ((image.naturalWidth || image.width) <= 64 && (image.naturalHeight || image.height) <= 64)
+      ) {
+        // A previously tall image can become a small icon after native source replacement.
+        imageBindings.get(image)?.restore();
+        imageBindings.delete(image);
         continue;
+      }
+      // Hidden history is checked when opened; unloaded images are checked on load.
+      if (!image.getClientRects().length) continue;
+      if (inlineImageHeight(image) <= imageHeightLimit) {
+        imageBindings.get(image)?.restore();
+        imageBindings.delete(image);
+        continue;
+      }
       if (imageBindings.has(image)) {
         imageBindings.get(image).refresh();
         continue;
@@ -1352,6 +1391,7 @@
       preview.setAttribute('aria-hidden', 'true');
       const clone = image.cloneNode();
       for (const key of [
+        'id',
         'data-zdh-message-image',
         'data-zdh-preview-id',
         'data-zdh-preview-trigger',
@@ -1419,6 +1459,18 @@
     }
   }
   function syncConversationScroll(conversation) {
+    // Zendesk inserts these floating jumps after scrolling/idle; the shared flow supersedes both.
+    for (const button of conversation.querySelectorAll('button')) {
+      const redundant =
+        !button.closest(
+          'article,[data-zdh-conversation-entry],[data-test-id="omnichannel-composer"]'
+        ) && /^see (oldest|newest)$/i.test(button.textContent.trim().replace(/\s+/g, ' '));
+      if (redundant) {
+        if (!button.hasAttribute('data-zdh-native-history-jump'))
+          button.dataset.zdhNativeHistoryJump = 'true';
+      } else if (button.hasAttribute('data-zdh-native-history-jump'))
+        delete button.dataset.zdhNativeHistoryJump;
+    }
     const pane = conversation?.querySelector('[data-test-id="convopane-resizable-grid"]');
     const root = pane?.closest('[data-editor-container="true"]');
     const log = pane?.querySelector('[data-test-id="omni-log-container"]');
@@ -1432,18 +1484,6 @@
     if (root.dataset.zdhConversationScroll !== 'true') root.dataset.zdhConversationScroll = 'true';
     for (const node of paths)
       if (node.dataset.zdhFlowPath !== 'true') node.dataset.zdhFlowPath = 'true';
-    // Zendesk inserts these floating jumps after scrolling/idle; the shared flow supersedes both.
-    for (const button of conversation.querySelectorAll('button')) {
-      const redundant =
-        !button.closest(
-          'article,[data-zdh-conversation-entry],[data-test-id="omnichannel-composer"]'
-        ) && /^see (oldest|newest)$/i.test(button.textContent.trim().replace(/\s+/g, ' '));
-      if (redundant) {
-        if (!button.hasAttribute('data-zdh-native-history-jump'))
-          button.dataset.zdhNativeHistoryJump = 'true';
-      } else if (button.hasAttribute('data-zdh-native-history-jump'))
-        delete button.dataset.zdhNativeHistoryJump;
-    }
   }
   // The latest-five disclosure and per-message quote disclosures are separate controls.
   function syncConversation(grid) {
@@ -1862,6 +1902,7 @@
       !enabled ||
       !layout ||
       target?.tagName !== 'IMG' ||
+      target.dataset.zdhMessageImage !== 'true' ||
       target.closest('[data-zdh-image-preview],[data-zdh-image-lightbox]')
     )
       return null;

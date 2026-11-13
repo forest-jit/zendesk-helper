@@ -11,7 +11,7 @@ const sharedExtensionGlobals = {
 export default [
   { ignores: ['node_modules/**', '.agents/**', 'docs/**', 'test-results/**'] },
   {
-    files: ['src/**/*.js'],
+    files: ['src/**/*.js', 'local-review/*.js'],
     ...js.configs.recommended,
     languageOptions: {
       ecmaVersion: 'latest',

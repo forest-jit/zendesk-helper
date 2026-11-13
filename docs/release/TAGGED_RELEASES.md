@@ -1,8 +1,10 @@
 # Make a release from a version tag
 
-A **tag** is a name attached to one exact Git commit. Pushing `v0.7.7` asks GitHub to package that commit as version `0.7.7`.
+A **tag** is a name attached to one exact Git commit. Pushing a tag such as `v0.7.12` asks GitHub to package that exact commit as version `0.7.12`.
 
 The workflow creates a **draft GitHub release** with a store ZIP, a development ZIP, checksums and release notes from CHANGELOG.md. It also builds store-update-notes.txt and store-description.txt for the dashboard. It does not submit to Chrome Web Store or deploy the privacy site. No Google credentials are needed for this stage.
+
+**Deployment is on hold.** Do not push a release tag or publish until the owner lifts the hold. The commands below describe the later release procedure.
 
 ## First release
 
@@ -14,15 +16,15 @@ A draft is visible to repository collaborators, not ordinary visitors. Clicking 
 
 ## Next release: five steps
 
-1. **Update the version.** For example, set `manifest.json` to `0.7.9`, then run `npm version 0.7.9 --no-git-tag-version`. npm updates `package.json` and `package-lock.json`. Use the same three-number version everywhere.
-2. **Test and document the change.** Run `npm run format:check` and `npm run check`; test changed behavior in Chrome. Update the guide, TASKS.md and CHROMEWEBSTORE.md as relevant. Add plain-language changes to CHANGELOG.md under Unreleased, then move them into a section such as `## 0.7.9 - 2026-11-12` before tagging. Missing or empty version notes stop the release. A green automated check is not live UI acceptance.
+1. **Update the version.** For example, set `manifest.json` to `0.7.12`, then run `npm version 0.7.12 --no-git-tag-version`. npm updates `package.json` and `package-lock.json`. Use the same three-number version everywhere.
+2. **Test and document the change.** Run `npm run format:check` and `npm run check`; test changed behavior in Chrome. Update the guide, TASKS.md and CHROMEWEBSTORE.md as relevant. Add plain-language changes to CHANGELOG.md under Unreleased, then move them into a section such as `## 0.7.12 - 2026-11-13` before tagging. Missing or empty version notes stop the release. A green automated check is not live UI acceptance.
 3. **Review and commit.** Use `git status` and `git diff`. Commit the intended source/version/documentation files. Keep customer data, exports and credentials out of Git.
 4. **Push the commit and tag.** From this repository, with the example version:
 
    ```sh
    git push origin main
-   git tag -a v0.7.9 -m "Jones IT Zendesk Helper 0.7.9"
-   git push origin v0.7.9
+   git tag -a v0.7.12 -m "Jones IT Zendesk Helper 0.7.12"
+   git push origin v0.7.12
    ```
 
 5. **Open Actions, then Releases.** Wait for **Prepare tagged release** to pass. Review the draft notes and download the matching store ZIP. Existing Web Store owners can upload it to the same store item.

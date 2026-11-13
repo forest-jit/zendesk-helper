@@ -20,10 +20,10 @@
       <section id="start">
         <h2>Start here</h2>
         <p class="note">
-          This guide describes the v0.7.11 interface. If your installed version is v0.7.8, use
-          Zendesk’s profile picture → <strong>Appearance → Light mode</strong> until the update
-          arrives. The new build has been checked with both native appearances and never changes
-          your saved Zendesk appearance.
+          This guide describes the local v0.7.12 interface; deployment is on hold. If your installed
+          version is v0.7.8, use Zendesk’s profile picture →
+          <strong>Appearance → Light mode</strong> until the update arrives. The new build has been
+          checked with both native appearances and never changes your saved Zendesk appearance.
         </p>
         <ol>
           <li>Open the extension from Chrome’s toolbar.</li>
@@ -133,8 +133,9 @@
             the rest.
           </li>
           <li>
-            <strong>Images:</strong> message images fit inside compact previews without cropping.
-            Click a preview to open the full image; Escape closes it.
+            <strong>Images:</strong> images taller than320 CSS pixels at their normal inline size
+            become compact previews. Short banners, logos and wide, short screenshots stay inline.
+            Hover or click a preview for the full image; Escape closes it.
           </li>
           <li>
             <strong>Titles:</strong> the automatic-title setting uses the selected company and
@@ -149,58 +150,42 @@
           structured title.
         </p>
         <h3>Email threads and readability</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Want to…</th>
-              <th>Do this</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Shorten an email inside a message</td>
-              <td>
-                Choose <strong>Hide quoted email history</strong>.
-                <strong>Show quoted email history</strong> reveals it again. This is separate from
-                showing older ticket messages.
-              </td>
-            </tr>
-            <tr>
-              <td>Reduce a bulky email layout</td>
-              <td>
-                Choose <strong>Simplify email formatting</strong> on a formatted email.
-                <strong>Restore email formatting</strong> returns its original layout. It removes
-                fixed widths, table padding and background fills in that message. Plain paragraphs
-                may look almost unchanged; formatted content farther down may become shorter. It
-                does not collapse quoted threads.
-              </td>
-            </tr>
-            <tr>
-              <td>Check an inline answer</td>
-              <td>
-                Expand the quoted history. Replies written inside an earlier email can be part of
-                that history.
-              </td>
-            </tr>
-            <tr>
-              <td>Understand the initial view</td>
-              <td>
-                Clearly marked quotes can start collapsed when a new response exists outside them.
-                Plain forwarded chains start open because their boundaries are less certain.
-                Quote-only and unrecognized messages stay visible.
-              </td>
-            </tr>
-          </tbody>
-        </table>
         <p>
-          The helper changes the display only. Original text, links and images remain in place. Raw
-          exports include rendered quoted history even when collapsed. Turning the helper off
-          removes the disclosures and restores the native view.
+          <strong
+            >Quoted email means earlier correspondence copied inside one received message.</strong
+          >
+          It can contain the only copy of a request or an inline answer. The helper does not check
+          for duplicates.
+        </p>
+        <ol>
+          <li>
+            Find <strong>Earlier email included in this message</strong> at a recognized quote
+            boundary. It starts open.
+          </li>
+          <li>
+            Read the earlier section. When you are finished with it, choose
+            <strong>Hide quoted email</strong>.
+          </li>
+          <li>
+            A short excerpt identifies the hidden section. Choose
+            <strong>Show quoted email</strong> to read it again.
+          </li>
+        </ol>
+        <p>
+          This only folds part of one message. <strong>View full conversation</strong> reveals older
+          ticket messages instead. Unknown structures and quote-only messages remain visible.
+          Original text, links and images stay in place, and hidden quoted text stays in raw
+          exports. Off restores the native view.
         </p>
         <p>
-          With a theme selected, unreadable text against solid message backgrounds receives a
-          contrasting display color. Readable authored colors and branded email panels stay intact.
-          Complex image backgrounds remain original.
+          <strong>Simplify email formatting has been removed.</strong> It reset widths, table
+          spacing and fills; wrapping could make a message taller without helping. It did not
+          summarize or remove repeated replies.
+        </p>
+        <p>
+          With a theme selected, text with insufficient contrast against a solid message background
+          receives readable display ink. Readable authored colors and branded email panels stay
+          intact. Complex image backgrounds remain original.
         </p>
         <h3>Other reading controls</h3>
         <ul>
@@ -349,8 +334,8 @@
             field saves without sending or losing either draft.
           </li>
           <li>
-            On messy real tickets, try quote controls, Simplify/Restore and image previews. Check
-            text, links, image access, colors and scroll position.
+            On messy real tickets, read a quoted section before hiding it, then show it again. Try
+            tall-image previews and check text, links, image access, colors and scroll position.
           </li>
           <li>
             Try your usual screen size, zoom, keyboard and assistive tools. Report the ticket
@@ -362,27 +347,40 @@
         <h2>Export for local AI</h2>
         <ol>
           <li>
-            In <strong>Settings → Ticket tools &amp; help</strong>, select the target ticket and use
-            <strong>Export ticket for local AI</strong>, or <strong>Close and export</strong> after
-            choosing Solved.
+            Open the toolbar popup on a ticket. Check <strong>Current ticket: #…</strong>, then
+            click <strong>Export ticket</strong>. It downloads JSON without saving fields or sending
+            a draft. Closing the popup does not cancel the request.
           </li>
           <li>
-            Run the local processor on the raw JSON. It uses the installed Ollama text and vision
-            models.
+            In the project folder, open <strong>Start Local Review.command</strong>. Choose the
+            JSON, then <strong>Create summary</strong>.
           </li>
           <li>
-            Review <code>notion-draft.md</code> and <code>processed.json</code> for remaining
-            personal information, missing media and incorrect interpretations.
+            Review the summary, conclusion, recorded actions and verification, and reusable notes.
+            C1 means the first exported message, C2 the second. Supporting excerpts and
+            <strong>Check cited messages</strong> help compare the result with redacted originals.
           </li>
-          <li>Import only the reviewed draft into the documentation service you choose.</li>
+          <li>
+            Check personal information, missing media and image interpretations. Choose
+            <strong>Download Notion draft</strong> only after review.
+          </li>
+          <li>
+            Import the reviewed Markdown into your chosen documentation page. Nothing is published
+            automatically.
+          </li>
         </ol>
-        <pre><code>python3 scripts/process_ticket.py "/path/to/ticket.raw.json"</code></pre>
+        <p>
+          The separate local reviewer needs Ollama with downloaded <code>mistral:latest</code> and
+          <code>qwen2.5vl:3b</code> models. The Chrome Web Store extension does not install it. See
+          <code>docs/DOCUMENTATION_HANDOFF.md</code> for setup and command-line options.
+        </p>
         <p class="note">
-          Raw exports contain ticket information. They include rendered messages, including
-          collapsed ones; unloaded history and inaccessible images are reported as outside the
-          capture. Local AI scrubbing is best-effort. Image interpretations remain unverified until
-          you review them. The helper does not publish to Notion or send ticket contents to a hosted
-          AI service.
+          Raw exports include original rendered ticket information, including hidden messages and
+          quotes. Unloaded history and unavailable media are reported. Redaction can miss personal
+          information; image observations remain unverified. Processing uses local models and does
+          not send ticket contents to a hosted AI service or upload to Notion.
+          <strong>Close and export</strong> remains available after choosing Solved; that action
+          saves the ticket before downloading.
         </p>
       </section>
       <section>

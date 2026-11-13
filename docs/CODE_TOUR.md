@@ -42,15 +42,15 @@ Five base colors do not mean five rendered colors. Borders, washes, focus and la
 
 ## Follow an export
 
-`src/export/exporter.js` collects rendered comments, including hidden history, and tries to capture accessible images. `src/background/service-worker.js` validates the requesting extension/site and waits for Chrome to finish the local download. Unloaded messages and inaccessible images are not silently invented.
+`src/export/exporter.js` collects rendered comments, including hidden history, and tries to capture accessible images. The popup hands its captured active-ticket ID to `src/background/service-worker.js` synchronously, before it can close. The worker validates the popup sender and rechecks the actual tab URL, then forwards capture and waits for Chrome to finish the local download. Unloaded messages and inaccessible images are not silently invented.
 
-The separate Python command in `scripts/process_ticket.py` reads that file. It scrubs known text identifiers, asks local Ollama models for a draft, and writes review files. Image pixels are not automatically anonymized. Local model output still needs privacy and factual review. The browser extension does not run Python or publish documentation.
+`Start Local Review.command` starts the separate loopback app in `scripts/local_review.py`; its browser UI is under `local-review/`. A chosen file stays in memory while `scripts/process_ticket.py` scrubs known identifiers, reads available images, extracts chunked evidence with message references, and synthesizes one summary/conclusion. Structured output is validated before private review files are written. `validate_summary` checks each supporting excerpt against redacted original messages. A uniquely matching quote can correct a shifted citation number; an unmatched quote stops the review. This checks provenance, not whether the interpretation is true. The CLI remains available. Image pixels are not automatically anonymized. Local model output still needs privacy and factual review. The browser extension does not run Python or publish documentation.
 
 ## Other modules, grouped by job
 
 | Job | Files |
 | --- | --- |
-| Reading | `src/conversations/email-threads.js`: quote detection/disclosures; `src/conversations/message-display.js`: contrast and Simplify; image previews/shared scrolling in `src/content/index.js` |
+| Reading | `src/conversations/email-threads.js`: quote detection/disclosures; `src/conversations/message-display.js`: measured contrast repair; image previews/shared scrolling in `src/content/index.js` |
 | Small ticket tools | `src/tickets/model.js`: pure decisions; `src/tickets/tools.js`: title/copy/mode/queue DOM adapters |
 | Native editor bridge | `src/page/draft-bridge.js`: checked read/park/restore/replace operations in the page world |
 | Optional Harvest | `src/integrations/harvest/policy.js`: allowed context; `src/integrations/harvest/controller.js`: permission/registration; `src/integrations/harvest/theme.js` + CSS: styling only |
@@ -69,7 +69,7 @@ The separate Python command in `scripts/process_ticket.py` reads that file. It s
 - Only the active ticket should establish native state; cached hidden workspaces are common.
 - The helper does not have its own ticket backend or presence service. Native Zendesk viewing/editing indicators are left alone; duplicate helper badges were removed.
 - Off removes owned UI/styles. It does not delete downloaded files or intentionally erase recovery backups.
-- Generic quote detection must fail open. A wrong collapsed boundary can hide an inline answer even when the source remains intact.
+- Quote detection must fail open. Recognized quotes also start open; folding is a manual display choice, not verified deduplication. A boundary can contain the only copy of an answer.
 - Permissions limit Chrome access; runtime context guards narrow it further. Keep both.
 
 ## Make one change

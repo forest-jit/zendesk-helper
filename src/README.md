@@ -15,3 +15,5 @@ The included help and privacy pages live in `guide/`. Only `page/draft-bridge.js
 Pure rules return values without clicking or changing the DOM. Adapters read or change native controls. The coordinator connects them and rechecks ticket/editor state before a save. Keep those responsibilities distinct.
 
 The full reading path and worked examples are in [the code tour](../docs/CODE_TOUR.md). Each runtime file also starts with a short explanation.
+
+The separate local reviewer lives outside the extension: `local-review/` holds its UI, `scripts/local_review.py` serves it on loopback, and `scripts/process_ticket.py` runs downloaded Ollama models. It does not ship in the Store package. See [local review instructions](../docs/DOCUMENTATION_HANDOFF.md).

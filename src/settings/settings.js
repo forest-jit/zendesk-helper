@@ -65,7 +65,7 @@ async function activeZendeskTab() {
   const id = Number($('target-ticket').value);
   if (!id) {
     $('target-ticket').focus();
-    throw Error('Choose the Zendesk tab to preview or export.');
+    throw Error('Choose a Zendesk tab for the preview or title tool.');
   }
   let tab;
   try {
@@ -348,17 +348,6 @@ $('delete-theme').addEventListener('click', async () => {
   loadStudio('native');
   paintPage('native');
   setStatus('');
-});
-$('export').addEventListener('click', async () => {
-  try {
-    const tab = await activeZendeskTab();
-    setStatus('Preparing local export…');
-    const result = await send(tab.id, { type: 'zdh-export' });
-    if (result?.error) throw Error(result.error);
-    setStatus('');
-  } catch (e) {
-    setStatus(e.message);
-  }
 });
 $('manual').addEventListener('click', async () => {
   try {

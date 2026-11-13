@@ -1,6 +1,6 @@
 # Jones IT Zendesk Helper privacy policy
 
-Last updated: November 12, 2026
+Last updated: November 13, 2026
 
 Publisher display name: forest  
 Privacy and support contact: forest.r.welch@gmail.com
@@ -41,7 +41,7 @@ It does not read or change project, task, notes, duration or timer values. Harve
 
 ## Optional local AI processing
 
-The browser extension does not call hosted AI or publish to Notion or another documentation service. You can separately run a Python command to process an export with Ollama on your computer at `127.0.0.1:11434`.
+The browser extension does not call hosted AI or publish to Notion or another documentation service. You can separately run the local reviewer or Python command to process an export with downloaded Ollama models on your computer at `127.0.0.1:11434`. The reviewer serves a browser page on loopback only, keeps the chosen raw file in memory during processing, and saves review files in a private local folder. It does not upload them to Notion. The Chrome Web Store package does not install this separate app.
 
 The command tries to remove known names and other identifying text before and after local AI processing. It uses known-identity and pattern-based checks. These checks can miss information.
 

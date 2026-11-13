@@ -15,6 +15,7 @@ class Element extends EventTarget {
     this.width = 800;
     this.height = 400;
     this.naturalWidth = 800;
+    this.naturalHeight = 400;
     this.children = [];
   }
   getAttribute(k) {
@@ -28,6 +29,12 @@ class Element extends EventTarget {
   }
   set tabIndex(v) {
     this.setAttribute('tabindex', v);
+  }
+  getClientRects() {
+    return [{ height: this.height }];
+  }
+  getBoundingClientRect() {
+    return { width: this.width, height: this.height };
   }
   closest() {
     return null;
@@ -94,4 +101,15 @@ assert.equal(image.getAttribute('tabindex'), '3');
 assert.equal(image.getAttribute('aria-label'), 'Original label');
 assert.equal(image.dataset.zdhMessageImage, undefined);
 assert.equal(image.adjacent.isConnected, false);
+// A short source replacement must restore the original image and click behavior.
+context.syncImages({ querySelectorAll: () => [image] });
+image.naturalHeight = 71;
+image.naturalWidth = 751;
+image.height = 71;
+context.syncImages({ querySelectorAll: () => [image] });
+assert.equal(image.dataset.zdhMessageImage, undefined);
+assert.equal(image.getAttribute('role'), 'img');
+const previousOpens = context.opened;
+image.dispatchEvent(new Event('click', { cancelable: true }));
+assert.equal(context.opened, previousOpens);
 console.log('PASS: image preview cleanup restores native attributes and removes owned bindings.');

@@ -16,9 +16,9 @@ Keep customer messages, screenshots, ticket exports and credentials in approved 
 ## Submit a code fix
 
 1. Fork the repository and make a branch for one problem.
-2. Read [the code tour](docs/CODE_TOUR.md) and [development guide](docs/DEVELOPMENT.md). Run `npm ci --ignore-scripts` to install development tools.
+2. Read [the code tour](docs/CODE_TOUR.md) and [development guide](docs/DEVELOPMENT.md). Run `npm ci --ignore-scripts --omit=optional` to install development tools.
 3. Make the change and run `npm run format:check` and `npm run check`. Check changed behavior in Chrome with a synthetic ticket or your own authorized test ticket. Do not send messages or save someone else’s ticket to test a fix.
-4. Add a short entry under **Unreleased** in [CHANGELOG.md](CHANGELOG.md). Update the feature guide if behavior changes.
+4. Add a short entry under **Unreleased** in [CHANGELOG.md](CHANGELOG.md). Update the feature guide if behavior changes. Follow [the workflow](docs/WORKFLOW.md) for spacing checks and the humanizer/ADHD writing review.
 5. Open a pull request explaining the problem, the changed behavior and what you tested. Use a sanitized example; keep private report links out of a public PR.
 
 Forest reviews fixes before merging. A merged fix can wait for the next version; it is not released to Chrome users until the Store update is approved. The maintainer coordinates the version bump and release tag.

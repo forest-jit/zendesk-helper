@@ -13,12 +13,16 @@ The store icon and at least one screenshot are required. Small/marquee promotion
 
 `privacy-mobile-check.jpg` is internal layout evidence, not a listing screenshot.
 
+## Version and hold
+
+The existing listing captures were prepared for 0.7.11. Local 0.7.12 changes the popup/export and email instructions. Recheck affected images before a later release; do not replace or upload them during the current deployment hold. No listing artwork was regenerated in this pass.
+
 ## Provenance
 
-The icon and tile are original code-drawn artwork, not Zendesk/Harvest logos. Rebuild with `python3 scripts/make_release_assets.py` (Pillow; local macOS fonts for the tile). The 128px icon has16px transparent outer padding.
+The icon and tile are original code-drawn artwork, not Zendesk/Harvest logos. Rebuild with `python3 scripts/make_release_assets.py` (Pillow; local macOS fonts for the tile). The 128px icon has 16px transparent outer padding.
 
 Popup and Settings screenshots use the actual shipped HTML/CSS/JavaScript on a loopback preview with synthetic in-memory Chrome preferences. Preview images are labeled as sample settings/palettes. They contain no customer ticket content, real profile, browser chrome or fabricated presence result. The guide screenshot uses the actual guide. These are listing images, not proof of live Zendesk compatibility.
 
-Reproduce with `python3 scripts/release_preview.py`, open the printed loopback URL in Chrome at1280×800, capture the overview at `/`, the full editor at `/demo-settings.html`, then the guide at `/guide.html`. Use Playwright’s `channel: chromium` if only the full test browser is installed. Stop the local server afterward. This server uses a narrow asset allowlist and is bound to127.0.0.1. Do not run screenshot demos against live customer data or present a fabricated ticket as a real one.
+Reproduce with `python3 scripts/release_preview.py`, open the printed loopback URL in Chrome at 1280×800, capture the overview at `/`, the full editor at `/demo-settings.html`, then the guide at `/guide.html`. Use Playwright’s `channel: chromium` if only the full test browser is installed. Stop the local server afterward. This server uses a narrow asset allowlist and is bound to 127.0.0.1. Do not run screenshot demos against live customer data or present a fabricated ticket as a real one.
 
 Source references: [image requirements](https://developer.chrome.com/docs/webstore/images), [listing fields](https://developer.chrome.com/docs/webstore/cws-dashboard-listing).

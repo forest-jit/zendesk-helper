@@ -27,6 +27,17 @@ Keep Zendesk’s native state authoritative. Do not change customer tickets to t
 
 For each UI change, exercise the normal state, the changed state and cleanup. Check keyboard use and a smaller viewport. Theme changes need a light and a dark helper palette; check public reply and internal note separately. Native Light/Dark acceptance passed in T57; keep checking both when changing theme boundaries. The published v0.7.8 still needs its Light-mode setup advice until users receive the update.
 
+### Spacing and style acceptance
+
+Every new or changed control needs a focused visual check:
+
+- Measure space above, below, left and right against the neighboring native content. Inspect the container as well as the button; do not leave a control flush against a frame.
+- Check normal, selected, hover/focus, disabled and error states where applicable. Verify text contrast and a single continuous border.
+- Check public and internal mode in a light and dark helper theme, at normal and narrower supported widths. Long labels must wrap without clipping or pushing out adjacent controls.
+- Check keyboard focus/order and Off cleanup. Confirm that drafts, source text, recipients and ticket values are unchanged by styling.
+
+Use focused screenshots or measured geometry as evidence. Synthetic snapshots establish a repeatable baseline; actual Zendesk must also be inspected before marking live acceptance complete. Record any missing check explicitly. Use the project design guidance and its detector when applicable.
+
 For reply/save changes, repeat the critical draft checks: field save with a draft, distinct public/internal drafts, refresh/navigation recovery, and an interrupted or failed save. Include attachments when their handling changes. Check the result after refresh; an action being requested is not proof it saved.
 
 For Harvest changes, start from a fresh profile with only one installation. Confirm optional access is absent initially, enable it from Settings → Harvest, refresh safely, and check on/off, permission removal and browser restart. Store and unpacked copies have separate IDs, settings and permissions. Inspect the timer without changing project, task, notes, duration or entries.

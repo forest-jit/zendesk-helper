@@ -1,10 +1,10 @@
 # Small-team installation
 
-The published Store version is **0.7.8**. Use Zendesk’s **Appearance → Light mode** with that version. The prepared **0.7.11** supports both native appearances and uses a simpler popup plus full Settings page; instructions below describe that update.
+The published Store version is **0.7.8**. Use Zendesk’s **Appearance → Light mode** with that version. Local **0.7.12** supports both native appearances, with a small popup, active-ticket export and full Settings. Deployment is on hold; the Store/GitHub 0.7.11 drafts remain unchanged. The instructions below describe the local interface.
 
 For the prepared private store release, start with [release/START_HERE.md](release/START_HERE.md). It links the listing, policy, disclosures, reviewer instructions, screenshots and remaining owner steps.
 
-This extension is scoped to Jones IT Zendesk. The release zip contains the extension only: no raw tickets, browser profile data, local AI models, credentials, or development dependencies.
+This extension is scoped to Jones IT Zendesk. The Store ZIP contains runtime code and icons. The development ZIP also includes the optional local reviewer, launcher and instructions. Neither contains raw tickets, browser profiles, AI models, credentials or development dependencies.
 
 1. Unzip the release to a stable folder. Each person keeps their own Chrome preferences and custom themes.
 2. In Chrome, open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select the unzipped folder.
@@ -32,7 +32,7 @@ The helper leaves Zendesk’s own collision indicators unchanged. It no longer d
 
 Raw exports and local recovery copies can contain customer information. Keep them local; review processed documentation before moving it to a shared knowledge base. Uninstalling does not remove files already downloaded.
 
-The v0.7.1 guide also covers quoted-email disclosures, display-only message contrast repair, Closed status, and the fixed desktop rail. Include the guide in any pilot handoff.
+The packaged feature guide covers manual quote folding, height-based images, contrast repair, Closed status and layout. Quotes start open; Simplify is removed in local 0.7.12. See [Reading email](READING_EMAIL.md) for the distinction between older ticket messages and quoted emails. [Local review instructions](DOCUMENTATION_HANDOFF.md) cover file-to-summary processing.
 
 GitHub source and information-page hosting: [release/GITHUB_HOSTING.md](release/GITHUB_HOSTING.md).
 

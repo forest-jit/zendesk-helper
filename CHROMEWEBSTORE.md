@@ -1,6 +1,12 @@
 # Chrome Web Store — Jones IT Zendesk Helper
 
-Last updated: November 12, 2026. Release version 0.7.8. The owner reports that the extension is now published in the Chrome Web Store. [Open the listing](https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf). Future package updates require review.
+Last updated locally: November 13, 2026. Release version 0.7.8. The owner reports that the extension is now published in the Chrome Web Store. [Open the listing](https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf). Future package updates require review.
+
+## Deployment hold — November 13, 2026
+
+Do not upload, submit, replace listing images or publish while the owner’s hold is active. Local v0.7.12 changes below are prepared copy only; the dashboard was not changed for this work.
+
+Prepared local v0.7.12 adds the active-ticket Export button and a separate loopback review app in the development package. The Store package still excludes the local AI tools and adds no permissions. Review the changed policy/source copy before a later submission; none of it was saved to Google during this hold.
 
 ## Store listing
 
@@ -15,14 +21,14 @@ Last updated: November 12, 2026. Release version 0.7.8. The owner reports that t
 Jones IT Zendesk Helper is a collection of tools and improvements for working in Jones IT Zendesk. It works only on itjones.zendesk.com agent pages and requires an authorized account.
 
 WHAT YOU CAN DO
-• Read long tickets: show the latest five messages or expand the loaded history. Collapse supported quoted email threads, simplify bulky email layouts and open images from compact previews.
+• Read long tickets: show the latest five messages or expand the loaded history. Manually fold supported quoted email after reading it; quotes start open. Short banners stay inline and tall images have previews.
 • Reply with fewer clicks: switch between public replies and internal notes in one click. In Settings, enable shared drafts to move text and formatting without replacing a different draft.
 • Save fields separately: update ticket properties while keeping your reply draft. Local recovery copies help protect drafts when a field save is interrupted.
-• Reuse ticket details: copy a linked ticket number, export loaded messages and accessible images, and refresh ticket views while idle.
+• Reuse ticket details: copy a linked ticket number, export the active ticket’s loaded messages and accessible images from the toolbar popup, and refresh ticket views while idle.
 • Adjust your workspace: choose a theme or open Settings to create one from five base colors. Preview it before applying; import/export theme files without ticket data. Optional Harvest styling matches the timer to your theme without changing its entries.
 
 GETTING STARTED
-The v0.7.11 update supports Zendesk Light and Dark appearances. If you are still using v0.7.8, choose Zendesk profile picture > Appearance > Light mode until the update arrives.
+The prepared update supports Zendesk Light and Dark appearances. If you are still using v0.7.8, choose Zendesk profile picture > Appearance > Light mode until the update arrives.
 1. Open a ticket in Jones IT Zendesk.
 2. Click the extension icon to turn the helper on and choose your settings.
 3. Open Settings for reply preferences, reading controls, Harvest setup and the Feature guide.

@@ -14,7 +14,7 @@ Release preparation and updates: [docs/release/START_HERE.md](docs/release/START
 
 ## Install
 
-**Published v0.7.8:** set your Zendesk profile picture → **Appearance → Light mode** for consistent colors. The next build supports both native appearances; its Light/Dark checks passed in Chrome. The instructions below describe the prepared v0.7.11 interface, which is not yet a Store update.
+**Published v0.7.8:** set your Zendesk profile picture → **Appearance → Light mode** for consistent colors. The next build supports both native appearances; its Light/Dark checks passed in Chrome. The instructions below describe local v0.7.12. Deployment is on hold; Store users do not have this interface yet.
 
 1. [Install from the Chrome Web Store](https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf).
 2. Open a Jones IT Zendesk agent page.
@@ -49,23 +49,15 @@ While typing in Public reply or Internal note, press **⌘Enter** to use Send. E
 
 ## Local documentation export
 
-Choose **Solved** to reveal **Close ticket** and **Close and export**. Both save Zendesk's Solved status (not Closed). Text drafts are protected and restored during property-only saves; queued attachments must be sent or removed first. Close and export prepares the snapshot before saving and downloads it after the save is acknowledged. **Settings → Ticket tools & help → Export ticket for local AI** also exports without changing status.
+Choose **Solved** to reveal **Close ticket** and **Close and export**. Both save Zendesk's Solved status (not Closed). Text drafts are protected and restored during property-only saves; queued attachments must be sent or removed first. Close and export prepares the snapshot before saving and downloads it after the save is acknowledged. To export without saving, open the toolbar popup on the ticket and click **Export ticket**. The popup names the current ticket. It is disabled on other pages; closing the popup does not cancel an export already requested.
 
 Exports are raw local JSON files, containing all rendered comments (including collapsed history), timestamps, visibility, and image references/bytes when accessible. Per-message quoted history remains in the export when its display is collapsed. Unloaded history is explicitly outside the snapshot. Some authenticated or cross-origin images may need a local copy.
 
-Ollama models used by the local processor:
+For a summary, open **Start Local Review.command** in the project folder. Choose the exported JSON, then **Create summary**. The local app shows the problem, a conclusion, recorded actions and verification, and reusable notes with message references. Download the Notion draft after checking it against the ticket.
 
-```sh
-ollama pull mistral
-ollama pull qwen2.5vl:3b
-python3 scripts/process_ticket.py "/path/to/ticket.raw.json"
-```
+Ollama must be running locally with `mistral:latest` and `qwen2.5vl:3b`. Both models are already installed on the maintainer’s Mac. The separate local app is not installed by the Chrome Web Store extension. [Local review instructions](docs/DOCUMENTATION_HANDOFF.md) cover setup, the optional command-line flow and missing images.
 
-Pattern matching and known-identity redaction run before and after local models. Author names are normalized separately from timestamps; known first-name references and domain names are also scrubbed. The text model drafts technical documentation. The vision model interprets embedded images. On macOS, wide/tall screenshots are padded locally with the built-in image tool so the model can see their edges. AI visual interpretations stay clearly marked as unverified, separate from the text-based draft. The output folder contains `notion-draft.md` and `processed.json`; review the draft before giving it to Notion AI. Raw screenshots and identity mappings are not included in the Markdown.
-
-For missing images, place local copies named `image-001.png`, `image-002.jpg`, etc. in a folder and pass `--media-dir "/path/to/images"`. Alternatively, `--fetch-public-media` opts into downloading public HTTPS images; it does not use browser cookies and cannot retrieve private attachments that require them. Missing media is reported, never described as analyzed.
-
-Ollama must be running at `127.0.0.1:11434`. Processing uses local models; this command does not write to Notion or call a hosted AI service. Privacy removal is best-effort and review remains necessary. Add `--redact-term "Additional name or organization"` for identifying terms found during review; repeat the option as needed. Review image interpretations against the actual image: the tested local vision model confused Pending membership with Active. A model summary is not proof of a resolution.
+Redaction runs before and after the text model; it can miss information. Raw image pixels reach the local vision model, and image observations stay marked as unverified. The app writes `notion-draft.md` and `processed.json` in a private local review folder. It does not publish to Notion or use a hosted AI service. Review identifying details and factual claims before sharing.
 
 Choose a built-in theme or **System light / dark** in the extension popup. Hover/focus previews the popup; selecting applies the theme. Open **Settings → Appearance** to create a custom theme with five color controls, preview it temporarily on the selected ticket/Harvest, then **Save and apply**. Theme files can be imported or exported without ticket data. Temporary ticket preview ends when the Settings tab closes; unsaved palette edits remain available for the current Chrome session. Themes apply immediately and persist across refresh; turning the overlay off restores native colors. Harvest styling needs its own setup; follow **Match Harvest to your theme** above. Harvest follows the selected theme; other embedded apps keep their own colors. Turning Harvest styling off restores its native colors; Chrome site access can be managed in the extension details. Coverage and verification: [docs/THEMING.md](docs/THEMING.md).
 
@@ -82,9 +74,14 @@ Choose a built-in theme or **System light / dark** in the extension popup. Hover
 
 ## Reading email threads
 
-Use **Hide quoted email history** inside a received message and **Show quoted email history** to restore it. Clearly marked quotes with a separate new response can start collapsed; plain forward headers start open. Unrecognized or quote-only messages remain visible. Expand older email content when checking for inline answers. The separate **View full conversation** button sits at the top of the scrolling history. **Collapse earlier messages** returns to five. Turn off **Settings → Replies & reading → Start with the latest five messages** to show all loaded messages.
+The two reading controls affect different things:
 
-For bulky formatted emails, choose **Simplify email formatting**. **Restore email formatting** returns the authored layout. It removes fixed widths, table padding and background fills; plain paragraphs can look unchanged. It does not collapse threads. The original message and raw export remain available.
+- **View full conversation** shows older ticket messages. **Collapse earlier messages** returns to the latest five. This control sits at the top of the scrolling history; turn off **Settings → Replies & reading → Start with the latest five messages** to show all loaded messages.
+- **Hide quoted email** folds earlier emails embedded *inside one received message*. They start open. A boundary explanation and a short excerpt show what you are hiding; **Show quoted email** restores it. The helper recognizes email structure, not duplicate text. The quote may contain the only copy of a request or an inline answer, so read it before hiding it. Unknown and quote-only messages stay visible.
+
+**Simplify email formatting has been removed in the local v0.7.12 build.** It reset table widths, spacing and fills; wrapping could make a message taller without making it clearer. It did not summarize or remove repeated email text. [Reading email: what changes](docs/READING_EMAIL.md) explains the remaining controls with a simple example.
+
+Images stay inline unless their displayed height exceeds **320 CSS pixels**. Short banners, logos and wide, short screenshots keep their normal presentation. Taller images get a contained thumbnail with hover/full-image access. The check uses displayed height, so a responsive image can qualify differently when the column width changes.
 
 Theme adaptation repairs measured unreadable text on solid message backgrounds and preserves readable authored colors. Image previews contain the full image. Off restores native content display. Closed tickets show a disabled **Closed** status; the helper never substitutes Open when native status controls are missing.
 

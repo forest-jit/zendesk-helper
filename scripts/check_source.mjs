@@ -12,6 +12,7 @@ function collect(folder) {
 
 const files = [
   ...collect('src'),
+  ...collect('local-review'),
   ...collect('tests'),
   ...collect('scripts'),
   'eslint.config.mjs',

@@ -2,7 +2,9 @@
 
 ## Supported Zendesk appearance
 
-The published v0.7.8 works best with Zendesk’s **Appearance → Light mode**. The prepared v0.7.11 has passed native Light/Dark acceptance; it does not change Zendesk’s saved preference. A source build and a Store update are different installations.
+The published v0.7.8 works best with Zendesk’s **Appearance → Light mode**. The current local v0.7.12 retains the earlier native Light/Dark fixes; it does not change Zendesk’s saved preference. Deployment is on hold. A source build and a Store update are different installations.
+
+The versioned acceptance sections below describe their recorded build. Some historical controls have since changed; use [the feature walkthrough](FEATURE_WALKTHROUGH.md) and [email guide](READING_EMAIL.md) for current behavior.
 
 ## Native appearance acceptance — v0.7.10, retained in v0.7.11
 
@@ -194,6 +196,6 @@ The short-ticket header is marked independently of older-message disclosure. Clo
 
 Known merge-drawer headings, suggested-ticket cards, required-field feedback, progress and Next use theme tokens. Forest and Daylight are the live acceptance pair. Native status indicators inside suggestion cards retain their semantic colors. This coverage record does not certify every future Zendesk widget.
 
-Preview geometry also applies through stable received-content selectors when Zendesk replaces image nodes. Keyboard/click bindings are reconciled and removed on Off, restoring original native attributes. Quoted-email disclosures preserve source nodes and raw export text. Ambiguous plain forwards start expanded.
+In local v0.7.12, only received images exceeding 320 CSS pixels at their authored displayed height become previews. Short unmarked images retain native geometry and click behavior. Source/width changes recheck eligibility; Off restores original attributes. Recognized quoted sections start open and retain original text in raw export.
 
-Formatted email can opt into **Simplify email formatting**, with **Restore email formatting** available in the same message. It removes layout spacing and background fills without rewriting source text. Contrast markers also set text-fill color so authored inline important colors cannot make text unreadable. Native/Off removes the controls and restores authored presentation. Chrome checked source text equality, Restore, Off cleanup and a readable invoice heading.
+Local v0.7.12 removes Simplify/Restore because broad width, spacing and fill resets did not reliably improve emails. Measured contrast repair remains and also sets text-fill ink for authored inline important colors. Native/Off removes owned repairs. Current behavior is explained in [Reading email](READING_EMAIL.md); earlier measurements above are historical acceptance, not a reason to hide important content.

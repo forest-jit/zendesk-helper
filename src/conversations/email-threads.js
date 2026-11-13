@@ -1,6 +1,6 @@
 // Quote cleanup is a display choice, not a content edit.
 // Detect a supported boundary → add a disclosure → hide/show the original nodes.
-// Uncertain forwards start open; unknown or quote-only content stays visible.
+// Every recognized section starts open: email markup cannot prove content is redundant.
 
 'use strict';
 // Display-only disclosures. Source nodes remain in place for copy/export and native restoration.
@@ -87,7 +87,7 @@
   function parts(body) {
     const explicit = analyze(body);
     if (explicit.disposition === 'review-candidates')
-      return { nodes: explicit.candidates.map((c) => c.node), collapsed: true, kind: 'explicit' };
+      return { nodes: explicit.candidates.map((c) => c.node), collapsed: false, kind: 'explicit' };
     // A plain forward is ambiguous: offer collapse but leave it open initially.
     // Require the whole ordered header, not a phrase such as “On ... wrote”.
     for (const rule of body.querySelectorAll('hr')) {
@@ -130,7 +130,7 @@
   }
   let records = new Map();
   function restore(record) {
-    record.button.remove();
+    record.controls.remove();
     for (const node of record.nodes) delete node.dataset.zdhEmailHidden;
   }
   function sync(scope) {
@@ -150,19 +150,35 @@
       }
       const plan = parts(body);
       if (!plan?.nodes.length) continue;
+      const controls = body.ownerDocument.createElement('div');
+      controls.dataset.zdhEmailControls = 'true';
+      const label = body.ownerDocument.createElement('span');
+      label.textContent = 'Earlier email included in this message';
       const button = body.ownerDocument.createElement('button');
       button.type = 'button';
       button.dataset.zdhEmailDisclosure = 'true';
       button.title =
-        plan.kind === 'forward'
-          ? 'Quoted history may contain inline replies. Review it before hiding.'
-          : 'Show or hide the original quoted email content.';
-      const record = { ...plan, button, expanded: !plan.collapsed };
+        'Show or hide this quoted section. It has not been checked for duplicate content.';
+      const help = body.ownerDocument.createElement('p');
+      const peek = body.ownerDocument.createElement('p');
+      peek.dataset.zdhEmailPeek = 'true';
+      // A short excerpt makes the hidden boundary recognizable. Original nodes stay intact.
+      const text = plan.nodes
+        .map((node) => node.textContent.trim())
+        .join(' ')
+        .replace(/\s+/g, ' ');
+      peek.textContent = text
+        ? 'Hidden section begins: ' + text.slice(0, 180) + (text.length > 180 ? '…' : '')
+        : 'The hidden section includes images.';
+      controls.append(label, button, help, peek);
+      const record = { ...plan, controls, button, expanded: true };
       function paint() {
-        button.textContent = record.expanded
-          ? 'Hide quoted email history'
-          : 'Show quoted email history';
+        button.textContent = record.expanded ? 'Hide quoted email' : 'Show quoted email';
         button.setAttribute('aria-expanded', String(record.expanded));
+        help.textContent = record.expanded
+          ? 'These earlier emails may contain details that appear nowhere else in the ticket.'
+          : 'Hidden in this view. Show quoted email to read the full section.';
+        peek.hidden = record.expanded;
         for (const node of record.nodes) {
           if (record.expanded) delete node.dataset.zdhEmailHidden;
           else node.dataset.zdhEmailHidden = 'true';
@@ -172,7 +188,7 @@
         record.expanded = !record.expanded;
         paint();
       });
-      plan.nodes[0].insertAdjacentElement('beforebegin', button);
+      plan.nodes[0].insertAdjacentElement('beforebegin', controls);
       records.set(body, record);
       paint();
     }

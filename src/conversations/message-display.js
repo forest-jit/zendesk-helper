@@ -1,6 +1,6 @@
 // Received-message display only. Editors are deliberately excluded.
 // Keep readable authored colors; mark measured contrast failures for theme.css to repair.
-// Simplify/Restore changes layout presentation, not thread length or export text.
+// Authored email layout stays intact; broad formatting flattening was removed.
 
 'use strict';
 // Display-only adaptation of received messages; never touches the composer or stored HTML.
@@ -12,7 +12,6 @@
   let cache = new WeakMap(),
     paletteKey = null,
     settleTimer = null;
-  let formatting = new Map();
   const selector = '[data-test-id="omni-log-message-content"]';
   function rgb(value) {
     const m = String(value).match(/^rgba?\(([^)]+)\)$/);
@@ -65,38 +64,6 @@
       delete e.dataset.zdhReadableSmall;
     }
   }
-  function formatControl(body, scope) {
-    if (formatting.has(body)) return;
-    const entry = body.closest('[data-test-id="omni-log-comment-item"]');
-    if (
-      !/via email/i.test(entry?.getAttribute('aria-label') || '') ||
-      !body.querySelector(
-        'table[role="presentation"],table[width],table[style*="width"],td[bgcolor],td[style*="background"]'
-      )
-    )
-      return;
-    const button = body.ownerDocument.createElement('button');
-    button.type = 'button';
-    button.dataset.zdhEmailFormatting = 'true';
-    let simple = false;
-    button.title =
-      'Remove fixed email widths, extra table padding and background fills in this message. Quoted history is separate. Original content and exports are kept.';
-    button.addEventListener('click', () => {
-      simple = !simple;
-      if (simple) body.dataset.zdhSimpleEmail = 'true';
-      else delete body.dataset.zdhSimpleEmail;
-      paint();
-      cache.delete(body);
-      sync(scope);
-    });
-    function paint() {
-      button.textContent = simple ? 'Restore email formatting' : 'Simplify email formatting';
-      button.setAttribute('aria-pressed', String(simple));
-    }
-    body.prepend(button);
-    formatting.set(body, button);
-    paint();
-  }
   function sync(scope) {
     const theme = scope.ownerDocument.documentElement.getAttribute('data-zdh-theme');
     const prefix =
@@ -109,14 +76,8 @@
         if (scope.isConnected) sync(scope);
       }, 450);
     }
-    for (const [body, button] of formatting)
-      if (!body.isConnected) {
-        button.remove();
-        formatting.delete(body);
-      }
     for (const body of scope.querySelectorAll(selector)) {
       if (body.closest('[contenteditable],[data-test-id="omnichannel-composer"]')) continue;
-      formatControl(body, scope);
       const signature = prefix + '|' + body.innerHTML;
       if (cache.get(body) === signature) continue;
       clearBody(body);
@@ -145,7 +106,7 @@
         ]) {
           if (
             e.closest(
-              '[data-zdh-image-preview],[data-zdh-email-disclosure],[data-zdh-email-formatting]'
+              '[data-zdh-image-preview],[data-zdh-email-disclosure],[data-zdh-email-controls]'
             ) ||
             ![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())
           )
@@ -160,11 +121,6 @@
     }
   }
   function clear(doc = document) {
-    for (const [body, button] of formatting) {
-      button.remove();
-      delete body.dataset.zdhSimpleEmail;
-    }
-    formatting = new Map();
     for (const body of doc.querySelectorAll(selector)) clearBody(body);
     cache = new WeakMap();
     paletteKey = null;

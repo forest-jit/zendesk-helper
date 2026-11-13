@@ -14,6 +14,7 @@
 - Keep source readable: normal formatting, a short file-level purpose/reading path, and comments for non-obvious state or safety boundaries. Use `npm run format`; avoid comments that merely repeat a statement. Keep the code tour current when module responsibilities change.
 - One observable behavior per iteration. Clear fixes need a brief acceptance condition, not a spec/plan/approval chain. Continue within established authorization.
 - Keep Zendesk's native reply selector and state authoritative. Scope changes to the active ticket; integrate with existing surfaces instead of duplicating controls.
+- For every added or changed control, check padding on all four sides against adjacent native content, keyboard focus, wrapping and narrow-screen overflow. Follow the visual acceptance checklist in docs/WORKFLOW.md; a button merely appearing is not acceptance.
 - Preserve native scrolling until a replacement passes live interaction and visual checks. Avoid app-shell rewrites and structural `display: contents` overrides.
 - Bump matching manifest, package, and lockfile versions once per delivered extension change. Documentation changes need no version bump.
 

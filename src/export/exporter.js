@@ -32,7 +32,9 @@
     if (!node) return '';
     const copy = node.cloneNode(true);
     copy
-      .querySelectorAll('script,style,button,[data-zdh-image-preview],[data-zdh-image-lightbox]')
+      .querySelectorAll(
+        'script,style,button,[data-zdh-email-controls],[data-zdh-image-preview],[data-zdh-image-lightbox]'
+      )
       .forEach((el) => el.remove());
     copy
       .querySelectorAll('br')
