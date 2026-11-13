@@ -57,9 +57,12 @@
     if (!['zdh-harvest-sync', 'zdh-harvest-enable'].includes(message?.type)) return;
     if (
       sender.id !== chrome.runtime.id ||
-      sender.url !== chrome.runtime.getURL('src/popup/popup.html')
+      ![
+        chrome.runtime.getURL('src/popup/popup.html'),
+        chrome.runtime.getURL('src/settings/settings.html')
+      ].includes(sender.url?.split('#')[0])
     ) {
-      reply({ error: 'Open the extension popup to configure Harvest styling.' });
+      reply({ error: 'Open the extension Settings page to configure Harvest styling.' });
       return;
     }
     if (message.type === 'zdh-harvest-enable') {

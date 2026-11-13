@@ -13,18 +13,17 @@
     </header>
     <nav aria-label="Guide sections">
       <a href="#start">Start here</a><a href="#read">Read a ticket</a
-      ><a href="#reply">Reply and save</a><a href="#queue">Queue and activity</a
+      ><a href="#reply">Reply and save</a><a href="#queue">Queue and copying</a
       ><a href="#export">Export</a>
     </nav>
     <main>
       <section id="start">
         <h2>Start here</h2>
         <p class="note">
-          <strong>Set Zendesk to Light mode first:</strong> open your Zendesk profile picture →
-          <strong>Appearance → Light mode</strong>. Choose Light mode rather than Match system
-          appearance. Native Zendesk Dark mode is not supported yet and can leave mismatched colors.
-          You can still choose a dark theme in the extension; your Mac’s appearance can stay as it
-          is. The helper does not change Zendesk’s saved appearance for you.
+          This guide describes the v0.7.11 interface. If your installed version is v0.7.8, use
+          Zendesk’s profile picture → <strong>Appearance → Light mode</strong> until the update
+          arrives. The new build has been checked with both native appearances and never changes
+          your saved Zendesk appearance.
         </p>
         <ol>
           <li>Open the extension from Chrome’s toolbar.</li>
@@ -32,9 +31,7 @@
             Use the <strong>On / Off</strong> switch. Off restores Zendesk’s native interface; your
             settings are kept.
           </li>
-          <li>
-            Choose a theme or open <strong>Workflow settings</strong>. Changes save immediately.
-          </li>
+          <li>Choose a theme or open <strong>Settings</strong>. Changes save immediately.</li>
         </ol>
         <h3>Themes and previews</h3>
         <table>
@@ -59,16 +56,16 @@
             <tr>
               <td>Make your own theme</td>
               <td>
-                Open <strong>Create or edit a theme</strong>. Name it and pick Page background,
-                Fields &amp; messages, Text, Buttons &amp; links, and Internal notes. Colors and hex
-                values both work.
+                Open <strong>Settings → Appearance → Create or edit a theme</strong>. Name it and
+                pick Page background, Fields &amp; messages, Text, Buttons &amp; links, and Internal
+                notes. Colors and hex values both work.
               </td>
             </tr>
             <tr>
               <td>Try it on the ticket first</td>
               <td>
                 Click <strong>Preview on ticket</strong>. Zendesk and enabled Harvest styling update
-                temporarily. Stop preview or close the popup to return to your saved theme.
+                temporarily. Stop preview or close the Settings tab to return to your saved theme.
               </td>
             </tr>
             <tr>
@@ -76,7 +73,8 @@
               <td>
                 Choose <strong>Save and apply</strong>. To edit, select the saved custom theme and
                 reopen the editor. Delete removes that custom theme. Unsaved editor colors are kept
-                for the current Chrome session.
+                for the current Chrome session. Export theme saves only its name and five colors;
+                Import theme fills the editor without applying it.
               </td>
             </tr>
           </tbody>
@@ -92,12 +90,15 @@
         </p>
         <ol>
           <li>Open Jones IT Zendesk Helper from your browser’s toolbar.</li>
-          <li>Click <strong>Match Harvest to theme</strong>.</li>
+          <li>
+            Open <strong>Settings → Harvest</strong>, then click
+            <strong>Match Harvest to theme</strong>.
+          </li>
           <li>Allow access to <strong>platform.harvestapp.com</strong> when asked.</li>
           <li>
             Check that the button says <strong>Harvest theme on</strong>. If the permission prompt
-            closed the popup, reopen it and click <strong>Match Harvest to theme</strong> again if
-            needed.
+            was interrupted, reopen Settings and click <strong>Match Harvest to theme</strong> again
+            if needed.
           </li>
           <li>
             Reload the <strong>Harvest panel</strong> using its reload icon, or refresh Zendesk
@@ -121,8 +122,10 @@
           </li>
           <li>
             <strong>Short history:</strong> the latest five messages appear by default.
-            <strong>Show older messages</strong> reveals the rest;
-            <strong>Show latest 5 messages</strong> collapses them again.
+            <strong>View full conversation</strong> at the top of the scrolling history reveals the
+            rest; <strong>Collapse earlier messages</strong> returns to five. Turn off
+            <strong>Settings → Replies &amp; reading → Start with the latest five messages</strong>
+            to show all loaded history.
           </li>
           <li>
             <strong>Compact fields:</strong> Requester, Assignee, Followers, Tags, Ticket Code,
@@ -212,9 +215,8 @@
             status; Zendesk’s metric details identify the target.
           </li>
           <li>
-            <strong>Desktop columns:</strong> the helper uses a fixed sidebar width. Turn off
-            <strong>Conversation left, ticket fields right</strong> or the helper to return to
-            native column resizing.
+            <strong>Desktop columns:</strong> the helper uses a fixed sidebar width. Turn the helper
+            <strong>Off</strong> to return to native column resizing.
           </li>
           <li>
             <strong>Long Harvest references:</strong> notes and reference text use bounded scroll
@@ -236,16 +238,19 @@
             <tr>
               <td>Switch reply mode in one click</td>
               <td>
-                Use <strong>Internal note</strong> or <strong>Public reply</strong> beside the
-                native selector. The native selector remains available for other channels.
+                Click the <strong>Public reply</strong> or <strong>Internal note</strong> side of
+                the two-part control. The selected side is highlighted. It uses Zendesk’s native
+                selector behind the scenes; turning the helper Off restores that selector.
               </td>
             </tr>
             <tr>
               <td>Carry your text across modes</td>
               <td>
-                Check <strong>Carry this draft</strong>. Text and formatting carry when the other
-                draft is empty or still matches the last carried copy. A different destination draft
-                is kept, with a message explaining the conflict. Separate drafts remain the default.
+                In <strong>Settings → Replies &amp; reading</strong>, enable
+                <strong>Use the same draft when switching reply modes</strong>. Text and formatting
+                carry when the other draft is empty or still matches the last carried copy. A
+                different destination draft is kept, with a message explaining the conflict.
+                Separate drafts remain the default.
               </td>
             </tr>
             <tr>
@@ -294,29 +299,17 @@
         </p>
       </section>
       <section id="queue">
-        <h2>Queue and activity</h2>
+        <h2>Queue and copying</h2>
         <ul>
           <li>
-            <strong>Copy ticket:</strong> hover over it near the title to open the choices; move
-            away to close them. Choose number, link, title/link, or Markdown link. Keyboard: Enter
-            or Space opens the choices, Tab reaches each action, Escape closes. Touch users can tap.
+            <strong>Copy ticket:</strong> click once to copy a linked ticket number. Rich-text apps
+            receive a clickable link; plain-text apps receive a Markdown link. There is no format
+            menu.
           </li>
           <li>
-            <strong>Viewing or editing:</strong> the small circle near the title shows an eye for
-            reported viewing/open-tab activity and a pencil for editing. Hover or focus it for the
-            names and status Zendesk reports.
-          </li>
-          <li>
-            <strong>Unknown activity:</strong> a question mark and “Other agents · unknown” mean the
-            helper has not found a native viewing or editing signal. Hover or focus the question
-            mark for an explanation. Someone may still have the ticket open. Older versions call
-            this “not reported.” Native collision reporting depends on the Zendesk plan and the
-            other agent’s session.
-          </li>
-          <li>
-            <strong>Queue refresh:</strong> Workflow settings offers 10, 15, 30 or 60 seconds, or
-            Off. The default is 15 seconds. It uses the native view refresh; ticket pages never
-            reload.
+            <strong>Queue refresh:</strong> Settings → Replies &amp; reading offers 10, 15, 30 or 60
+            seconds, or Off. The default is 15 seconds. It uses the native view refresh; ticket
+            pages never reload.
           </li>
           <li>
             <strong>Refresh pauses:</strong> while you type, select tickets, open a
@@ -324,18 +317,16 @@
             whether it is running or paused.
           </li>
         </ul>
-        <p class="note">
-          Activity uses
+        <p>
+          Zendesk’s native viewing and editing indicators remain unchanged. The helper no longer
+          adds its own activity badge. See
           <a
             href="https://support.zendesk.com/hc/en-us/articles/9186264597146-Avoiding-agent-collision"
             target="_blank"
             rel="noopener"
-            >Zendesk’s native collision reporting</a
-          >. Our eye/pencil icons summarize information read from Zendesk’s rendered indicators.
-          Zendesk normally shows agent pictures in the upper-left ticket area: regular for viewing,
-          blue outline for editing, dimmed when away. Views can show an eye. No separate presence
-          service is added. Recognition of this account’s actual indicators still needs a two-person
-          test.
+            >Zendesk’s agent collision guide</a
+          >
+          for the native behavior.
         </p>
       </section>
       <section id="testing">
@@ -346,12 +337,11 @@
         </p>
         <ol>
           <li>
-            With a coworker, open #209867 in separate accounts. Compare Zendesk’s native pictures
-            with the helper badge while one person views, types without sending, switches away and
-            closes the ticket. Check names and stale-state cleanup.
+            Copy a ticket and paste into your usual editor. Confirm that the ticket number links to
+            the correct ticket.
           </li>
           <li>
-            Try different public and internal drafts with Carry this draft on. A distinct
+            Try different public and internal drafts with the shared-draft setting on. A distinct
             destination must survive; conflicts should explain what happened.
           </li>
           <li>
@@ -367,17 +357,14 @@
             number, theme, action and what you expected.
           </li>
         </ol>
-        <p>
-          Presence results remain unverified until the coworker test passes. “Not reported” means
-          unknown.
-        </p>
       </section>
       <section id="export">
         <h2>Export for local AI</h2>
         <ol>
           <li>
-            Use <strong>Export ticket for local AI</strong> in the popup, or
-            <strong>Close and export</strong> after choosing Solved.
+            In <strong>Settings → Ticket tools &amp; help</strong>, select the target ticket and use
+            <strong>Export ticket for local AI</strong>, or <strong>Close and export</strong> after
+            choosing Solved.
           </li>
           <li>
             Run the local processor on the raw JSON. It uses the installed Ollama text and vision
@@ -401,9 +388,16 @@
       <section>
         <h2>Installation and updates</h2>
         <p>
-          Load the unzipped extension folder through <code>chrome://extensions</code> → Developer
-          mode → Load unpacked. After an update, protect your drafts, reload the extension, and
-          refresh Zendesk once. Team installation may need your organization’s approval.
+          Install from the
+          <a
+            href="https://chromewebstore.google.com/detail/jones-it-zendesk-helper/bbhdbfdfidlfihbbohohdndpppibgogf"
+            target="_blank"
+            rel="noopener"
+            >Chrome Web Store</a
+          >. Development copies use the unzipped extension folder through
+          <code>chrome://extensions</code> → Developer mode → Load unpacked. After an update,
+          protect your drafts, reload the extension, and refresh Zendesk once. Team installation may
+          need your organization’s approval.
         </p>
         <p>
           For detailed local-processing and team-install instructions, see

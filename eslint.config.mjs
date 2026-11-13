@@ -3,7 +3,9 @@ import globals from 'globals';
 
 // Classic content scripts intentionally share these names in one isolated world.
 const sharedExtensionGlobals = {
-  zdhThemes: 'readonly'
+  zdhThemes: 'readonly',
+  zdhThemeControls: 'readonly',
+  zdhThemeFiles: 'readonly'
 };
 
 export default [

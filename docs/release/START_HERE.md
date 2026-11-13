@@ -13,12 +13,12 @@ The owner reported publication on November 12, 2026. [Install Jones IT Zendesk H
 | Icons, screenshot provenance and image sizes | ASSETS.md |
 | Company GitHub / Pages setup | GITHUB_HOSTING.md |
 
-Use the matching `zendesk-helper-0.7.8-store.zip` and checksum in this chat's outputs folder for the dashboard. The separate development ZIP also includes local-processing instructions/tooling. Store artwork and policy pages are outside the extension ZIP. The runtime icon files are inside it. `docs/CODE_TOUR.md` is the reading guide for the source.
+Use the matching Store ZIP and checksum from the version-tagged GitHub release for an update. The prepared source version is 0.7.11; the currently published Store version is 0.7.8. The separate development ZIP also includes local-processing instructions/tooling. Store artwork and policy pages are outside the extension ZIP. The runtime icon files are inside it. `docs/CODE_TOUR.md` is the reading guide for the source.
 
 ## What remains outside this release packet
 
 - Company rollout and managed installation need the appropriate administrator.
-- The real two-person presence check and screen-reader walkthrough remain in TASKS.md.
+- The fresh Harvest-permission check and screen-reader walkthrough remain in TASKS.md.
 - Test the Store installation in a separate profile before disabling an unpacked copy. Different extension IDs do not share settings or recovery data automatically.
 
 ## Later updates

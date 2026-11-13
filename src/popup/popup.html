@@ -1,120 +1,51 @@
 <!doctype html>
 <html lang="en">
-  <meta charset="utf-8" /><title>Jones IT Zendesk Helper</title>
-  <link rel="stylesheet" href="popup.css" />
-  <header class="popup-header">
-    <div>
+  <head>
+    <meta charset="utf-8" />
+    <title>Jones IT Zendesk Helper</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="popup-header">
       <h1>Jones IT Zendesk Helper</h1>
-      <p class="subtitle">Settings for Zendesk</p>
-    </div>
+      <button
+        id="power"
+        type="button"
+        role="switch"
+        aria-label="Jones IT Zendesk Helper"
+        aria-checked="true"
+      >
+        <span class="switch-track" aria-hidden="true"></span><span id="power-label">On</span>
+      </button>
+    </header>
+    <label for="theme-trigger">Theme</label>
+    <select id="theme" hidden aria-hidden="true" tabindex="-1"></select>
     <button
-      id="power"
+      id="theme-trigger"
+      class="secondary theme-trigger"
       type="button"
-      role="switch"
-      aria-label="Jones IT Zendesk Helper"
-      aria-checked="true"
+      role="combobox"
+      aria-label="Theme"
+      aria-expanded="false"
+      aria-controls="theme-options"
+      aria-haspopup="listbox"
     >
-      <span class="switch-track" aria-hidden="true"></span><span id="power-label">On</span>
+      <span id="theme-name">Theme</span><span aria-hidden="true">⌄</span>
     </button>
-  </header>
-  <label for="theme-trigger">Theme</label>
-  <select id="theme" hidden aria-hidden="true" tabindex="-1">
-    <option value="system">System light / dark</option>
-    <option value="native">Zendesk default</option>
-    <option value="daylight">Daylight</option>
-    <option value="midnight">Midnight</option>
-    <option value="blush">Blush pink</option>
-    <option value="forest">Forest</option>
-    <option value="purple">Deep Purple</option>
-    <option value="magenta">Magenta</option>
-    <option value="jones">Jones IT</option>
-    <option value="tealPink">Teal &amp; Pink</option>
-    <option value="pinkTeal">Pink &amp; Teal</option>
-    <option value="copper">Copper</option>
-    <option value="chestnut">Chestnut</option>
-    <option value="catppuccin">Catppuccin Mocha</option>
-    <option value="dracula">Dracula</option>
-    <option value="tokyoNight">Tokyo Night</option>
-    <option value="nord">Nord</option>
-    <option value="gruvbox">Gruvbox Dark</option>
-    <option value="oneDark">One Dark</option>
-  </select>
-  <button
-    id="theme-trigger"
-    class="secondary theme-trigger"
-    type="button"
-    role="combobox"
-    aria-label="Theme"
-    aria-expanded="false"
-    aria-controls="theme-options"
-    aria-haspopup="listbox"
-  >
-    <span id="theme-name">Theme</span><span aria-hidden="true">⌄</span>
-  </button>
-  <div id="theme-options" role="listbox" aria-label="Themes" hidden></div>
-  <section class="theme-preview" aria-label="Theme preview">
-    <div class="preview-heading">Ticket preview <span>Open</span></div>
-    <p class="preview-message">Thanks for the update.</p>
-    <p class="preview-note">Internal note · Only your team can see this.</p>
-    <button type="button" class="preview-send" tabindex="-1">Send</button>
-  </section>
-  <p class="theme-note">Hover or use arrow keys to preview here. Click to apply.</p>
-  <details id="theme-studio">
-    <summary>Create or edit a theme</summary>
-    <label for="custom-name">Theme name</label
-    ><input id="custom-name" maxlength="60" placeholder="My theme" />
-    <div id="color-fields"></div>
-    <p id="theme-error" role="status"></p>
-    <div class="actions">
-      <button id="preview-site" class="secondary" type="button">Preview on ticket</button
-      ><button id="save-theme" type="button">Save and apply</button
-      ><button id="delete-theme" class="secondary" type="button" hidden>Delete theme</button>
-    </div>
-    <p class="theme-note">
-      Ticket preview is temporary and ends when this popup closes. Text must remain readable on both
-      backgrounds.
-    </p>
-  </details>
-  <button class="secondary" id="harvest-theme" type="button" aria-pressed="false">
-    Match Harvest to theme
-  </button>
-  <p class="theme-note">
-    Off by default. Click Match Harvest to theme, allow access, then reload the Harvest panel.
-    Changes colors only, not timer entries.
-  </p>
-  <details>
-    <summary>Workflow settings</summary>
-    <label
-      ><input type="checkbox" id="auto-title" /> Update company and requester in ticket
-      titles</label
-    ><label><input type="checkbox" id="carry-draft" /> Carry draft when switching reply mode</label
-    ><label for="queue-refresh">Refresh ticket views</label
-    ><select id="queue-refresh">
-      <option value="0">Off</option>
-      <option value="10">Every 10 seconds</option>
-      <option value="15">Every 15 seconds</option>
-      <option value="30">Every 30 seconds</option>
-      <option value="60">Every minute</option>
-    </select>
-    <p class="theme-note">
-      Pauses during interaction, selection, menus, offline or hidden tabs. Ticket pages never
-      reload.
-    </p>
-    <label
-      ><input type="checkbox" id="layout" checked /> Conversation left, ticket fields right</label
-    >
-    <label><input type="checkbox" id="context" /> Also show customer context / apps</label>
-    <details>
-      <summary>Title not detected?</summary>
-      <button id="manual">Select title manually</button>
-    </details>
-  </details>
-  <button class="secondary" id="export">Export ticket for local AI</button>
+    <div id="theme-options" role="listbox" aria-label="Themes" hidden></div>
+    <section class="theme-preview" aria-label="Theme preview">
+      <div class="preview-heading">Ticket preview <span>Open</span></div>
+      <p class="preview-message">Thanks for the update.</p>
+      <p class="preview-note">Internal note · Only your team can see this.</p>
+      <button type="button" class="preview-send" tabindex="-1">Send</button>
+    </section>
 
-  <a class="guide-link" href="../guide/guide.html" target="_blank" rel="noopener"
-    >Help &amp; feature guide</a
-  >
-  <p id="status" role="status">Loading settings…</p>
-  <script src="../shared/themes.js"></script>
-  <script src="popup.js"></script>
+    <footer class="popup-footer">
+      <button id="settings" class="secondary" type="button">Settings</button>
+    </footer>
+    <p id="status" role="status"></p>
+    <script src="../shared/themes.js"></script>
+    <script src="../shared/theme-controls.js"></script>
+    <script src="popup.js"></script>
+  </body>
 </html>

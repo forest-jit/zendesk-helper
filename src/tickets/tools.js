@@ -1,6 +1,5 @@
-// Small native-adjacent features: identity titles, reply-mode switch, copy, presence and queue refresh.
+// Small native-adjacent features: identity titles, reply-mode switch, copy and queue refresh.
 // Find a feature by its syncName function. sync() reconnects tools after Zendesk navigation.
-// Presence is observed from native DOM signals; this file does not create a presence service.
 
 'use strict';
 // Native DOM adapters only: no private Zendesk stores, polling endpoints or remote services.
@@ -10,10 +9,9 @@
     modeBar = null,
     copyBar = null,
     copyFeedback = null,
-    activityBadge = null,
-    activityBar = null,
     titleHint = null,
     queueBar = null,
+    nativeModeButtons = new Set(),
     lastInput = Date.now(),
     lastRefresh = 0,
     pendingRefresh = null,
@@ -193,13 +191,24 @@
     throw Error('Wait for Zendesk to finish loading this draft. Both drafts were kept.');
   }
   // Carry is opt-in. A distinct destination draft wins; retain both rather than replacing it.
-  async function switchMode() {
+  async function switchMode(requestedMode) {
     const state = getState(),
       path = location.pathname,
       transaction = ctx;
-    if (!state?.nativeReady || ctx.busy() || !ctx.acquire()) return;
-    const target = state.mode === 'public' ? 'internal' : 'public',
-      carry = ctx.preferences.carryDraft;
+    const target = ['public', 'internal'].includes(requestedMode)
+      ? requestedMode
+      : state?.mode === 'public'
+        ? 'internal'
+        : 'public';
+    if (
+      target === state?.mode ||
+      !state?.nativeReady ||
+      state.readOnly ||
+      ctx.busy() ||
+      !ctx.acquire()
+    )
+      return;
+    const carry = ctx.preferences.carryDraft;
     let backupKey = null;
     try {
       if (carry && ctx.uploads(state))
@@ -256,193 +265,105 @@
     }
   }
   function syncMode(state) {
-    if (!state?.modeButton) return;
-    if (
-      !modeBar?.isConnected ||
-      modeBar.closest('[data-test-id="omnichannel-composer"]') !==
-        state.composer?.closest('[data-test-id="omnichannel-composer"]')
-    ) {
+    if (!state?.modeButton || state.readOnly || !['public', 'internal'].includes(state.mode)) {
+      modeBar?.remove();
+      for (const native of nativeModeButtons) native.removeAttribute('data-zdh-native-mode');
+      nativeModeButtons.clear();
+      return;
+    }
+    if (!modeBar?.isConnected || !state.modeButton.parentElement.contains(modeBar)) {
       modeBar?.remove();
       modeBar = document.createElement('span');
       modeBar.dataset.zdhModeTools = 'true';
-      const change = button('', switchMode);
-      change.dataset.modeSwitch = 'true';
-      const carryLabel = document.createElement('label'),
-        carry = document.createElement('input');
-      carry.type = 'checkbox';
-      carry.dataset.carryDraft = 'true';
-      carry.addEventListener('change', () => {
-        if (!carry.checked) notice('');
-        ctx.preferences.carryDraft = carry.checked;
-        chrome.storage.local.set({ carryDraft: carry.checked });
+      const choices = document.createElement('span');
+      choices.dataset.modeChoices = 'true';
+      choices.setAttribute('role', 'radiogroup');
+      choices.setAttribute('aria-label', 'Reply visibility');
+      for (const [mode, label] of [
+        ['public', 'Public reply'],
+        ['internal', 'Internal note']
+      ]) {
+        const choice = button(label, () => switchMode(mode));
+        choice.dataset.modeChoice = mode;
+        choice.setAttribute('role', 'radio');
+        choices.append(choice);
+      }
+      choices.addEventListener('keydown', async (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const target =
+          event.key === 'Home'
+            ? 'public'
+            : event.key === 'End'
+              ? 'internal'
+              : getState()?.mode === 'public'
+                ? 'internal'
+                : 'public';
+        await switchMode(target);
+        modeBar?.querySelector('[aria-checked="true"]')?.focus();
       });
-      carryLabel.append(carry, document.createTextNode('Carry this draft'));
-      carryLabel.title =
-        'Carry text and formatting when switching. A different destination draft is never overwritten.';
       const output = document.createElement('span');
       output.dataset.modeNotice = 'true';
       output.setAttribute('role', 'status');
-      modeBar.append(change, carryLabel, output);
+      modeBar.append(choices, output);
       state.modeButton.insertAdjacentElement('afterend', modeBar);
     }
-    const change = modeBar.querySelector('[data-mode-switch]');
-    text(change, state.mode === 'public' ? 'Internal note' : 'Public reply');
-    change.title = state.mode === 'public' ? 'Switch to internal note' : 'Switch to public reply';
-    const disabled = ctx.busy() || !['public', 'internal'].includes(state.mode);
-    if (change.disabled !== disabled) change.disabled = disabled;
-    modeBar.querySelector('input').checked = ctx.preferences.carryDraft;
+    // Keep the native selector in the DOM as the state source and action target.
+    // Only our UI replaces its visible trigger; Off restores the original immediately.
+    state.modeButton.dataset.zdhNativeMode = 'true';
+    nativeModeButtons.add(state.modeButton);
+    for (const choice of modeBar.querySelectorAll('[data-mode-choice]')) {
+      const selected = choice.dataset.modeChoice === state.mode;
+      const disabled = ctx.busy() || !state.nativeReady;
+      choice.setAttribute('aria-checked', String(selected));
+      choice.tabIndex = selected ? 0 : -1;
+      if (choice.disabled !== disabled) choice.disabled = disabled;
+    }
   }
   function syncCopy(state) {
     const field = state?.grid?.querySelector('input[data-test-id="omni-header-subject"]');
     if (!field) return;
+    const row = state.conversation?.querySelector('[data-zdh-ticket-tools-row]');
     if (copyBar?.isConnected && state.grid.contains(copyBar)) {
-      const row = state.conversation?.querySelector('[data-zdh-history-row]');
       if (row && copyBar.parentElement !== row) {
         row.append(copyBar);
         if (copyFeedback) row.append(copyFeedback);
-        if (activityBadge) row.append(activityBadge);
       }
       return;
     }
     copyBar?.remove();
     copyFeedback?.remove();
-    copyBar = document.createElement('details');
-    copyBar.dataset.zdhCopyTools = 'true';
-    const summary = document.createElement('summary');
-    summary.textContent = 'Copy ticket';
-    const actions = document.createElement('div');
-    actions.setAttribute('role', 'group');
-    actions.setAttribute('aria-label', 'Copy ticket');
     const output = document.createElement('span');
     output.setAttribute('role', 'status');
     output.dataset.zdhCopyFeedback = 'true';
     copyFeedback = output;
-    for (const [format, label] of [
-      ['number', 'Copy number'],
-      ['url', 'Copy link'],
-      ['title', 'Copy title and link'],
-      ['markdown', 'Copy Markdown link']
-    ])
-      actions.append(
-        button(label, async () => {
+    copyBar = button('Copy ticket', async () => {
+      try {
+        const id = location.pathname.match(/^\/agent\/tickets\/(\d+)$/)?.[1];
+        const link = model.ticketLink(id || '');
+        // Rich editors receive a linked number; plain-text destinations receive Markdown.
+        if (globalThis.ClipboardItem && navigator.clipboard.write) {
           try {
-            const id = location.pathname.match(/^\/agent\/tickets\/(\d+)$/)?.[1];
-            if (!id) throw Error('Open a ticket first.');
-            const title =
-              getState()?.grid?.querySelector('input[data-test-id="omni-header-subject"]')?.value ||
-              '';
-            const url = location.origin + '/agent/tickets/' + id;
-            await navigator.clipboard.writeText(model.copyText({ id, title, url }, format));
-            text(output, '');
-            copyBar.open = false;
-          } catch (error) {
-            text(output, error.message);
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': new Blob([link.html], { type: 'text/html' }),
+                'text/plain': new Blob([link.plain], { type: 'text/plain' })
+              })
+            ]);
+          } catch {
+            await navigator.clipboard.writeText(link.plain);
           }
-        })
-      );
-    copyBar.append(summary, actions);
-    const panel = copyBar;
-    panel.addEventListener('pointerenter', (event) => {
-      if (event.pointerType !== 'touch') panel.open = true;
-    });
-    panel.addEventListener('pointerleave', (event) => {
-      if (event.pointerType !== 'touch') panel.open = false;
-    });
-    summary.addEventListener('click', (event) => {
-      if (event.detail && matchMedia('(hover: hover)').matches) {
-        event.preventDefault();
-        panel.open = true;
+        } else await navigator.clipboard.writeText(link.plain);
+        text(output, '');
+      } catch (error) {
+        text(output, error.message);
       }
     });
-    panel.addEventListener('focusout', (event) => {
-      if (!panel.contains(event.relatedTarget)) panel.open = false;
-    });
-    panel.addEventListener('keydown', (event) => {
-      if (event.target === summary && ['Enter', ' '].includes(event.key)) {
-        event.preventDefault();
-        panel.open = !panel.open;
-      } else if (event.key === 'Escape') {
-        event.preventDefault();
-        panel.open = false;
-        summary.focus();
-      }
-    });
-    const row = state.conversation?.querySelector('[data-zdh-history-row]');
+    copyBar.dataset.zdhCopyTools = 'true';
+    copyBar.title = 'Copy the ticket number as a link';
     if (row) row.append(copyBar);
     else field.insertAdjacentElement('afterend', copyBar);
     copyBar.insertAdjacentElement('afterend', output);
-  }
-  // Read accessible native collision labels. No signal is unknown, not proof nobody is there.
-  function nativeActivity() {
-    return model.activity(
-      [
-        ...document.querySelectorAll(
-          '[data-test-id*="collision"],[data-test-id*="presence"],[aria-label*=" is editing" i],[aria-label*=" is viewing" i],[title*=" is editing" i],[title*=" is viewing" i]'
-        )
-      ]
-        .filter(
-          (e) =>
-            visible(e) &&
-            !e.closest(
-              '[data-zdh-activity],[data-zdh-presence],article,[data-test-id="omnichannel-composer"]'
-            )
-        )
-        .map((e) => e.getAttribute('aria-label') || e.title || e.textContent)
-    );
-  }
-  function syncActivity(state) {
-    const composer = state?.composer?.closest('[data-test-id="omnichannel-composer"]');
-    if (!composer) return;
-    if (!activityBar?.isConnected || activityBar.parentElement !== composer.parentElement) {
-      activityBar?.remove();
-      activityBar = document.createElement('div');
-      activityBar.dataset.zdhActivity = 'true';
-      activityBar.setAttribute('role', 'status');
-      composer.insertAdjacentElement('beforebegin', activityBar);
-    }
-    const a = nativeActivity();
-    if (!activityBadge?.isConnected || !state.grid.contains(activityBadge)) {
-      activityBadge?.remove();
-      activityBadge = document.createElement('span');
-      activityBadge.dataset.zdhPresence = 'true';
-      const trigger = document.createElement('button');
-      trigger.type = 'button';
-      trigger.dataset.presenceTrigger = 'true';
-      const tooltip = document.createElement('span');
-      tooltip.role = 'tooltip';
-      tooltip.id = 'zdh-presence-' + crypto.randomUUID();
-      trigger.setAttribute('aria-describedby', tooltip.id);
-      activityBadge.append(trigger, tooltip);
-      const copy = state.grid.querySelector('[data-zdh-copy-tools]');
-      if (copy) copy.insertAdjacentElement('afterend', activityBadge);
-      else
-        state.grid
-          .querySelector('input[data-test-id="omni-header-subject"]')
-          ?.insertAdjacentElement('afterend', activityBadge);
-    }
-    const copy = state.grid.querySelector('[data-zdh-copy-tools]');
-    if (copy && activityBadge.parentElement !== copy.parentElement)
-      copy.insertAdjacentElement('afterend', activityBadge);
-    const badge = activityBadge.querySelector('button'),
-      tooltip = activityBadge.querySelector('[role="tooltip"]');
-    const unknownHelp =
-      'The helper has not found a native Zendesk viewing or editing signal. Someone may still have this ticket open.';
-    const label = a.kind === 'unknown' ? 'Other agents: activity unknown' : a.text;
-    if (activityBadge.dataset.state !== a.kind) {
-      activityBadge.dataset.state = a.kind;
-      badge.innerHTML =
-        a.kind === 'unknown'
-          ? '<span aria-hidden="true">?</span>'
-          : a.kind === 'editing'
-            ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m10.5 2 3.5 3.5-7.8 7.8-4.2.7.7-4.2L10.5 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="m9 3.5 3.5 3.5" stroke="currentColor" stroke-width="1.3"/></svg>'
-            : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M1 8s2.5-4.5 7-4.5S15 8 15 8s-2.5 4.5-7 4.5S1 8 1 8Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.3"/></svg>';
-    }
-    if (badge.getAttribute('aria-label') !== label) badge.setAttribute('aria-label', label);
-    text(tooltip, a.kind === 'unknown' ? label + '. ' + unknownHelp : label);
-    activityBar.dataset.state = a.kind;
-    text(activityBar, a.kind === 'unknown' ? 'Other agents · unknown' : a.text);
-    activityBar.title =
-      a.kind === 'unknown' ? unknownHelp : 'Reported by Zendesk’s native collision indicator.';
   }
   function overlayOpen() {
     return [...document.querySelectorAll('[role="dialog"],[role="menu"],[role="listbox"]')].some(
@@ -532,7 +453,6 @@
           const state = getState();
           if (state) {
             syncTitle(state);
-            syncActivity(state);
           }
         }
       }, 1000);
@@ -542,22 +462,14 @@
     syncTitle(state);
     syncMode(state);
     syncCopy(state);
-    syncActivity(state);
   }
   function clear() {
     if (timer) clearInterval(timer);
     timer = null;
-    for (const e of [
-      modeBar,
-      copyBar,
-      copyFeedback,
-      activityBadge,
-      activityBar,
-      titleHint,
-      queueBar
-    ])
-      e?.remove();
-    modeBar = copyBar = copyFeedback = activityBadge = activityBar = titleHint = queueBar = null;
+    for (const e of [modeBar, copyBar, copyFeedback, titleHint, queueBar]) e?.remove();
+    modeBar = copyBar = copyFeedback = titleHint = queueBar = null;
+    for (const native of nativeModeButtons) native.removeAttribute('data-zdh-native-mode');
+    nativeModeButtons.clear();
     ctx = null;
   }
   for (const event of ['pointerdown', 'keydown', 'input', 'wheel'])
@@ -572,7 +484,6 @@
     sync,
     clear,
     identity,
-    activity: nativeActivity,
     prepareTitle: (state) => {
       if (ctx?.enabled) syncTitle(state, true);
     }

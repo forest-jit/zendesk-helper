@@ -240,6 +240,33 @@ assert.equal(styles.length, 0);
   assert.equal(prefs.harvestTheme, false, 'denial must not enable styling');
   assert.equal(registered.length, 0);
 
+  // Settings is another exact, packaged extension page; its section anchors are allowed.
+  messageListener(
+    enable,
+    { ...popup, url: 'chrome-extension://test-extension/src/settings/settings.html#harvest' },
+    (r) => {
+      response = r;
+    }
+  );
+  assert.equal(permissionRequests, 3);
+  permitted = true;
+  resolvePermission(true);
+  await flush();
+  assert.equal(response.granted, true);
+  assert.equal(prefs.harvestTheme, true);
+  prefs.harvestTheme = false;
+  changed({ harvestTheme: {} }, 'local');
+  await flush();
+  messageListener(
+    enable,
+    { ...popup, url: 'chrome-extension://another-extension/src/settings/settings.html' },
+    (r) => {
+      response = r;
+    }
+  );
+  assert.ok(response.error);
+  assert.equal(permissionRequests, 3);
+
   // Unrelated grant events still reconcile preferences; they never turn the feature on.
   permitted = true;
   installed();

@@ -91,7 +91,7 @@ async function launchPackagedBrowser() {
 }
 
 test.beforeAll(async () => {
-  // Reuse fictional ticket content; add the current native composer wrapper for activity placement.
+  // Reuse fictional ticket content; add the current native composer wrapper for reply controls.
   ticketHTML = (await fs.readFile(path.join(__dirname, 'fixtures/zendesk-ticket.html'), 'utf8'))
     .replace(
       '<section class="composer">',
@@ -156,7 +156,8 @@ for (const theme of ['daylight', 'purple', 'blush']) {
     const popup = await context.newPage();
     await popup.goto(`chrome-extension://${extensionId}/src/popup/popup.html`);
     await expect(popup.locator('html')).toHaveAttribute('data-zdh-theme', theme);
-    await expect(popup.locator('#harvest-theme')).toHaveText('Match Harvest to theme');
+    await expect(popup.locator('#harvest-theme')).toHaveCount(0);
+    await expect(popup.getByRole('button', { name: 'Settings', exact: true })).toBeVisible();
     await expect(popup.locator('.theme-preview')).toHaveScreenshot(`popup-preview-${theme}.png`);
     await popup.locator('#theme-trigger').click();
     const preview = theme === 'purple' ? 'blush' : 'purple';
@@ -186,21 +187,12 @@ test('browser restart reloads the packaged extension and retains preferences', a
   await page.close();
 });
 
-// Simulated native labels check our rendering only; a real second-agent test is still required.
-test('activity distinguishes unknown, viewing and editing without submitting', async () => {
+// Zendesk owns collision reporting. The helper must neither duplicate nor remove it.
+test('native agent activity remains untouched without duplicate helper indicators', async () => {
   await preferences({ enabled: true, theme: 'purple', layout: true, autoTitle: false });
   const page = await context.newPage();
-  await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('https://itjones.zendesk.com/agent/tickets/222');
-  const badge = page.locator('[data-zdh-presence] button');
-  const activity = page.locator('[data-zdh-activity]');
-  await expect(badge).toHaveAccessibleName('Other agents: activity unknown');
-  await expect(badge).toHaveText('?');
-  await expect(activity).toHaveText('Other agents · unknown');
-  await badge.focus();
-  await expect(page.locator('[data-zdh-presence] [role=tooltip]')).toContainText(
-    'Someone may still have this ticket open'
-  );
+  await expect(page.locator('[data-zdh-presence],[data-zdh-activity]')).toHaveCount(0);
   await page.evaluate(() => {
     const signal = document.createElement('span');
     signal.id = 'native-collision-test';
@@ -209,23 +201,238 @@ test('activity distinguishes unknown, viewing and editing without submitting', a
     signal.textContent = 'Morgan';
     document.querySelector('#active-ticket').prepend(signal);
   });
-  await expect(badge).toHaveAccessibleName('Morgan is viewing this ticket');
-  await expect(page.locator('[data-zdh-presence]')).toHaveAttribute('data-state', 'viewing');
-  await page
-    .locator('#native-collision-test')
-    .evaluate((e) => e.setAttribute('aria-label', 'Morgan is editing this ticket'));
-  await expect(badge).toHaveAccessibleName('Morgan is editing this ticket');
-  await expect(page.locator('[data-zdh-presence]')).toHaveAttribute('data-state', 'editing');
-  await page.locator('#native-collision-test').evaluate((e) => {
-    e.hidden = true;
+  const signal = page.locator('#native-collision-test');
+  await expect(signal).toBeVisible();
+  await signal.evaluate((e) => e.setAttribute('aria-label', 'Morgan is editing this ticket'));
+  await expect(signal).toHaveAttribute('aria-label', 'Morgan is editing this ticket');
+  await expect(page.locator('[data-zdh-presence],[data-zdh-activity]')).toHaveCount(0);
+  await preferences({ enabled: false });
+  await expect(signal).toBeVisible();
+  await expect(signal).toHaveAttribute('aria-label', 'Morgan is editing this ticket');
+  expect(await page.evaluate(() => globalThis.__nativeActions.submitClicks)).toBe(0);
+  await page.close();
+});
+
+test('segmented reply control follows native state and restores the original selector on Off', async () => {
+  await preferences({
+    enabled: true,
+    theme: 'purple',
+    layout: true,
+    autoTitle: false,
+    carryDraft: false
   });
-  await expect(badge).toHaveAccessibleName('Other agents: activity unknown');
-  await expect(badge).toHaveText('?');
+  const page = await context.newPage();
+  await page.goto('https://itjones.zendesk.com/agent/tickets/222');
+  await page.evaluate(() => {
+    // Production mounts the mode controls inside a header with important native ink.
+    const trigger = document.querySelector('[data-test-id=omnichannel-channel-switcher-button]');
+    const header = document.createElement('header');
+    trigger.before(header);
+    header.append(trigger);
+    const old = document.querySelector('#reply');
+    const editor = document.createElement('div');
+    editor.contentEditable = 'true';
+    editor.dataset.testId = 'omnicomposer-rich-text-ckeditor';
+    editor.textContent = 'Keep this unsent.';
+    old.replaceWith(editor);
+    for (const choice of document.querySelectorAll(
+      '[data-test-id=omnichannel-channel-switcher-menu] button'
+    ))
+      choice.setAttribute('role', 'menuitemcheckbox');
+  });
+  const native = page.locator('[data-test-id=omnichannel-channel-switcher-button]');
+  const publicChoice = page.getByRole('radio', { name: 'Public reply', exact: true });
+  const internalChoice = page.getByRole('radio', { name: 'Internal note', exact: true });
+  await expect(publicChoice).toHaveAttribute('aria-checked', 'true');
+  const inactiveInk = await internalChoice.evaluate((e) => getComputedStyle(e).color);
+  const activeInk = await publicChoice.evaluate((e) => getComputedStyle(e).color);
+  expect(inactiveInk).not.toBe(activeInk);
+  await expect(native).toBeHidden();
+  await expect(page.getByRole('checkbox', { name: 'Carry this draft' })).toHaveCount(0);
+  await internalChoice.click();
+  await expect(native).toHaveAttribute('aria-label', 'Internal note');
+  await expect(internalChoice).toHaveAttribute('aria-checked', 'true');
+  await expect(internalChoice).toBeEnabled();
+  await internalChoice.focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(native).toHaveAttribute('aria-label', 'Public reply');
+  await expect(publicChoice).toHaveAttribute('aria-checked', 'true');
+  await expect(page.locator('[contenteditable=true]')).toHaveText('Keep this unsent.');
   expect(await page.evaluate(() => globalThis.__nativeActions.submitClicks)).toBe(0);
   await preferences({ enabled: false });
-  await expect(badge).toHaveCount(0);
-  await expect(activity).toHaveCount(0);
+  await expect(native).toBeVisible();
+  await expect(page.getByRole('radiogroup', { name: 'Reply visibility' })).toHaveCount(0);
   await page.close();
+});
+
+test('one Copy ticket action writes a linked number without a copy menu', async () => {
+  await preferences({ enabled: true, layout: true, autoTitle: false });
+  const page = await context.newPage();
+  await page.goto('https://itjones.zendesk.com/agent/tickets/222');
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'], {
+    origin: 'https://itjones.zendesk.com'
+  });
+  await page.getByRole('button', { name: 'Copy ticket', exact: true }).click();
+  // Click returns before the asynchronous clipboard write completes.
+  await expect
+    .poll(() =>
+      page.evaluate(async () => {
+        const item = (await navigator.clipboard.read())[0];
+        if (!item?.types.includes('text/html')) return null;
+        return {
+          plain: await (await item.getType('text/plain')).text(),
+          linkedNumber: (await (await item.getType('text/html')).text()).includes(
+            'href="https://itjones.zendesk.com/agent/tickets/222"'
+          )
+        };
+      })
+    )
+    .toEqual({
+      plain: '[#222](https://itjones.zendesk.com/agent/tickets/222)',
+      linkedNumber: true
+    });
+  await context.clearPermissions();
+  await expect(page.locator('details[data-zdh-copy-tools]')).toHaveCount(0);
+  expect(await page.evaluate(() => globalThis.__nativeActions.submitClicks)).toBe(0);
+  await page.close();
+});
+
+test('optional recent-message summary lives inside the scrolling history', async () => {
+  await preferences({ enabled: true, layout: true, autoTitle: false, collapseHistory: true });
+  const page = await context.newPage();
+  await page.goto('https://itjones.zendesk.com/agent/tickets/222');
+  await page.evaluate(() => {
+    const log = document.querySelector('#live-log-shape');
+    for (let i = 0; i < 3; i++) log.append(log.querySelector('article').cloneNode(true));
+  });
+  const disclosure = page.locator('[data-zdh-conversation-disclosure]');
+  const entries = page.locator('[data-test-id=omni-log-comment-item]');
+  await expect(disclosure).toHaveText('View full conversation');
+  await expect(disclosure).toHaveAttribute(
+    'aria-label',
+    'View full conversation, 3 earlier messages hidden'
+  );
+  await expect(page.locator('#live-log-shape > [data-zdh-conversation-disclosure]')).toHaveCount(1);
+  await expect(entries.locator('visible=true')).toHaveCount(5);
+  await disclosure.click();
+  await expect(disclosure).toHaveText('Collapse earlier messages');
+  await expect(entries.locator('visible=true')).toHaveCount(8);
+  await preferences({ collapseHistory: false });
+  await expect(disclosure).toHaveCount(0);
+  await expect(entries.locator('visible=true')).toHaveCount(8);
+  await preferences({ collapseHistory: true });
+  await expect(disclosure).toHaveCount(1);
+  await expect(entries.locator('visible=true')).toHaveCount(5);
+  await preferences({ enabled: false });
+  await expect(entries.locator('visible=true')).toHaveCount(8);
+  await page.close();
+});
+
+test('small popup opens Settings; theme imports preview and roll back without changing the ticket', async () => {
+  await preferences({
+    enabled: true,
+    theme: 'purple',
+    customThemes: {},
+    carryDraft: false,
+    collapseHistory: true
+  });
+  await worker.evaluate(() =>
+    chrome.storage.session.remove(['themeStudioDraft', 'settingsTargetTab'])
+  );
+  const page = await context.newPage();
+  await page.goto('https://itjones.zendesk.com/agent/zdh-visual-test');
+  const popup = await context.newPage();
+  await popup.goto(`chrome-extension://${extensionId}/src/popup/popup.html`);
+  await expect(
+    popup.locator('#theme-studio,#carry-draft,#harvest-theme,#layout,#context')
+  ).toHaveCount(0);
+  await expect(popup.getByText('Settings for Zendesk', { exact: true })).toHaveCount(0);
+  const opened = context.waitForEvent('page');
+  await popup.getByRole('button', { name: 'Settings', exact: true }).click();
+  const settings = await opened;
+  await settings.waitForURL(`chrome-extension://${extensionId}/src/settings/settings.html`);
+  await expect(settings.locator('#hex-page')).toHaveValue('#21142f');
+  await expect(settings.locator('#target-ticket')).not.toHaveValue('');
+  await expect(settings.getByRole('checkbox', { name: /Use the same draft/ })).not.toBeChecked();
+  await settings.getByRole('checkbox', { name: /Use the same draft/ }).check();
+  await expect
+    .poll(() =>
+      worker.evaluate(async () => (await chrome.storage.local.get('carryDraft')).carryDraft)
+    )
+    .toBe(true);
+  const files = require('../src/shared/theme-files.js');
+  const downloadStarted = settings.waitForEvent('download');
+  await settings.getByRole('button', { name: 'Export theme', exact: true }).click();
+  const download = await downloadStarted;
+  expect(download.suggestedFilename()).toBe('deep-purple.json');
+  const exported = await fs.readFile(await download.path(), 'utf8');
+  expect(files.parse(exported).name).toBe('Deep Purple');
+  expect(Object.keys(JSON.parse(exported)).sort()).toEqual([
+    'format',
+    'name',
+    'palette',
+    'version'
+  ]);
+  const palette = require('../src/shared/themes.js').palettes.blush;
+  await settings.locator('#theme-file').setInputFiles({
+    name: 'demo-theme.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(files.serialize({ name: 'Demo rose', palette }))
+  });
+  await expect(settings.locator('#custom-name')).toHaveValue('Demo rose');
+  await expect(page.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
+  await settings.getByRole('button', { name: 'Preview on ticket', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-zdh-theme', 'custom-preview');
+  await settings.close();
+  await expect(page.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
+  const again = await context.newPage();
+  await again.goto(`chrome-extension://${extensionId}/src/settings/settings.html`);
+  await expect(again.locator('#custom-name')).toHaveValue('Demo rose');
+  await again.getByRole('button', { name: 'Save and apply', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-zdh-theme', /^custom-/);
+  await expect
+    .poll(() =>
+      worker.evaluate(async () =>
+        Object.values((await chrome.storage.local.get('customThemes')).customThemes).map(
+          (x) => x.name
+        )
+      )
+    )
+    .toContain('Demo rose');
+  await again.close();
+  await popup.close();
+  await page.close();
+});
+
+test('Settings does not guess a preview target when multiple Zendesk tabs are open', async () => {
+  await preferences({ enabled: true, theme: 'purple', customThemes: {} });
+  await worker.evaluate(() =>
+    chrome.storage.session.remove(['settingsTargetTab', 'themeStudioDraft'])
+  );
+  const first = await context.newPage();
+  await first.goto('https://itjones.zendesk.com/agent/zdh-visual-test');
+  const second = await context.newPage();
+  await second.goto('https://itjones.zendesk.com/agent/zdh-visual-test');
+  const settings = await context.newPage();
+  await settings.goto(`chrome-extension://${extensionId}/src/settings/settings.html`);
+  await expect(settings.locator('#target-ticket')).toHaveValue('');
+  await settings.getByRole('button', { name: 'Preview on ticket', exact: true }).click();
+  await expect(settings.locator('#status')).toHaveText(
+    'Choose the Zendesk tab to preview or export.'
+  );
+  await expect(first.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
+  await expect(second.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
+  const options = await settings
+    .locator('#target-ticket option')
+    .evaluateAll((nodes) => nodes.map((n) => n.value).filter(Boolean));
+  await settings.locator('#target-ticket').selectOption(options[1]);
+  await settings.getByRole('button', { name: 'Preview on ticket', exact: true }).click();
+  await expect(second.locator('html')).toHaveAttribute('data-zdh-theme', 'custom-preview');
+  await expect(first.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
+  await settings.close();
+  await expect(second.locator('html')).toHaveAttribute('data-zdh-theme', 'purple');
+  await first.close();
+  await second.close();
 });
 
 // A native Closed notice must beat stale Open controls and an old composer in the same workspace.

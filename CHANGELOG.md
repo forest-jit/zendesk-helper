@@ -4,24 +4,38 @@ Changes to Jones IT Zendesk Helper, written for the people using it.
 
 ## Unreleased
 
-### Fixes and setup
+## 0.7.11 - 2026-11-12
 
-- Themes now reach ticket sections that could revert to Zendesk’s own colors. Browser controls follow the selected helper palette too. The helper leaves your Zendesk appearance preference alone. Full native Dark-mode acceptance is still pending; keep Zendesk on Light mode for now.
-- Sidebar dividers and ticket-tab borders use the helper theme instead of fixed native gray. Disabled labels now have distinct text and background colors.
-- Unknown activity now uses a question mark and **Other agents · unknown**. Its help text says someone may still have the ticket open; an eye is reserved for reported viewing activity.
-- Harvest setup now finishes in the background after permission approval, even if the popup closes during the prompt. Access is still requested only when you click **Match Harvest to theme**.
-- Light mode, Dark mode and Match system appearance labels now follow the helper theme in Zendesk’s Appearance menu, including the selected option and keyboard focus.
-- Harvest setup is explicit: styling starts off. Click **Match Harvest to theme**, allow access, check **Harvest theme on**, then reload the Harvest panel. Each browser/profile and Store/unpacked installation needs its own setup.
-- The popup explains the Harvest setup beside the control. The installation and theme guides include troubleshooting when the timer stays white.
+### Changed
 
-### Development
+- Switch between Public reply and Internal note with one two-part control. The selected side is highlighted; arrow keys work too. Draft sharing now lives in Settings, away from the reply box.
+- Copy ticket is one click for a linked ticket number. Rich-text apps receive a link; plain text receives Markdown.
+- View full conversation / Collapse earlier messages now sits at the top of the scrolling history. Turn off the latest-five summary in Settings to show all loaded messages.
+- The toolbar popup keeps On/Off, theme selection and Settings. Custom themes, workflow preferences, Harvest setup and help have a full Settings page. Confusing layout-side switches are removed.
+- Removed duplicate helper viewing/editing badges and unknown-activity text. Zendesk’s own indicators remain unchanged.
 
-- Added a change/test/documentation/release workflow and packaged-extension browser checks. Focused screenshot comparisons cover the Appearance menu and popup preview in Daylight, Deep Purple and Blush, plus Off cleanup and browser restart. Packaged checks also cover simulated activity states and Closed-ticket Send guards. These do not replace real Zendesk checks.
-- Added theme regressions for nested Light/Dark containers, native control schemes, dividers and disabled labels. They also check newly added components, preserved email colors and high-contrast cleanup.
+### Added
 
-### Documentation
+- Export a theme as a small JSON file, or import one into the editor before saving. Files contain only a name and five colors.
+- Choose the Zendesk tab for temporary previews and exports. When several tabs are open, the helper does not guess.
+- Direct links to the feature guide, problem reports and a plain-English implementation walkthrough in Settings.
 
-- Added the supported setup: keep Zendesk’s own appearance in Light mode. The helper’s dark themes remain available; native Zendesk Dark mode compatibility is still pending.
+### Fixed
+
+- Themes now reach nested Zendesk containers and native controls that could keep old colors. Native Light/Dark checks passed in Chrome for Daylight, Deep Purple and Blush, in both reply modes. Zendesk’s saved appearance is left alone.
+- Appearance-menu labels/icons, sidebar dividers, ticket-tab borders and disabled text/background pairs follow the helper palette.
+- Harvest permission setup completes in the background after approval, even if the popup closes. Setup is explicit: Settings → Harvest → Match Harvest to theme → allow access → check Harvest theme on → reload the panel. Each installation needs its own setup.
+
+### Documentation and checks
+
+- Updated the packaged, GitHub and Notion guides for the new controls, clear Harvest setup and the difference between published and prepared versions. Added a full feature list with short implementation explanations.
+- Rechecked quote collapse and Simplify/Restore on real read-only emails. Simplify changes layout; it does not remove threads or guarantee a shorter message.
+- Added packaged browser checks for the new controls, Settings, portable themes and preview rollback. Existing draft failure/recovery, Closed-ticket, theme and native-cleanup regressions remain in place. Focused synthetic screenshots supplement live Zendesk checks.
+
+### Still needs outside acceptance
+
+- A fresh real Harvest permission prompt, a screen-reader walkthrough and the Notion reporting-permission check remain open. No broader extension permissions or hosted service was added.
+- This GitHub version is not automatically a Store update. Google review and a check of the approved Store build are separate steps.
 
 ## 0.7.8 - 2026-11-12
 

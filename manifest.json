@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Jones IT Zendesk Helper",
-  "version": "0.7.10",
+  "version": "0.7.11",
   "description": "A collection of tools and improvements for Jones IT Zendesk: conversation controls, draft protection and ticket actions.",
   "permissions": ["storage", "downloads"],
   "host_permissions": ["https://itjones.zendesk.com/agent/*"],
@@ -54,5 +54,9 @@
     "48": "assets/icons/icon-48.png",
     "128": "assets/icons/icon-128.png"
   },
-  "minimum_chrome_version": "114"
+  "minimum_chrome_version": "114",
+  "options_ui": {
+    "page": "src/settings/settings.html",
+    "open_in_tab": true
+  }
 }

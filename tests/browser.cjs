@@ -142,7 +142,7 @@ fs.mkdirSync(resultsDir, { recursive: true });
   });
   await disclosure.waitFor({ state: 'visible' });
   assert.equal(await disclosure.count(), 1, 'disclosure must remain idempotent');
-  assert.match(await disclosure.innerText(), /Show 1 older message/);
+  assert.match(await disclosure.innerText(), /View full conversation/);
   assert.equal(await page.locator('#live-log-shape .message:visible').count(), 5);
   await disclosure.click();
   assert.equal(await page.locator('#live-log-shape .message:visible').count(), 6);

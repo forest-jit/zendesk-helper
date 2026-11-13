@@ -91,16 +91,8 @@ assert.equal(palettes.tealPink.attention, palettes.pinkTeal.accent);
 assert.equal(palettes.pinkTeal.attention, palettes.tealPink.accent);
 
 // Every selectable palette has a shared compiler and accessible role mappings.
-const picker = require('node:fs').readFileSync(
-  require('node:path').join(__dirname, '../src/popup/popup.html'),
-  'utf8'
-);
-const pickerIds = [
-  ...picker
-    .match(/<select id="theme"[^>]*>([\s\S]*?)<\/select>/)[1]
-    .matchAll(/<option value="([^"]+)"/g)
-]
-  .map((m) => m[1])
+const pickerIds = require('../src/shared/theme-controls.js')
+  .builtins.map(([id]) => id)
   .filter((id) => !['native', 'system'].includes(id));
 assert.deepEqual([...pickerIds].sort(), Object.keys(palettes).sort());
 assert.equal(palettes.copper.accent, '#7f2b0a');

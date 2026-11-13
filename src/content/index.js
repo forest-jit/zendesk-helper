@@ -14,6 +14,7 @@
     customThemes: {},
     autoTitle: true,
     carryDraft: false,
+    collapseHistory: true,
     queueRefresh: 15
   };
   let selectedTheme = 'native',
@@ -1464,14 +1465,14 @@
     for (const entry of entries) entry.dataset.zdhConversationEntry = 'true';
     syncConversationScroll(state.conversation);
     const via = state.conversation.querySelector('[data-test-id="omni-header-via-label"]');
-    const historyRow = via?.parentElement;
-    if (historyRow) {
-      historyRow.dataset.zdhHistoryRow = 'true';
+    const toolsRow = via?.parentElement;
+    if (toolsRow) {
+      toolsRow.dataset.zdhTicketToolsRow = 'true';
       const header = via.closest('[data-editor-container]')?.firstElementChild;
       if (header) header.dataset.zdhConversationHeader = 'true';
     }
     let disclosure = state.conversation.querySelector('[data-zdh-conversation-disclosure]');
-    if (entries.length <= 5) {
+    if (entries.length <= 5 || preferences.collapseHistory === false) {
       disclosure?.remove();
       for (const entry of entries)
         if (entry.dataset.zdhCollapsed) {
@@ -1493,19 +1494,16 @@
       });
       log.insertAdjacentElement('beforebegin', disclosure);
     }
-    if (historyRow) {
-      if (disclosure.parentElement !== historyRow) historyRow.append(disclosure);
-    } else {
-      const pane = state.conversation.querySelector('[data-test-id="convopane-resizable-grid"]');
-      const anchor = pane?.parentElement || log;
-      if (disclosure.nextElementSibling !== anchor)
-        anchor.insertAdjacentElement('beforebegin', disclosure);
-    }
+    // This belongs to the history, so it scrolls away with the messages, not the header.
+    const firstEntry = entries[0];
+    if (firstEntry && disclosure.nextElementSibling !== firstEntry)
+      firstEntry.insertAdjacentElement('beforebegin', disclosure);
     const expanded = disclosure.dataset.expanded === 'true',
       hiddenCount = entries.length - 5;
-    const label = expanded
-      ? 'Show latest 5 messages'
-      : `Show ${hiddenCount} older message${hiddenCount === 1 ? '' : 's'}`;
+    const label = expanded ? 'Collapse earlier messages' : 'View full conversation';
+    const accessibleLabel = expanded ? label : `${label}, ${hiddenCount} earlier messages hidden`;
+    if (disclosure.getAttribute('aria-label') !== accessibleLabel)
+      disclosure.setAttribute('aria-label', accessibleLabel);
     if (disclosure.textContent !== label) disclosure.textContent = label;
     disclosure.setAttribute('aria-expanded', String(expanded));
     entries.forEach((entry, index) => {
@@ -1533,9 +1531,9 @@
       delete node.dataset.zdhNativeHistoryJump;
     }
     for (const node of document.querySelectorAll(
-      '[data-zdh-history-row],[data-zdh-conversation-header]'
+      '[data-zdh-ticket-tools-row],[data-zdh-conversation-header]'
     )) {
-      delete node.dataset.zdhHistoryRow;
+      delete node.dataset.zdhTicketToolsRow;
       delete node.dataset.zdhConversationHeader;
     }
     for (const disclosure of document.querySelectorAll('[data-zdh-conversation-disclosure]'))
@@ -1941,7 +1939,10 @@
     if (
       port.name !== 'zdh-theme-preview' ||
       port.sender?.id !== runtime.id ||
-      port.sender?.url !== runtime.getURL('src/popup/popup.html')
+      ![
+        runtime.getURL('src/popup/popup.html'),
+        runtime.getURL('src/settings/settings.html')
+      ].includes(port.sender?.url?.split('#')[0])
     )
       return;
     port.onMessage.addListener((message) => {
@@ -1981,7 +1982,7 @@
   });
   if (storage?.get)
     storage.get(defaults, (next) => {
-      preferences = next;
+      preferences = { ...next, layout: true, context: false };
       globalThis.zdhThemes.setCustomThemes(preferences.customThemes);
       selectedTheme = preferences.theme;
       if (preferences.enabled === false) globalThis.zdTitleHelper.setEnabled(false);

@@ -1,4 +1,4 @@
-// Pure ticket helpers: title construction, draft-transfer decisions, copy formats and activity parsing.
+// Pure ticket helpers: title construction, draft-transfer decisions, linked ticket numbers and safe queue refresh.
 // No browser mutation here. The matching adapters live in ticket-tools.js.
 
 'use strict';
@@ -30,23 +30,14 @@
     if (!destination || destination === previous) return 'replace';
     return 'conflict';
   }
-  function copyText({ id, title, url }, format) {
-    const safeTitle = String(title || '')
-      .replace(/[\r\n]+/g, ' ')
-      .trim();
-    if (format === 'number') return '#' + id;
-    if (format === 'url') return url;
-    if (format === 'markdown')
-      return (
-        '[' +
-        safeTitle.replaceAll('\\', '\\\\').replaceAll('[', '\\[').replaceAll(']', '\\]') +
-        ' (#' +
-        id +
-        ')](' +
-        url +
-        ')'
-      );
-    return '#' + id + ' · ' + safeTitle + '\n' + url;
+  function ticketLink(id) {
+    const number = String(id);
+    if (!/^\d+$/.test(number)) throw Error('Open a ticket first.');
+    const url = 'https://itjones.zendesk.com/agent/tickets/' + number;
+    return {
+      plain: `[#${number}](${url})`,
+      html: `<a href="${url}">#${number}</a>`
+    };
   }
   function queueAllowed(s) {
     return !!(
@@ -63,17 +54,5 @@
       s.idleMs >= 5000
     );
   }
-  function activity(labels = []) {
-    const unique = [
-      ...new Set(labels.map((s) => String(s).replace(/\s+/g, ' ').trim()).filter(Boolean))
-    ];
-    const editing = unique.filter(
-      (s) => /\b(editing|typing|composing)\b/i.test(s) && !/^no\b/i.test(s)
-    );
-    if (editing.length) return { kind: 'editing', text: editing.join(' · ') };
-    const viewing = unique.filter((s) => /\b(viewing|viewed|away)\b/i.test(s) && !/^no\b/i.test(s));
-    if (viewing.length) return { kind: 'viewing', text: viewing.join(' · ') };
-    return { kind: 'unknown', text: 'Activity unknown' };
-  }
-  return { identityTitle, transferDecision, copyText, queueAllowed, activity };
+  return { identityTitle, transferDecision, ticketLink, queueAllowed };
 });

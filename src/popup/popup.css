@@ -313,3 +313,13 @@ html {
   font-size: 12px;
   text-underline-offset: 3px;
 }
+
+/* Daily popup stays small; advanced controls live in the full Settings tab. */
+.popup-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+#status:empty {
+  display: none;
+}

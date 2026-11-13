@@ -1,10 +1,10 @@
 # Small-team installation
 
-**Use Zendesk Light mode:** click your Zendesk profile picture → **Appearance → Light mode**. Choose Light mode explicitly rather than Match system appearance. Native Zendesk Dark mode is not supported by the helper yet and can leave mismatched colors. You can still use the helper’s own dark themes; your Mac’s appearance can stay as it is.
+The published Store version is **0.7.8**. Use Zendesk’s **Appearance → Light mode** with that version. The prepared **0.7.11** supports both native appearances and uses a simpler popup plus full Settings page; instructions below describe that update.
 
 For the prepared private store release, start with [release/START_HERE.md](release/START_HERE.md). It links the listing, policy, disclosures, reviewer instructions, screenshots and remaining owner steps.
 
-This is a local prototype for Jones IT Zendesk. The release zip contains the extension only: no raw tickets, browser profile data, local AI models, credentials, or development dependencies.
+This extension is scoped to Jones IT Zendesk. The release zip contains the extension only: no raw tickets, browser profile data, local AI models, credentials, or development dependencies.
 
 1. Unzip the release to a stable folder. Each person keeps their own Chrome preferences and custom themes.
 2. In Chrome, open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select the unzipped folder.
@@ -17,9 +17,9 @@ This is a local prototype for Jones IT Zendesk. The release zip contains the ext
 **Harvest styling is off by default.** Choosing a theme does not turn it on.
 
 1. Open Jones IT Zendesk Helper from your browser’s toolbar.
-2. Click **Match Harvest to theme**.
+2. Open **Settings → Harvest**, then click **Match Harvest to theme**.
 3. Allow access to **platform.harvestapp.com** when your browser asks.
-4. Check that the button says **Harvest theme on**. If the permission prompt closed the popup, reopen it; if it still says **Match Harvest to theme**, click it again.
+4. Check that the button says **Harvest theme on**. If approval was interrupted, reopen Settings; if it still says **Match Harvest to theme**, click it again.
 5. Reload the **Harvest panel** using its reload icon. You can also refresh Zendesk after protecting your drafts.
 
 Harvest should now match your selected helper theme. It changes colors only; it does not start a timer or change time entries. Set this up separately in each browser/profile and when switching between Store and unpacked installations; their settings and permissions do not automatically carry over. If Harvest stays white, check both **Harvest theme on** and the browser’s allowed site access before reporting a theme bug.
@@ -28,11 +28,11 @@ For a team pilot, use an authorized test ticket first: check public/internal mod
 
 Unpacked extensions may be restricted by organization policy. A managed rollout, Chrome Web Store publication, automatic updates, extension allowlisting, and company approval must be arranged through the organization's normal administrator process. This package does not grant or bypass that approval.
 
-Presence depends on Zendesk's native collision reporting. “Not reported” means unknown, not safe to reply. A genuine second-agent session is needed to validate live name/editing indicators for the team's plan.
+The helper leaves Zendesk’s own collision indicators unchanged. It no longer displays a second viewing/editing badge.
 
 Raw exports and local recovery copies can contain customer information. Keep them local; review processed documentation before moving it to a shared knowledge base. Uninstalling does not remove files already downloaded.
 
-The v0.7.1 guide also covers quoted-email disclosures, display-only message contrast repair, Closed status, and the fixed desktop rail. Include the guide in any pilot handoff. Assess peer presence with a genuine second agent before relying on it.
+The v0.7.1 guide also covers quoted-email disclosures, display-only message contrast repair, Closed status, and the fixed desktop rail. Include the guide in any pilot handoff.
 
 GitHub source and information-page hosting: [release/GITHUB_HOSTING.md](release/GITHUB_HOSTING.md).
 
@@ -48,7 +48,7 @@ Start with a private tester release. Use a company-owned publisher account if Jo
 
 For updates: test locally, increase the manifest/package version, rebuild the full ZIP, upload it to the same store item, update changed listing/disclosure details and submit for review. Chrome automatically checks for approved updates on startup and every few hours; arrival and activation are not immediate. Existing Zendesk tabs may retain old content scripts until refreshed. Protect drafts before refreshing; do not force-reload active ticket tabs as an update strategy. New permissions may require further user approval. Keep a separate development install/profile for testing and plan recovery releases before a broad launch.
 
-This documents the process only. No developer registration, payment, upload, terms acceptance or publication has been performed. Store assets, a hosted privacy policy, reviewer access and company approval are still needed before submission.
+This documents the process only. The first item is published; that does not publish the next update. Check current reviewer arrangements and any organization requirements before submitting it.
 
 Official references, checked 2026-11-11: [Register](https://developer.chrome.com/docs/webstore/register/), [Publish](https://developer.chrome.com/docs/webstore/publish), [Distribution](https://developer.chrome.com/docs/webstore/cws-dashboard-distribution), [Privacy](https://developer.chrome.com/docs/webstore/program-policies/privacy), [Updates](https://developer.chrome.com/docs/webstore/update), [Update lifecycle](https://developer.chrome.com/docs/extensions/develop/concepts/extensions-update-lifecycle).
 
@@ -56,6 +56,6 @@ Official references, checked 2026-11-11: [Register](https://developer.chrome.com
 
 > Hey @consultants! I'm looking for a few people to test a Zendesk Chrome extension with me in the office this morning.
 >
-> Especially interested in messy tickets: nested email threads, hard-to-read colors, lots of images, or awkward layouts. I'd also love two people to help check the viewing and editing indicators.
+> Especially interested in messy tickets: nested email threads, hard-to-read colors, lots of images, or awkward layouts. Try the separate Send/Save controls, keyboard switching and your usual theme too.
 >
 > Send me a ticket link or stop by if you're interested. We'll keep real tickets read-only and use my test ticket for any saves or sends. General bug reports and usability feedback are welcome too!

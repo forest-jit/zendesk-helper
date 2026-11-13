@@ -25,11 +25,11 @@ Keep Zendesk’s native state authoritative. Do not change customer tickets to t
 | Real Zendesk browser checks | Current selectors, layout, menus, dialogs, scrolling and actual Harvest embedding | Every possible ticket or another agent’s permissions/session |
 | Fresh Store-install check | First-run defaults, permission prompts, packaged paths and persistence with the published extension ID | That an unpacked-only change has already reached users |
 
-For each UI change, exercise the normal state, the changed state and cleanup. Check keyboard use and a smaller viewport. Theme changes need a light and a dark helper palette; check public reply and internal note separately. Native Zendesk Light mode is the supported baseline until T57 passes.
+For each UI change, exercise the normal state, the changed state and cleanup. Check keyboard use and a smaller viewport. Theme changes need a light and a dark helper palette; check public reply and internal note separately. Native Light/Dark acceptance passed in T57; keep checking both when changing theme boundaries. The published v0.7.8 still needs its Light-mode setup advice until users receive the update.
 
 For reply/save changes, repeat the critical draft checks: field save with a draft, distinct public/internal drafts, refresh/navigation recovery, and an interrupted or failed save. Include attachments when their handling changes. Check the result after refresh; an action being requested is not proof it saved.
 
-For Harvest changes, start from a fresh profile with only one installation. Confirm optional access is absent initially, enable it from the popup, refresh safely, and check on/off, permission removal and browser restart. Store and unpacked copies have separate IDs, settings and permissions. Inspect the timer without changing project, task, notes, duration or entries.
+For Harvest changes, start from a fresh profile with only one installation. Confirm optional access is absent initially, enable it from Settings → Harvest, refresh safely, and check on/off, permission removal and browser restart. Store and unpacked copies have separate IDs, settings and permissions. Inspect the timer without changing project, task, notes, duration or entries.
 
 For browser-specific reports, name and target that browser explicitly. A Chrome pass is not an Arc pass. Record whether the wrong window was opened by the extension, a link handler, the automation tool or the window manager before changing any settings.
 

@@ -1,0 +1,96 @@
+/* Settings gets a full tab; the toolbar keeps only its daily controls. */
+body {
+  width: auto;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  font-size: 14px;
+}
+.popup-header {
+  margin-bottom: 16px;
+}
+nav,
+.help-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+a {
+  color: var(--zdh-theme-link);
+  text-underline-offset: 3px;
+}
+a:focus-visible {
+  outline: 2px solid var(--zdh-theme-focus);
+  outline-offset: 4px;
+}
+main > section {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--zdh-theme-border);
+}
+h2 {
+  margin: 0 0 16px;
+  font-size: 19px;
+  font-weight: 650;
+}
+.appearance-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+}
+#theme-studio {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+#theme-studio summary {
+  margin-bottom: 16px;
+}
+.theme-files {
+  margin-top: 16px;
+}
+#workflow {
+  max-width: 680px;
+}
+#workflow label {
+  margin: 20px 0 10px;
+}
+#workflow small {
+  display: block;
+  margin-top: 5px;
+  color: var(--zdh-theme-muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+#queue-refresh {
+  max-width: 260px;
+}
+#harvest-theme,
+#export {
+  width: auto;
+  margin-top: 0;
+}
+#tools .actions {
+  margin-top: 16px;
+}
+#harvest li {
+  margin-bottom: 8px;
+}
+#harvest-theme {
+  margin-top: 8px;
+}
+.help-links {
+  margin-top: 20px;
+}
+#status:empty {
+  display: none;
+}
+@media (max-width: 680px) {
+  body {
+    padding: 24px 16px 48px;
+  }
+  .appearance-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+}

@@ -16,19 +16,19 @@ Jones IT Zendesk Helper is a collection of tools and improvements for working in
 
 WHAT YOU CAN DO
 • Read long tickets: show the latest five messages or expand the loaded history. Collapse supported quoted email threads, simplify bulky email layouts and open images from compact previews.
-• Reply with fewer clicks: switch between public replies and internal notes in one click. Turn on Carry this draft to move text and formatting without replacing a different draft.
+• Reply with fewer clicks: switch between public replies and internal notes in one click. In Settings, enable shared drafts to move text and formatting without replacing a different draft.
 • Save fields separately: update ticket properties while keeping your reply draft. Local recovery copies help protect drafts when a field save is interrupted.
-• Reuse ticket details: copy a ticket number or link, export loaded messages and accessible images, and refresh ticket views while idle.
-• Adjust your workspace: choose a theme or create one from five base colors. Preview it before applying. Optional Harvest styling matches the timer to your theme without changing its entries.
+• Reuse ticket details: copy a linked ticket number, export loaded messages and accessible images, and refresh ticket views while idle.
+• Adjust your workspace: choose a theme or open Settings to create one from five base colors. Preview it before applying; import/export theme files without ticket data. Optional Harvest styling matches the timer to your theme without changing its entries.
 
 GETTING STARTED
-Set Zendesk itself to Light mode first: profile picture > Appearance > Light mode. Native Zendesk Dark mode is not supported yet and can leave mismatched colors. You can still choose any dark theme in the extension; your Mac appearance can stay as it is.
+The v0.7.11 update supports Zendesk Light and Dark appearances. If you are still using v0.7.8, choose Zendesk profile picture > Appearance > Light mode until the update arrives.
 1. Open a ticket in Jones IT Zendesk.
 2. Click the extension icon to turn the helper on and choose your settings.
-3. Open Help & feature guide in the popup for instructions.
+3. Open Settings for reply preferences, reading controls, Harvest setup and the Feature guide.
 
 OPTIONAL HARVEST SETUP
-Harvest styling is off by default. Open the extension, click Match Harvest to theme, and allow access to platform.harvestapp.com. Check that the button says Harvest theme on, then reload the Harvest panel using its reload icon. If the permission prompt closed the popup, reopen it and click Match Harvest to theme again if needed. Set this up separately in each browser/profile or when switching from an unpacked copy.
+Harvest styling is off by default. Open the extension > Settings > Harvest, click Match Harvest to theme, and allow access to platform.harvestapp.com. Check that the button says Harvest theme on, then reload the Harvest panel using its reload icon. If approval was interrupted, reopen Settings and click Match Harvest to theme again if needed. Set this up separately in each browser/profile or when switching from an unpacked copy.
 
 KEYBOARD SHORTCUT
 Command+Enter sends while you are typing in the reply box. In the sidebar, it saves field changes instead. Check whether you are writing a public reply or internal note before sending.
@@ -36,7 +36,7 @@ Command+Enter sends while you are typing in the reply box. In the sidebar, it sa
 DATA AND LIMITS
 Settings and recovery copies stay in your Chrome profile. Raw exports contain original ticket information and may include personal data. Optional local AI processing is a separate tool; its redaction and image interpretations need your review before sharing. The extension does not call hosted AI or publish documentation.
 
-The activity badge shows only information Zendesk reports. Viewing/editing recognition still needs a two-person pilot test. “Not reported” means unknown, not that nobody else is working on the ticket.
+Zendesk’s own viewing/editing indicators are unchanged. The helper does not add a separate presence badge.
 
 This is a private pilot, independently developed and not an official Zendesk or Harvest product. Other embedded apps keep their own interface.
 
@@ -68,7 +68,7 @@ Chrome host matching can grant origin-level capability beyond a path. The manife
 
 ## Data categories to review
 
-The extension locally handles **website content**, **personal communications**, and **personally identifiable information** in tickets/drafts. It also interprets native viewing/editing activity, so disclose that limited **user activity** rather than presenting it as independent browsing telemetry.
+The extension locally handles **website content**, **personal communications**, and **personally identifiable information** in tickets/drafts. Workspace interactions such as typing, focus and selection pause queue refresh and route shortcuts. These are limited **user activity**, not general browsing telemetry. The duplicate presence adapter has been removed.
 
 Ticket bodies and screenshots can incidentally contain financial, health, authentication or other sensitive material. Raw exports do not filter those categories. Review the dashboard definitions and include applicable categories for the tickets this pilot actually handles. Do not automatically mark all data boxes empty because nothing is uploaded to a publisher server. No dedicated credential/cookie reading, general browser-history collection, payment collection or location service is implemented.
 
@@ -84,7 +84,7 @@ The reviewed policy source is [PRIVACY.md](docs/release/PRIVACY.md). Hosting out
 
 ## Distribution
 
-Private pilot for designated trusted testers. Do not substitute Unlisted for access restriction. No Web Store item has been submitted or approved.
+Private pilot for designated trusted testers. Do not substitute Unlisted for access restriction. The owner reports v0.7.8 published; the prepared update has not been submitted.
 
 ## Graphics
 
@@ -98,13 +98,13 @@ Pushing a version tag runs the automated checks, validates matching manifest/pac
 
 | Version | Date | Change | Store status |
 | --- | --- | --- | --- |
-|0.7.8|2026-11-11|Renamed to Jones IT Zendesk Helper across extension, policy, guide and listing artwork; same scope and permissions|Draft|
+|0.7.8|2026-11-12|Renamed to Jones IT Zendesk Helper across extension, policy, guide and listing artwork; same scope and permissions|Published, owner confirmed|
 |0.7.7|2026-11-11|Feature-based src layout, readable control styles, lint/resource/CI checks, migrated Harvest registration paths; no new permissions|Draft|
 |0.7.6|2026-11-11|Removed desktop column divider; source pushed to GitHub|Not submitted|
 
 ## Review notes
 
-No Google rejection history. Open acceptance: real second-agent presence recognition and screen-reader walkthrough. Other third-party frames remain outside the Harvest adapter. Local privacy scrubbing and vision interpretations always need review. Reviewer account/SSO instructions belong in the dashboard's restricted field, never the public repo. See [reviewer instructions](docs/release/REVIEWER.md).
+No Google rejection history. Open acceptance: fresh real Harvest permission flow and screen-reader walkthrough. Other third-party frames remain outside the Harvest adapter. Local privacy scrubbing and vision interpretations always need review. Reviewer account/SSO instructions belong in the dashboard's restricted field, never the public repo. See [reviewer instructions](docs/release/REVIEWER.md).
 
 ## Dashboard draft, November 11, 2026
 
@@ -146,7 +146,7 @@ Optional https://platform.harvestapp.com/*: style only the embedded Zendesk time
 
 No general access to other sites or browsing history.
 
-Selected categories: Personally identifiable information, Personal communications, User activity and Website content. User activity covers native activity indicators and interactions needed for workspace features, not general monitoring. No dedicated health, finance, credentials, location or browser-history collection is implemented; these were left unchecked in the draft. Raw messages/exports do not filter incidental sensitive content, so the owner must review applicable categories against actual pilot use before certifying.
+Selected categories: Personally identifiable information, Personal communications, User activity and Website content. Historically User activity included native activity indicators. In v0.7.11 those duplicate indicators are removed; focus/typing/selection still support workspace features. No general monitoring is added. No dedicated health, finance, credentials, location or browser-history collection is implemented; these were left unchecked in the draft. Raw messages/exports do not filter incidental sensitive content, so the owner must review applicable categories against actual pilot use before certifying.
 
 Publisher action: review the policy and category choices, then make the three declarations about sale/transfer, use limited to the single purpose, and no creditworthiness/lending use. These declarations were not accepted on the owner’s behalf. Current form did not show a separate remote-code control; packaged-code/no-remote-code details remain above. Evidence: current chat outputs/store-privacy.
 
@@ -162,6 +162,8 @@ Current product name is Jones IT Zendesk Helper. Runtime-only v0.7.8 was uploade
 
 CHANGELOG.md supplies the user-facing notes. The tagged release generates store-update-notes.txt and store-description.txt; the latter includes the base description above plus the latest update. Copy that text into the dashboard description when preparing an update. GitHub does not sync it to the Store automatically. See docs/release/TAGGED_RELEASES.md.
 
-## Next update — v0.7.10, prepared locally
+## Next update — v0.7.11, prepared
 
-Unknown activity uses a question mark and clearer help text. Appearance-menu labels, nested native theme containers, control schemes, sidebar dividers and ticket-tab borders follow the selected helper theme. Full native Dark-mode acceptance is pending; the listing retains the Light-mode requirement. Harvest permission approval completes in the background if the popup closes. Harvest setup is clearer in the popup and guide: it is off by default and needs its own optional access and panel reload. Store-description source above includes these steps. Package and listing changes have not been uploaded or submitted to Google.
+The new reply control clearly separates Public reply and Internal note. Draft sharing moves into Settings. Copy ticket becomes one click for a linked number. History controls scroll with the conversation and the latest-five summary can be disabled. The popup keeps On/Off and themes; full Settings contains custom themes, Harvest, workflow choices and help. Theme JSON import/export and an explicit preview/export target are added. Duplicate helper activity badges and layout-side switches are removed.
+
+Native Light/Dark checks passed in Chrome on the preceding 0.7.10 theme changes retained here. Appearance labels and nested native surfaces use the selected palette. Harvest approval finishes independently of popup lifetime; first real consent acceptance remains open. No broader permissions or hosted services are added. This is the next-description source, not a claim that it is saved in Google’s dashboard.

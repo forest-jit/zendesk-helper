@@ -111,6 +111,15 @@ html[data-zdh-theme] [data-zdh-composer-mode] .ck-editor__editable {
 html[data-zdh-theme] [data-zdh-composer-mode] [data-test-id='omnichannel-channel-switcher-button'] {
   color: var(--zdh-composer-text) !important;
 }
+/* Composer headers also color their buttons. Keep the inactive mode visibly secondary. */
+html[data-zdh-theme] [data-zdh-mode-tools] [data-mode-choice][aria-checked='false'] {
+  color: var(--zdh-theme-muted) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+html[data-zdh-theme] [data-zdh-mode-tools] [data-mode-choice][aria-checked='true'] {
+  color: var(--zdh-theme-selected-text) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
 html[data-zdh-theme] [data-test-id='omni-log-comment-item'] {
   background-color: var(--zdh-theme-surface) !important;
   color: var(--zdh-theme-text) !important;

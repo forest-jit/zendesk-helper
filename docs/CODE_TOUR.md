@@ -28,13 +28,15 @@ The source files now use normal indentation and one visible block per decision. 
 
 The tricky part is timing: Zendesk can replace a ticket grid or load a draft late. Rechecks protect against submitting draft text as part of a field-only save. Do not remove them just because an earlier check appears similar. `tests/draft-recovery.cjs` exercises failure, timeout, navigation and reload races.
 
+For the complete feature list and short explanations, read [how the features work](FEATURE_WALKTHROUGH.md).
+
 ## Follow a reply-mode switch
 
-`src/tickets/tools.js → switchMode` asks the native selector to switch. `settledEditor` waits for the destination draft to finish loading. `src/tickets/model.js → transferDecision` chooses whether it is safe to carry text. A different destination draft is preserved. Carry is optional; switching never sends.
+`src/tickets/tools.js → switchMode` asks the native selector to switch. `settledEditor` waits for the destination draft to finish loading. `src/tickets/model.js → transferDecision` chooses whether it is safe to carry text. A different destination draft is preserved. The segmented radio buttons pass the requested mode to that native action; there is no second mode store. Carry is optional in Settings; switching never sends.
 
 ## Follow a theme
 
-`src/popup/popup.js` saves a theme ID or custom five-role palette. `src/shared/themes.js` derives readable component colors. `src/themes/native.js` applies one owned variable stylesheet at the document and nested native theme boundaries; `src/themes/native.css` covers observed native exceptions, including literal control color schemes and field-row borders. Zendesk’s saved appearance is never changed by this adapter. Harvest uses the same palette in its own frame through `src/integrations/harvest/theme.js`. Its controller starts optional access from the popup’s click message and finishes saving/registering in the background, so closing the popup during approval does not interrupt setup.
+`src/popup/popup.js` saves a theme ID; `src/settings/settings.js` manages custom five-role palettes and workflow settings. `src/shared/theme-controls.js` supplies the shared picker and local preview. `src/shared/theme-files.js` validates portable theme files. `src/shared/themes.js` derives readable component colors. `src/themes/native.js` applies one owned variable stylesheet at the document and nested native theme boundaries; `src/themes/native.css` covers observed native exceptions, including literal control color schemes and field-row borders. Zendesk’s saved appearance is never changed by this adapter. Harvest uses the same palette in its own frame through `src/integrations/harvest/theme.js`. Its controller starts optional access from the popup or Settings click message and finishes saving/registering in the background, so closing the popup during approval does not interrupt setup.
 
 Five base colors do not mean five rendered colors. Borders, washes, focus and label inks are derived. Native authored content has its own colors; `src/conversations/message-display.js` repairs measured unreadable text without editing the composer.
 
@@ -49,10 +51,10 @@ The separate Python command in `scripts/process_ticket.py` reads that file. It s
 | Job | Files |
 | --- | --- |
 | Reading | `src/conversations/email-threads.js`: quote detection/disclosures; `src/conversations/message-display.js`: contrast and Simplify; image previews/shared scrolling in `src/content/index.js` |
-| Small ticket tools | `src/tickets/model.js`: pure decisions; `src/tickets/tools.js`: title/copy/mode/presence/queue DOM adapters |
+| Small ticket tools | `src/tickets/model.js`: pure decisions; `src/tickets/tools.js`: title/copy/mode/queue DOM adapters |
 | Native editor bridge | `src/page/draft-bridge.js`: checked read/park/restore/replace operations in the page world |
 | Optional Harvest | `src/integrations/harvest/policy.js`: allowed context; `src/integrations/harvest/controller.js`: permission/registration; `src/integrations/harvest/theme.js` + CSS: styling only |
-| Extension surfaces | `src/popup/popup.html/js/css`: settings; `src/guide/guide.html/js/css`: feature guide; `src/background/service-worker.js`: downloads and registration |
+| Extension surfaces | `src/popup/popup.html/js/css`: quick controls; `src/settings/`: full options page; `src/guide/guide.html/js/css`: feature guide; `src/background/service-worker.js`: downloads and registration |
 
 ## Small glossary
 
@@ -65,7 +67,7 @@ The separate Python command in `scripts/process_ticket.py` reads that file. It s
 ## Boundaries worth remembering
 
 - Only the active ticket should establish native state; cached hidden workspaces are common.
-- The helper does not have its own ticket backend or presence service. The activity adapter reads rendered native signals and still needs a real coworker test.
+- The helper does not have its own ticket backend or presence service. Native Zendesk viewing/editing indicators are left alone; duplicate helper badges were removed.
 - Off removes owned UI/styles. It does not delete downloaded files or intentionally erase recovery backups.
 - Generic quote detection must fail open. A wrong collapsed boundary can hide an inline answer even when the source remains intact.
 - Permissions limit Chrome access; runtime context guards narrow it further. Keep both.

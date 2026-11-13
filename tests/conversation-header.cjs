@@ -47,7 +47,7 @@ for (const count of [0, 1, 2, 5]) {
   );
   context.syncConversation({});
   assert.equal(header.dataset.zdhConversationHeader, 'true');
-  assert.equal(row.dataset.zdhHistoryRow, 'true');
+  assert.equal(row.dataset.zdhTicketToolsRow, 'true');
   assert.ok(removed && images);
   assert.ok(entries.every((e) => e.dataset.zdhConversationEntry === 'true'));
 }

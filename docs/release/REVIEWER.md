@@ -19,10 +19,10 @@ Fill in all three before submitting.
 1. Sign in with the approved reviewer account, open the designated synthetic ticket and open the toolbar popup. Toggle On/Off; choose a theme. Settings persist locally. Themes do not alter ticket content.
 2. Observe the separate conversation/sidebar scrolling, newest-five disclosure, compact images and native-like Status control. A genuinely closed ticket shows disabled Closed and no helper Send/Save. Do not create a follow-up.
 3. On the authorized synthetic ticket, switch reply modes with distinct sample drafts. Carry is optional; a different destination is protected. Field-only Save must retain a reply draft without sending it. Command/Ctrl+Enter is contextual; test sending only if that action is explicitly authorized for this synthetic ticket.
-4. On a synthetic formatted email, use quoted-history disclosure and Simplify/Restore. Unknown quote structures stay visible. Hover Copy ticket for formats; keyboard Enter/Space/Escape also work. Copy does not update a ticket.
-5. Use Export ticket for local AI. Chrome downloads raw JSON; no hosted AI or publisher server is called. Optional Harvest styling can be tested if the test account has the native Harvest app: grant only the requested timer-origin access, inspect style changes, then turn it off. Do not start a timer.
+4. On a synthetic formatted email, use quoted-history disclosure and Simplify/Restore. Unknown quote structures stay visible. Click Copy ticket once and paste a linked ticket number into a rich-text editor or a Markdown link into plain text. Copy does not update a ticket.
+5. Open Settings → Ticket tools & help, select the synthetic ticket and use Export ticket for local AI. Chrome downloads raw JSON; no hosted AI or publisher server is called. Optional Harvest styling can be tested if the test account has the native Harvest app: open Settings → Harvest and grant only the requested timer-origin access, inspect style changes, then turn it off. Do not start a timer.
 
-Native activity reporting depends on Zendesk signals and the account plan. It may show not reported. No independent presence network is bundled. Queue refresh uses Zendesk's native view action and pauses during interaction; it does not reload ticket pages.
+Zendesk’s own activity indicators are unchanged; the helper adds no duplicate presence UI. Queue refresh uses Zendesk's native view action and pauses during interaction; it does not reload ticket pages.
 
 ## Separate local-AI utility
 

@@ -92,7 +92,7 @@
 [data-zdh-conversation-disclosure] {
   flex: 0 0 auto;
   align-self: flex-start;
-  margin: 4px 0 8px;
+  margin: 12px 16px;
   padding: 4px 10px;
   min-height: 28px;
   border: 1px solid var(--zdh-theme-control-border, #b0b8be);
@@ -342,17 +342,10 @@ table[data-test-id='generic-table'] :is(th, td) {
   [data-zdh-layout='true'] [data-test-id='ticket-call-controls-action-bar']:empty {
     display: none !important;
   }
-  [data-zdh-history-row='true'] {
+  [data-zdh-ticket-tools-row='true'] {
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-  }
-  [data-zdh-history-row='true'] > [data-zdh-conversation-disclosure] {
-    margin: 0;
-    padding: 2px 10px;
-    min-height: 28px;
-    align-self: auto;
-    font-size: 12px;
   }
 }
 
@@ -413,19 +406,10 @@ html
   display: none !important;
 }
 @media (max-width: 999px) {
-  [data-zdh-history-row='true'] {
+  [data-zdh-ticket-tools-row='true'] {
     flex-wrap: wrap;
     align-items: flex-start;
     gap: 4px;
-  }
-  [data-zdh-history-row='true'] > [data-zdh-conversation-disclosure] {
-    flex: 0 1 auto;
-    min-width: 0;
-    max-width: 100%;
-    padding-inline: 6px;
-    box-sizing: border-box;
-    white-space: normal;
-    overflow-wrap: break-word;
   }
 }
 
@@ -482,7 +466,7 @@ html
   min-width: 0;
 }
 [data-zdh-mode-tools] button,
-[data-zdh-copy-tools] button,
+[data-zdh-copy-tools],
 [data-zdh-title-hint] button {
   min-height: 28px;
   padding: 3px 9px;
@@ -497,16 +481,30 @@ html
   opacity: 0.55;
   cursor: not-allowed;
 }
-[data-zdh-mode-tools] label {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
-  color: var(--zdh-theme-muted, #52616b);
-  font-size: 12px;
+/* The segmented control mirrors native state; it never stores a separate reply mode. */
+[data-zdh-native-mode='true'] {
+  display: none !important;
 }
-[data-zdh-mode-tools] input {
-  accent-color: var(--zdh-theme-accent, #1f73b7);
+[data-mode-choices] {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--zdh-theme-control-border, #b0b8be);
+  border-radius: 6px;
+  background: var(--zdh-theme-page, #f8f9f9);
+}
+[data-mode-choices] [data-mode-choice] {
+  min-height: 28px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--zdh-theme-muted, #52616b) !important;
+  white-space: nowrap;
+}
+[data-mode-choices] [aria-checked='true'] {
+  background: var(--zdh-theme-selected, #e8f0f8);
+  color: var(--zdh-theme-selected-text, #185d80) !important;
+  font-weight: 600;
 }
 [data-mode-notice] {
   flex-basis: 100%;
@@ -523,35 +521,6 @@ html
   font: 12px/1.5 system-ui;
   margin-inline: 4px;
 }
-[data-zdh-copy-tools] summary {
-  cursor: pointer;
-  color: var(--zdh-theme-link, #1f73b7);
-  padding: 3px 6px;
-  border-radius: 4px;
-}
-[data-zdh-copy-tools] > div {
-  position: absolute;
-  z-index: 20;
-  left: 0;
-  top: 100%;
-  display: grid;
-  gap: 4px;
-  min-width: 180px;
-  padding: 8px;
-  background: var(--zdh-theme-surface, #fff);
-  border: 1px solid var(--zdh-theme-control-border, #b0b8be);
-  border-radius: 6px;
-  box-shadow: 0 4px 12px var(--zdh-theme-shadow, rgb(0 0 0 / 18%));
-}
-[data-zdh-copy-tools] > div button {
-  text-align: left;
-}
-[data-zdh-copy-tools]:not([open]) > div {
-  display: none;
-}
-[data-zdh-copy-tools] > span {
-  font-size: 12px;
-}
 [data-zdh-title-hint] {
   display: inline-flex;
   flex-wrap: wrap;
@@ -561,23 +530,13 @@ html
   padding: 4px 0;
   color: var(--zdh-theme-muted, #52616b);
 }
-[data-zdh-activity] {
-  font: 12px/1.5 system-ui;
-  color: var(--zdh-theme-muted, #52616b);
-  padding: 6px 12px;
-  margin-top: 8px;
-}
-[data-zdh-activity][data-state='editing'] {
-  color: var(--zdh-theme-attention-text, #83491b);
-  background: var(--zdh-theme-note, #fff4e5);
-}
 [data-zdh-queue-status] {
   font: 12px/1.5 system-ui;
-  color: var(--zdh-theme-muted, #52616b);
+  color: var(--zdh-theme-muted, #52616b) !important;
   white-space: nowrap;
 }
 [data-zdh-mode-tools] button:focus-visible,
-[data-zdh-copy-tools] :is(summary, button):focus-visible,
+[data-zdh-copy-tools]:focus-visible,
 [data-zdh-title-hint] button:focus-visible {
   outline: 2px solid var(--zdh-theme-focus, #1f73b7);
   outline-offset: 2px;
@@ -588,67 +547,6 @@ html
   color: var(--zdh-theme-muted, #52616b);
   margin-inline: 4px;
 }
-[data-zdh-presence] {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  margin-inline: 4px;
-  font: 12px/1.5 system-ui;
-}
-[data-zdh-presence] button {
-  display: inline-grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 1px solid var(--zdh-theme-control-border, #b0b8be);
-  border-radius: 50%;
-  background: var(--zdh-theme-surface, #fff);
-  color: var(--zdh-theme-muted, #52616b);
-  cursor: help;
-  transition:
-    background-color 140ms ease-out,
-    color 140ms ease-out,
-    transform 140ms ease-out;
-}
-[data-zdh-presence][data-state='viewing'] button {
-  color: var(--zdh-theme-link, #1f73b7);
-}
-[data-zdh-presence][data-state='editing'] button {
-  color: var(--zdh-theme-attention-text, #83491b);
-  background: var(--zdh-theme-note, #fff4e5);
-}
-[data-zdh-presence] button:is(:hover, :focus-visible) {
-  transform: scale(1.05);
-  outline: 2px solid var(--zdh-theme-focus, #1f73b7);
-  outline-offset: 2px;
-}
-[data-zdh-presence] [role='tooltip'] {
-  display: none;
-  position: absolute;
-  z-index: 30;
-  inset-block-start: calc(100% + 8px);
-  inset-inline-end: 0;
-  min-width: 180px;
-  max-width: 300px;
-  white-space: normal;
-  padding: 8px 12px;
-  border: 1px solid var(--zdh-theme-control-border, #b0b8be);
-  border-radius: 6px;
-  background: var(--zdh-theme-surface, #fff);
-  color: var(--zdh-theme-text, #293239);
-  box-shadow: 0 4px 12px var(--zdh-theme-shadow, rgb(0 0 0 / 18%));
-}
-[data-zdh-presence]:is(:hover, :focus-within) [role='tooltip'] {
-  display: block;
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-zdh-presence] button {
-    transition: none;
-    transform: none !important;
-  }
-}
-
 /* Stable content scope also covers images replaced by Zendesk after the first scan. */
 [data-zdh-layout='true']
   [data-zdh-conversation-entry]
@@ -682,13 +580,13 @@ html
   outline-offset: 2px;
 }
 
-[data-zdh-history-row='true'] {
+[data-zdh-ticket-tools-row='true'] {
   display: flex !important;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
-[data-zdh-history-row] [data-zdh-copy-feedback]:empty {
+[data-zdh-ticket-tools-row] [data-zdh-copy-feedback]:empty {
   display: none;
 }
 /* Desktop column order/width is owned by this layout; native handles point outside it. */

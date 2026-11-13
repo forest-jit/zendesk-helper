@@ -18,6 +18,7 @@ function resource(name, base = root) {
 
 resource(manifest.background.service_worker);
 resource(manifest.action.default_popup);
+resource(manifest.options_ui.page);
 for (const name of Object.values(manifest.icons)) resource(name);
 for (const name of Object.values(manifest.action.default_icon)) resource(name);
 for (const entry of manifest.content_scripts) {
@@ -26,7 +27,7 @@ for (const entry of manifest.content_scripts) {
 for (const name of [...harvest.registration.js, ...harvest.registration.css]) resource(name);
 
 // Follow all packaged HTML links, including popup → guide → privacy.
-for (const folder of ['popup', 'guide']) {
+for (const folder of ['popup', 'settings', 'guide']) {
   for (const name of fs.readdirSync(path.join(root, 'src', folder))) {
     if (!name.endsWith('.html')) continue;
     const file = resource(`src/${folder}/${name}`);

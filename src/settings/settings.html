@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Settings · Jones IT Zendesk Helper</title>
+    <link rel="stylesheet" href="../popup/popup.css" />
+    <link rel="stylesheet" href="settings.css" />
+  </head>
+  <body>
+    <header class="popup-header">
+      <h1>Jones IT Zendesk Helper</h1>
+      <button
+        id="power"
+        type="button"
+        role="switch"
+        aria-label="Jones IT Zendesk Helper"
+        aria-checked="true"
+      >
+        <span class="switch-track" aria-hidden="true"></span><span id="power-label">On</span>
+      </button>
+    </header>
+    <nav aria-label="Settings sections">
+      <a href="#appearance">Appearance</a><a href="#workflow">Replies &amp; reading</a
+      ><a href="#harvest">Harvest</a><a href="#tools">Ticket tools &amp; help</a>
+    </nav>
+    <p id="status" role="status"></p>
+    <main>
+      <section id="appearance">
+        <h2>Appearance</h2>
+        <div class="appearance-grid">
+          <div>
+            <label for="theme-trigger">Theme</label>
+            <select id="theme" hidden aria-hidden="true" tabindex="-1"></select>
+            <button
+              id="theme-trigger"
+              class="secondary theme-trigger"
+              type="button"
+              role="combobox"
+              aria-label="Theme"
+              aria-expanded="false"
+              aria-controls="theme-options"
+              aria-haspopup="listbox"
+            >
+              <span id="theme-name">Theme</span><span aria-hidden="true">⌄</span>
+            </button>
+            <div id="theme-options" role="listbox" aria-label="Themes" hidden></div>
+            <section class="theme-preview" aria-label="Theme preview">
+              <div class="preview-heading">Ticket preview <span>Open</span></div>
+              <p class="preview-message">Thanks for the update.</p>
+              <p class="preview-note">Internal note · Only your team can see this.</p>
+              <button type="button" class="preview-send" tabindex="-1">Send</button>
+            </section>
+          </div>
+          <div>
+            <details id="theme-studio" open>
+              <summary>Create or edit a theme</summary>
+              <label for="custom-name">Theme name</label
+              ><input id="custom-name" maxlength="60" placeholder="My theme" />
+              <div id="color-fields"></div>
+              <p id="theme-error" role="status"></p>
+              <div class="actions">
+                <button id="preview-site" class="secondary" type="button">Preview on ticket</button
+                ><button id="save-theme" type="button">Save and apply</button
+                ><button id="delete-theme" class="secondary" type="button" hidden>
+                  Delete theme
+                </button>
+              </div>
+              <div class="actions theme-files">
+                <button id="export-theme" class="secondary" type="button">Export theme</button>
+                <button id="import-theme" class="secondary" type="button">Import theme</button>
+                <input id="theme-file" type="file" accept=".json,application/json" hidden />
+              </div>
+              <p class="theme-note">
+                Import fills the editor. Save and apply keeps it. Theme files contain only a name
+                and five colors.
+              </p>
+              <p class="theme-note">
+                Ticket preview is temporary and ends when this Settings tab closes. Text must remain
+                readable on both backgrounds.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+      <section id="workflow">
+        <h2>Replies &amp; reading</h2>
+        <label
+          ><input type="checkbox" id="carry-draft" /><span
+            >Use the same draft when switching reply modes<small
+              >Carry text and formatting into an empty or matching draft. A different draft is never
+              overwritten. Queued attachments are protected.</small
+            ></span
+          ></label
+        >
+        <label
+          ><input type="checkbox" id="collapse-history" /><span
+            >Start with the latest five messages<small
+              >Older loaded messages stay behind a button at the top of the conversation. Turn off
+              to show the full loaded history.</small
+            ></span
+          ></label
+        >
+        <label
+          ><input type="checkbox" id="auto-title" /><span
+            >Keep company and requester names in the ticket title<small
+              >Updates the title draft when the selected names change; it does not save the ticket.
+              Undo restores the prior title and turns this setting off.</small
+            ></span
+          ></label
+        >
+        <label for="queue-refresh">Refresh ticket views</label
+        ><select id="queue-refresh">
+          <option value="0">Off</option>
+          <option value="10">Every 10 seconds</option>
+          <option value="15">Every 15 seconds</option>
+          <option value="30">Every 30 seconds</option>
+          <option value="60">Every minute</option>
+        </select>
+        <p class="theme-note">
+          Pauses while you interact, select tickets, open menus, go offline or hide the tab. Ticket
+          pages never reload.
+        </p>
+      </section>
+      <section id="harvest">
+        <h2>Match Harvest to your theme</h2>
+        <p>Harvest styling starts <strong>off</strong>. Choosing a theme does not enable it.</p>
+        <ol>
+          <li>Click <strong>Match Harvest to theme</strong> below.</li>
+          <li>Allow access to <strong>platform.harvestapp.com</strong> when Chrome asks.</li>
+          <li>
+            Check for <strong>Harvest theme on</strong>, then reload the Harvest panel using its
+            reload icon.
+          </li>
+        </ol>
+        <button class="secondary" id="harvest-theme" type="button" aria-pressed="false">
+          Match Harvest to theme
+        </button>
+        <p class="theme-note">
+          Changes colors only. It never starts timers or changes time entries. Set up each
+          browser/profile and Store/development copy separately.
+        </p>
+      </section>
+      <section id="tools">
+        <h2>Ticket tools &amp; help</h2>
+        <label for="target-ticket">Ticket for preview and export</label
+        ><select id="target-ticket">
+          <option value="">Choose a Zendesk tab</option>
+        </select>
+        <p class="theme-note">
+          Theme choices and workflow settings apply to all Jones IT Zendesk tabs. Temporary previews
+          and exports use the tab selected here.
+        </p>
+        <div class="actions">
+          <button class="secondary" id="export" type="button">Export ticket for local AI</button
+          ><button class="secondary" id="manual" type="button">Select title manually</button>
+        </div>
+        <p class="theme-note">
+          Exports contain original ticket data. Local AI processing is separate and needs human
+          review. Manual title selection is a fallback if the usual field is not detected.
+        </p>
+        <div class="help-links">
+          <a href="../guide/guide.html" target="_blank" rel="noopener">Feature guide</a
+          ><a
+            href="https://app.notion.com/p/41618a28418d8148b816ec7c3bd7d641"
+            target="_blank"
+            rel="noopener"
+            >Report a problem</a
+          ><a
+            href="https://github.com/forest-jit/zendesk-helper/blob/main/docs/FEATURE_WALKTHROUGH.md"
+            target="_blank"
+            rel="noopener"
+            >How the features work</a
+          >
+        </div>
+      </section>
+    </main>
+    <script src="../shared/themes.js"></script>
+    <script src="../shared/theme-controls.js"></script>
+    <script src="../shared/theme-files.js"></script>
+    <script src="settings.js"></script>
+  </body>
+</html>

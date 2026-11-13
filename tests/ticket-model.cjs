@@ -46,19 +46,13 @@ for (const patch of [
   { interval: 2 }
 ])
   assert.equal(m.queueAllowed({ ...safe, ...patch }), false);
-assert.equal(
-  m.copyText(
-    { id: '123', title: 'A [link]', url: 'https://itjones.zendesk.com/agent/tickets/123' },
-    'markdown'
-  ),
-  '[A \\[link\\] (#123)](https://itjones.zendesk.com/agent/tickets/123)'
-);
-assert.equal(m.activity([]).kind, 'unknown');
-assert.equal(m.activity(['No agent viewing this ticket']).kind, 'unknown');
-assert.equal(m.activity(['Taylor is editing this ticket']).kind, 'editing');
-assert.equal(m.activity(['Sam is viewing this ticket']).kind, 'viewing');
+assert.deepEqual(m.ticketLink('209867'), {
+  plain: '[#209867](https://itjones.zendesk.com/agent/tickets/209867)',
+  html: '<a href="https://itjones.zendesk.com/agent/tickets/209867">#209867</a>'
+});
+assert.throws(() => m.ticketLink('209867<script>'));
 console.log(
-  'PASS: identity prefixes, issue preservation, distinct draft conflict, clipboard escaping, queue interruption gates and reported activity states.'
+  'PASS: identity prefixes, issue preservation, distinct draft conflict, linked-number clipboard output, queue interruption gates.'
 );
 
 // Native Requester uses a selected display value, not the hidden search input.

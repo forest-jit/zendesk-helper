@@ -1,6 +1,6 @@
 # Jones IT Zendesk Helper privacy policy
 
-Last updated: November 11, 2026
+Last updated: November 12, 2026
 
 Publisher display name: forest  
 Privacy and support contact: forest.r.welch@gmail.com
@@ -9,7 +9,7 @@ Jones IT Zendesk Helper adds reading controls, reply shortcuts and ticket tools 
 
 ## What the extension reads
 
-The helper reads the ticket details needed for its features: titles and ticket numbers, requester and organization details, author names, messages, internal notes, timestamps, images, attachment references and selected fields. It also reads the agent-activity indicators that Zendesk provides. Tickets can contain personal, confidential or other sensitive information.
+The helper reads the ticket details needed for its features: titles and ticket numbers, requester and organization details, author names, messages, internal notes, timestamps, images, attachment references and selected fields. Tickets can contain personal, confidential or other sensitive information.
 
 The helper handles unsent public replies and internal notes, including their formatting. It uses local draft copies to protect field saves, recover interrupted operations and carry text between reply modes.
 
@@ -19,7 +19,7 @@ It reads the current agent-page URL to identify the ticket and direct your actio
 
 Settings and custom themes stay in this Chrome profile. Unsaved theme edits use Chrome session storage. Draft recovery copies stay in local extension storage while needed to protect an interrupted save or a conflict between drafts.
 
-Copy commands put the ticket details you choose on your clipboard. Export and recovery commands save files to your computer. These files can contain original, unredacted ticket content, image data and image URLs.
+Copy ticket puts a linked ticket number on your clipboard. Theme import/export reads or saves a name and five colors, without ticket data. Export and recovery commands save files to your computer. These files can contain original, unredacted ticket content, image data and image URLs.
 
 The extension uses Chrome's profile storage without adding its own encryption. Access to your device, profile management, backups and synced folders depends on your device and organization settings.
 

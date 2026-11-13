@@ -6,8 +6,8 @@ Keep `manifest.json` at the project root. Chrome loads this source directly; the
 | --- | --- |
 | Sending, field saves and draft recovery | `tickets/workflow.js` for rules, then `content/index.js` for orchestration; `page/draft-bridge.js` talks to the native editor |
 | Conversation reading | `conversations/` for quote/contrast controls; `content/index.js` for history/images/shared scroll; `content/layout.css` for layout |
-| Titles, copy, reply switching, activity and queue refresh | `tickets/model.js` for pure decisions; `tickets/tools.js` for native DOM adapters |
-| Theme selection and page colors | `popup/` for controls; `shared/themes.js` for palettes; `themes/` for native Zendesk styling |
+| Titles, copy, reply switching and queue refresh | `tickets/model.js` for pure decisions; `tickets/tools.js` for native DOM adapters |
+| Theme selection and page colors | `popup/` for quick controls; `settings/` for preferences/editor; `shared/theme-controls.js` for the shared picker; `shared/theme-files.js` for import/export; `shared/themes.js` for palettes; `themes/` for native Zendesk styling |
 | Downloads and Harvest | `export/exporter.js` collects files; `background/service-worker.js` downloads; `integrations/harvest/` contains the optional timer adapter |
 
 The included help and privacy pages live in `guide/`. Only `page/draft-bridge.js` runs in Zendesk's page world. The rest of the content scripts run in the extension's isolated world, in manifest order.

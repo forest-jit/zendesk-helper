@@ -2,21 +2,21 @@
 
 ## Supported Zendesk appearance
 
-**Use Zendesk Light mode:** click your Zendesk profile picture → **Appearance → Light mode**. Choose Light mode explicitly rather than Match system appearance. Native Zendesk Dark mode is not supported by the helper yet and can leave mismatched colors. You can still use the helper’s own dark themes; your Mac’s appearance can stay as it is.
+The published v0.7.8 works best with Zendesk’s **Appearance → Light mode**. The prepared v0.7.11 has passed native Light/Dark acceptance; it does not change Zendesk’s saved preference. A source build and a Store update are different installations.
 
-This is the supported setup for the current release. Prior theme coverage does not establish compatibility with Zendesk’s native Dark mode. Support for both native modes remains in TASKS.md.
+## Native appearance acceptance — v0.7.10, retained in v0.7.11
 
-Status: v0.7.1 fixes closed/short-ticket coverage, received-message contrast and merge-drawer validation. v0.7.0 added custom five-role themes, popup-only hover/focus previews, temporary ticket/Harvest previews with rollback and System light/dark. Built-in palettes remain unchanged. Live forced-colors, cached navigation, width and zoom evidence is recorded in docs/CURRENT_STATE.md. TASKS.md retains unvisited native states; this document does not certify every Zendesk surface.
+Zendesk redeclares palettes inside native Light/Dark roots and Polaris components. One owned stylesheet supplies helper variables at those boundaries. Controls, sidebar separators, ticket-tab borders and disabled states use the same palette.
 
-## Native appearance work — prepared v0.7.10
+Actual Chrome unpacked v0.7.10 passed all 12 combinations of Daylight/Deep Purple/Blush, native Light/Dark and Public reply/Internal note. Both rich-text drafts matched backups; Harvest stayed themed and idle. Off restored native Dark without changing its preference. Chrome list/filter, menu/dialog and 1100×850 checks passed. Arc’s earlier scoped preview passed the broader list/dialog matrix too. Private evidence is recorded in CURRENT_STATE.md; customer captures are not public baselines.
 
-Zendesk redeclares its palette inside native Light/Dark roots and Polaris components. The adapter now supplies the same helper variables at those boundaries using one owned stylesheet. Native controls use the helper’s light/dark scheme; sidebar separators and ticket-tab borders use the helper border. Disabled controls pair muted text with the Page background. The five base colors are unchanged.
+This is verified coverage of the visited surfaces, not a promise that every future Zendesk component or authored email is themed. The packaged regression tests cover nested roots, late components, control schemes, border/disabled pairs and forced-colors cleanup.
 
-A temporary preview on real Zendesk in Arc passed all 12 combinations of Daylight/Deep Purple/Blush, native Light/Dark and Public reply/Internal note. Both draft HTML buffers matched their private backups. Harvest stayed themed and idle; Off restored native Dark without changing its saved preference. The preview was removed and the original settings restored.
+## Picker, Settings and theme files — v0.7.11
 
-The Arc preview also passed All tickets list, Filter drawer and Add link dialog checks in Daylight/Deep Purple over both native appearances. Priority menus were checked in the crossing cases (Daylight/native Dark and Purple/native Light). Sampled opaque UI text pairs reached at least 12.37:1; this sample does not establish page-wide accessibility. List navigation retained the draft. At 1100×850, Purple/native Dark and Daylight/native Light had no horizontal overflow; Status stayed visible and the conversation scrolled independently to a fully visible Send button. Filters and link insertion were canceled.
+The toolbar popup contains On/Off, theme selection and a small preview. Hover or keyboard focus previews that document only; selecting applies the theme. **Settings → Appearance** contains the five-color editor. **Preview on ticket** uses the selected target tab and rolls back when stopped or when Settings closes. Unsaved editor values stay for the Chrome session.
 
-The packaged extension passes controlled native-appearance regressions and 12 reviewed component snapshots. This remains partial acceptance: the actual new build still needs the live Chrome appearance matrix. Chrome’s separate unpacked v0.7.8 was identified, but its console security warning blocked draft backup; no reload was attempted. Keep the Light-mode setup instruction until T57 passes. No new package has reached Store users.
+**Export theme** writes only a name and five colors to JSON. **Import theme** validates the file and fills the editor; it does not apply it. Save and apply is explicit. Files are limited to 16 KB, one supported format version and the five palette roles; unreadable palettes are rejected. Themes and preferences stay in local profile storage.
 
 ## Five base colors
 
@@ -51,9 +51,9 @@ Do not use universal `*` recoloring, page inversion, image filters, generated Ze
 **Harvest styling is off by default.** Choosing a theme does not turn it on.
 
 1. Open Jones IT Zendesk Helper from your browser’s toolbar.
-2. Click **Match Harvest to theme**.
+2. Open **Settings → Harvest**, then click **Match Harvest to theme**.
 3. Allow access to **platform.harvestapp.com** when your browser asks.
-4. Check that the button says **Harvest theme on**. If the permission prompt closed the popup, reopen it; if it still says **Match Harvest to theme**, click it again.
+4. Check that the button says **Harvest theme on**. If approval was interrupted, reopen Settings; if it still says **Match Harvest to theme**, click it again.
 5. Reload the **Harvest panel** using its reload icon. You can also refresh Zendesk after protecting your drafts.
 
 Harvest should now match your selected helper theme. It changes colors only; it does not start a timer or change time entries. Set this up separately in each browser/profile and when switching between Store and unpacked installations; their settings and permissions do not automatically carry over. If Harvest stays white, check both **Harvest theme on** and the browser’s allowed site access before reporting a theme bug.
@@ -79,7 +79,7 @@ Current live scope includes the ticket shell, fields, composer, theme studio, li
 | Other editors/widgets | Grammarly and browser-native select/file UI, autofill, spellcheck | Separate ownership; inventory exceptions rather than claiming full control |
 | Media/accessibility | Attachment images, logos, rich-text colors, forced-colors, selection, zoom | Preserve content colors; honor OS high-contrast choices |
 
-The popup sends the Harvest enable click directly to the background. It starts the optional permission request synchronously, then saves the enable preference and registers the adapter only after approval. Completion does not rely on the popup staying open; denied access and unrelated permission events never enable styling. The sender must be this extension’s exact popup page.
+The Settings page sends the Harvest enable click directly to the background. It starts the optional permission request synchronously, then saves the enable preference and registers the adapter only after approval. Completion does not rely on the popup staying open; denied access and unrelated permission events never enable styling. The sender must be this extension’s exact popup or Settings page.
 
 Harvest contents now use an opt-in frame adapter. Required access remains Zendesk agent pages; optional scripting + https://platform.harvestapp.com/* access is requested explicitly. Registration matches only /platform/timer*, and runtime guards require the exact timer path, Zendesk app/service parameters and Jones IT Zendesk as the top ancestor. No access to 3.apps.zdusercontent.com or Harvest account subdomains is requested. The adapter styles the document and reads extension preferences; it does not read/change timer fields. Native, Off, disabled Harvest support and forced-colors remove owned theme variables. Same-origin iframes also require styles inside their own document.
 
@@ -182,7 +182,7 @@ Live acceptance: all eight new picker selections, public/internal/public layers 
 
 ## v0.7.0 custom theme lifecycle
 
-The popup registers at most32 validated custom palettes. Each has exactly the five base roles above; the compiler derives readable states. Color wells and hex fields update the popup immediately. Save commits the palette locally. Preview on ticket uses a scoped popup connection; closing it restores the saved selection on Zendesk and Harvest. Unsaved editor values live in Chrome session storage. Delete removes only the selected custom theme.
+Historically, the popup registered at most32 validated custom palettes; v0.7.11 moves this editor to Settings. Each has exactly the five base roles above; the compiler derives readable states. Color wells and hex fields update the popup immediately. Save commits the palette locally. Preview on ticket uses a scoped popup connection; closing it restores the saved selection on Zendesk and Harvest. Unsaved editor values live in Chrome session storage. Delete removes only the selected custom theme.
 
 System selects Daylight/Midnight from OS appearance and responds to media changes. Forced-colors removes owned page and Harvest variables rather than recoloring system contrast. Lifecycle regressions cover these paths; native DevTools forced-colors was also checked live. Current widths1000/1100/1280px and zoom125–200% produced no horizontal overflow. At under1000 CSS pixels the native layout remains in use.
 

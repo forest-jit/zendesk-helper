@@ -32,14 +32,14 @@ Unzip this folder, then open chrome://extensions in Chrome. Enable Developer mod
 choose Load unpacked, and select this folder. Refresh Zendesk once.
 
 Open the toolbar popup. The On / Off switch controls the helper; other settings save
-automatically. Help & feature guide explains every feature. You can also open src/guide/guide.html.
+automatically. Settings > Feature guide explains each feature. You can also open src/guide/guide.html.
 
-Set Zendesk itself to Light mode: profile picture > Appearance > Light mode.
-Native Zendesk Dark mode is not supported yet. The helper’s own dark themes remain available.
+This build supports both native Zendesk appearances. Earlier Store v0.7.8 works best with
+Zendesk profile picture > Appearance > Light mode.
 
-Harvest styling is OFF by default. Open the popup > Match Harvest to theme > allow
+Harvest styling is OFF by default. Open the popup > Settings > Harvest > Match Harvest to theme > allow
 platform.harvestapp.com > check Harvest theme on > reload the Harvest panel.
-If the permission prompt closed the popup, reopen it and click Match Harvest to theme
+If approval was interrupted, reopen Settings and click Match Harvest to theme
 again if needed. Set this up separately in each browser/profile or new installation.
 Protect your drafts before refreshing Zendesk.
 
