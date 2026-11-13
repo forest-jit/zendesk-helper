@@ -42,3 +42,12 @@ Project copies of humanizer and i-have-adhd are preserved under .agents/skills/,
 ## Removing local files
 
 Removing the project folder stops the unpacked extension and local reviewer on this Mac. Confirm the presentation/demo is finished here before cleanup. Moving files to Trash is recoverable and does not securely erase the device; the company’s normal device-return process remains necessary. No browser profile, password store or unrelated project should be removed as part of this project cleanup.
+
+## Verified handoff
+
+The owner explicitly approved moving the old local project and disposable testing artifacts to Trash after remote verification. The original project/work/output/review paths are absent. The GitHub source and Notion notes are the restore points; private test files were not uploaded. Browser profiles, credentials, global tools/models and unrelated projects were not removed.
+
+- [Notion computer handoff](https://app.notion.com/p/41718a28418d8175ae05f197cefe5ad8)
+- [Notion presentation notes](https://app.notion.com/p/41718a28418d8149bdf2eed99b89fd41)
+
+Trash remains on the old disk until the normal device-return/erase process is completed. This handoff does not certify secure erasure.

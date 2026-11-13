@@ -1,12 +1,14 @@
 # Current state — 2026-11-13
 
-## Device handoff — current request
+## Device handoff — completed
 
-Scope is Zendesk Helper and this chat only. Forest said the local screenshots, draft backups and AI-review artifacts are not needed; do not upload that private evidence to GitHub or shared Notion. Historical local evidence paths below refer to the old Mac and are not required to restore the project.
+Scope was Zendesk Helper and this chat only. Forest declined retention of the private testing artifacts, then explicitly approved moving the local project and test files to Trash. The project checkout, chat work/outputs, local AI reviews and temporary backup staging were moved; the original working paths are absent. The verified project reviewer was stopped. Other projects, browser profiles, credentials, shared tools and the global model cache were left alone.
 
-[Moving-computer instructions](MOVING_COMPUTERS.md) document restoration and browser-state limits. The presentation runbook, maintained docs, task queue and project writing skills are included in the source handoff. Notion has presentation and moving-computer pages under the existing project hub. Verify remote copies before deleting local originals. Removing the local project disables the unpacked extension/local reviewer on this Mac, so confirm cleanup timing against the presentation.
+The source, presentation runbook, task queue, current state and project writing skills are preserved in GitHub. All 211 tracked files were verified against their remote hashes/modes at the handoff checkpoint. No private screenshots, draft backups or AI outputs were uploaded. Historical local evidence paths below refer to the disposed working files and are not required for restoration.
 
-Deployment remains on hold. No other projects or whole-Mac erase is authorized by this scoped handoff.
+[Computer handoff in Notion](https://app.notion.com/p/41718a28418d8175ae05f197cefe5ad8) and [presentation notes](https://app.notion.com/p/41718a28418d8149bdf2eed99b89fd41) were saved and read back. [Moving-computer instructions](MOVING_COMPUTERS.md) explain restoration and browser-state limits. Clone the source on the replacement computer; the old Mac’s unpacked extension/local reviewer no longer has its working folder.
+
+This was recoverable Trash cleanup, not secure device erasure or a backup of browser profiles/full chat history. Use the company’s normal device-return process. Deployment remains on hold.
 
 ## Presentation priority after handoff
 

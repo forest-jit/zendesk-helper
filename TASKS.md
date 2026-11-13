@@ -4,7 +4,7 @@
 
 ## In progress
 
-- [ ] **T79 — Device handoff.** Scope: Zendesk Helper and this chat. Preserve all source/presentation/resume docs and project writing skills in GitHub, mirror presentation/handoff notes in Notion, and verify remote copies. Owner declined retention of private testing artifacts; do not upload them. Confirm when local cleanup can occur, because removing the project stops the unpacked extension/local AI. No whole-Mac wipe or unrelated project cleanup.
+None. Device handoff is complete; presentation rehearsal can resume from the replacement environment.
 
 ## Next — needs another person
 
@@ -33,6 +33,8 @@ Add a line: `- [ ] Short request — what should be different when it works.`
 - [ ] **T09 — Organization rollout.** Owner reports Chrome Web Store publication on November 12, 2026. Store item and release packet are prepared; managed installation, company approval/allowlisting and clean-profile rollout checks remain administrator/owner work. Do not treat publication as organization-wide deployment.
 
 ## Done
+
+- [x] **T79 — Device handoff, November 13.** All 211 tracked source files were verified against GitHub hashes/modes after pushing the presentation, resume notes and writing skills. Presentation and computer-handoff pages were saved/read back in Notion. Owner declined retention of private test artifacts and explicitly requested moving the local project and test files to Trash. The project, chat work/outputs, local AI review data and temporary private-backup staging were moved to Trash; original working paths are absent. Only the verified project reviewer was stopped. Other projects, browser profiles, credentials, shared tools and the global model cache were untouched. This was recoverable cleanup, not secure erasure; use the company’s device-return procedure. Restore via GitHub and resume T78 when ready.
 
 - [x] **T76 — Useful local AI review, local v0.7.12.** Added Start Local Review.command and a loopback file-to-review UI; actual Chrome export/upload/processing/refresh/evidence viewer/Markdown download passed on 27 messages, 8 available images and 2 explicitly missing decorative references. Installed local Mistral/Qwen used; no hosted AI/Notion upload. One summary/conclusion plus actions, verification and reusable-note candidates use validated supporting excerpts; unique literal matches correct shifted references, unmatched quotes stop processing, pending-work verification is flagged/omitted. Card-tail/expiry redaction strengthened after real output review. Source/processed files stay private; generated facts/unknown identities and image interpretations still need review. A separately reviewed Notion candidate is in private chat outputs. Offline request/job/privacy/excerpt tests pass; docs and Notion updated. Generic Chrome download naming was reproduced with a synthetic direct API call and recorded as a browser-environment follow-up.
 
