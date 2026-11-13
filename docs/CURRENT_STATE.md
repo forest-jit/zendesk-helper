@@ -2,7 +2,7 @@
 
 ## Deployment is on hold
 
-The owner paused deployment and listing changes on November 13. Do not upload, submit, replace listing images, tag or publish a new release. Existing Store/GitHub v0.7.11 drafts remain unchanged. The v0.7.12 source/docs are saved on main separately from deployment. Branch pushes run source checks; they do not publish the extension. No release tag or Store action occurred. See the repository’s Actions for the latest source-check result.
+The owner paused deployment and listing changes on November 13. Do not upload, submit, replace listing images, tag or publish a new release. Existing Store/GitHub v0.7.11 drafts remain unchanged. The v0.7.12 source/docs are saved on main separately from deployment. Branch pushes run source checks; they do not publish the extension. No release tag or Store action occurred. Feature commit `98bc1bb` passed [source CI 43450758622](https://github.com/forest-jit/zendesk-helper/actions/runs/43450758622), including check and browser-regressions jobs. Later comments/evidence-only updates run the same source workflow.
 
 **Published Store: v0.7.8**, ID `bbhdbfdfidlfihbbohohdndpppibgogf`, used in Arc. **Local source and Chrome unpacked: v0.7.12**, matching manifest/package/lock, unpacked ID `pfgmgihalnopfhgaodnopkeejgofenba`. The actual extension Reload control showed 0.7.12. Source edits do not update Store users.
 

@@ -1,5 +1,5 @@
 // Received-message display only. Editors are deliberately excluded.
-// Keep readable authored colors; mark measured contrast failures for theme.css to repair.
+// Keep readable authored colors; mark measured contrast failures for themes/native.css to repair.
 // Authored email layout stays intact; broad formatting flattening was removed.
 
 'use strict';

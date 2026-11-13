@@ -1,10 +1,10 @@
 // Background jobs: approve local downloads and register optional Harvest styling.
-// Requests must come from this extension on the allowed Zendesk site.
+// Popup requests target an approved ticket; downloads originate in its content script.
 // A download is successful only when Chrome reports completion, not when it returns an ID.
 
 'use strict';
 importScripts('../integrations/harvest/policy.js', '../integrations/harvest/controller.js');
-// Only this extension's content script on the approved Zendesk agent site can save exports.
+// Each message type has its own sender guard before any tab action or file download.
 chrome.runtime.onMessage.addListener((message, sender, respond) => {
   if (message?.type === 'zdh-export-active-ticket') {
     const popup = `chrome-extension://${chrome.runtime.id}/src/popup/popup.html`;
