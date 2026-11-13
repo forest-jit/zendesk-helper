@@ -1,0 +1,3 @@
+interface:
+  display_name: "Humanizer"
+  short_description: "Rewrite AI-sounding prose in the writer’s voice"

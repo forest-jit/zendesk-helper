@@ -1,5 +1,23 @@
 # Current state — 2026-11-13
 
+## Device handoff — current request
+
+Scope is Zendesk Helper and this chat only. Forest said the local screenshots, draft backups and AI-review artifacts are not needed; do not upload that private evidence to GitHub or shared Notion. Historical local evidence paths below refer to the old Mac and are not required to restore the project.
+
+[Moving-computer instructions](MOVING_COMPUTERS.md) document restoration and browser-state limits. The presentation runbook, maintained docs, task queue and project writing skills are included in the source handoff. Notion has presentation and moving-computer pages under the existing project hub. Verify remote copies before deleting local originals. Removing the local project disables the unpacked extension/local reviewer on this Mac, so confirm cleanup timing against the presentation.
+
+Deployment remains on hold. No other projects or whole-Mac erase is authorized by this scoped handoff.
+
+## Presentation priority after handoff
+
+Forest resumed for a 15–20 minute presentation. Prioritize the demo and speaker preparation; defer the remaining fixes and external checks until afterward. Deployment remains on hold.
+
+[Presentation runbook](PRESENTATION.md) has a 15-minute core demo, questions, setup checks, exact field-save rehearsal, short implementation explanations and fallback instructions. It is included in the handoff; no new browser rehearsal or runtime changes were performed during presentation preparation.
+
+Next: rehearse changing Status and saving it while preserving a reply draft on #209867, then restore the original status. Confirm Chrome has the tested v0.7.12 development copy and only one helper installation active. The Store checkpoint remains v0.7.8; introduce unreleased controls as a preview.
+
+Source checkpoint: commit `335a26d` on main; [source checks passed](https://github.com/forest-jit/zendesk-helper/actions/runs/43451360905). Chrome was previously left on #209867 with both drafts preserved and original preferences restored. The local reviewer is stopped. Private email walkthrough and reviewed AI example remain in chat outputs/reading-and-local-ai-2026-11-13/. Screenshots were already handled by Forest.
+
 ## Deployment is on hold
 
 The owner paused deployment and listing changes on November 13. Do not upload, submit, replace listing images, tag or publish a new release. Existing Store/GitHub v0.7.11 drafts remain unchanged. The v0.7.12 source/docs are saved on main separately from deployment. Branch pushes run source checks; they do not publish the extension. No release tag or Store action occurred. Feature commit `98bc1bb` passed [source CI 43450758622](https://github.com/forest-jit/zendesk-helper/actions/runs/43450758622), including check and browser-regressions jobs. Later comments/evidence-only updates run the same source workflow.

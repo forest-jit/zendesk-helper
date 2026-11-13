@@ -1,0 +1,7 @@
+interface:
+  display_name: "I Have ADHD"
+  short_description: "Clear next steps and ADHD-friendly responses"
+  default_prompt: "Use $i-have-adhd to keep responses easy to act on throughout this chat."
+
+policy:
+  allow_implicit_invocation: false

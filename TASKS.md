@@ -4,7 +4,7 @@
 
 ## In progress
 
-None. Deployment remains on hold; external checks are below.
+- [ ] **T79 — Device handoff.** Scope: Zendesk Helper and this chat. Preserve all source/presentation/resume docs and project writing skills in GitHub, mirror presentation/handoff notes in Notion, and verify remote copies. Owner declined retention of private testing artifacts; do not upload them. Confirm when local cleanup can occur, because removing the project stops the unpacked extension/local AI. No whole-Mac wipe or unrelated project cleanup.
 
 ## Next — needs another person
 
@@ -15,6 +15,8 @@ None. Deployment remains on hold; external checks are below.
 - [ ] **T05 — Screen-reader walkthrough.** Keyboard controls, widths/zoom, forced-colors and native merge required-field feedback checked. Desktop native column handles are hidden while the fixed helper layout is active and return with Off. A screen-reader user still needs to check reading order, announcements and focus. No accessibility certification claimed.
 
 ## Inbox
+
+- [ ] **T78 — Presentation readiness, first priority.** Prepare a 15–20 minute demonstration around layout/scrolling, separate Save/Send, reply switching, themes/Harvest and installation/feedback. docs/PRESENTATION.md is ready with speaker notes, short code explanations and fallbacks. Next: presentation-day rehearsal on #209867, especially Status → Command–Enter with an unsent draft, then restore the original status. No new browser rehearsal claimed. Defer all other work until after the presentation; deployment stays on hold.
 
 - [ ] **T60 — Arc popup changes browser focus.** Owner reports Arc’s toolbar popup switches to Chrome. With both browsers open, two clicks on Arc’s actual toolbar icon opened the Store-ID popup in Arc and stayed there. Its original hidden-toolbar setting was restored. Extensions-menu opening also stayed in Arc. Source contains no Chrome-launch command. The local AeroSpace rule moving new Arc windows to workspace 1 remains a possible cause, not a diagnosis; no configuration changed. Keep open for an intermittent reproduction with the owner’s exact window/workspace state.
 

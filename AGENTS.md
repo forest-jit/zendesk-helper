@@ -19,7 +19,7 @@
 - Bump matching manifest, package, and lockfile versions once per delivered extension change. Documentation changes need no version bump.
 
 ## Verify and report
-- Update the feature guide and relevant documentation with every behavior change. Use `/Users/forest/.codex/skills/i-have-adhd/SKILL.md` and `/Users/forest/.codex/skills/humanizer/SKILL.md`: short task-based instructions, exact control names, clear limits, and no unsupported completion claims. Reconcile TASKS.md and CURRENT_STATE.md before handoff.
+- Update the feature guide and relevant documentation with every behavior change. Use `.agents/skills/i-have-adhd/SKILL.md` and `.agents/skills/humanizer/SKILL.md`: short task-based instructions, exact control names, clear limits, and no unsupported completion claims. Reconcile TASKS.md and CURRENT_STATE.md before handoff.
 - Follow `docs/WORKFLOW.md` for extension changes, including packaged and fresh Store-install checks. `npm run check` is the fast syntax/manifest/workflow gate; `npm run test:fixtures` is optional regression coverage, not UI acceptance. Routine fixes need no design pipeline; choose one design skill only when relevant. No delegation by default.
 - Bound tool output and browser observations. Reuse passing evidence; repeat checks after relevant changes or unresolved failures.
 - Distinguish implemented, locally checked, and live verified. Move tasks to Done with version and acceptance evidence; leave unverified work open.
