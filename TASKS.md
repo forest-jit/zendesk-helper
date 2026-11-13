@@ -4,7 +4,7 @@
 
 ## In progress
 
-- [ ] **T62 — Prepare v0.7.11 and publish the next Store update.** New interface and 0.7.10 theme acceptance are live-checked in Chrome. Final notes, tag, matching ZIPs, GitHub draft and Store draft preparation are underway. Google submission/approval and a fresh published-build check remain separate. Do not replace v0.7.8 assets or claim a source push updates users.
+- [ ] **T62 — Finish the v0.7.11 release.** Source commit a1331b2 and tag v0.7.11 pushed. Source CI 43389692281 and tagged build 43389694785 passed; the draft GitHub release has both ZIPs/checksums/notes. Downloaded tagged Store ZIP passes preflight and all 14 packaged macOS checks/snapshots. Google Package confirms Draft 0.7.11 / Published 0.7.8; generated description/changelog saved and retained after reload. New three customer-free listing images are ready/reviewed locally. Google’s Remove Image dialog says “This cannot be undone”; canceled without deleting, so owner confirmation is needed to replace the three old images. Then review release/consent gates, publish the GitHub draft and submit the Store update. Do not claim it is approved until verified in a fresh Store install.
 
 
 

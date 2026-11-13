@@ -167,3 +167,9 @@ CHANGELOG.md supplies the user-facing notes. The tagged release generates store-
 The new reply control clearly separates Public reply and Internal note. Draft sharing moves into Settings. Copy ticket becomes one click for a linked number. History controls scroll with the conversation and the latest-five summary can be disabled. The popup keeps On/Off and themes; full Settings contains custom themes, Harvest, workflow choices and help. Theme JSON import/export and an explicit preview/export target are added. Duplicate helper activity badges and layout-side switches are removed.
 
 Native Light/Dark checks passed in Chrome on the preceding 0.7.10 theme changes retained here. Appearance labels and nested native surfaces use the selected palette. Harvest approval finishes independently of popup lifetime; first real consent acceptance remains open. No broader permissions or hosted services are added. This is the next-description source, not a claim that it is saved in Google’s dashboard.
+
+## Update draft verified — November 13, 2026
+
+Uploaded the Store ZIP from the successful v0.7.11 tagged build (commit a1331b2, run 43389694785). Google Package shows Draft 0.7.11 and Published 0.7.8. Generated store-description.txt, including the matching changelog, was saved and retained after a full page reload. Submit for review is enabled; it was not clicked. The published item is public, as observed in the dashboard; distribution was not changed.
+
+The three replacement listing screenshots use current popup/Settings/guide code with sample preferences and were visually reviewed. They are ready in docs/release, but the old dashboard images remain: Google labels their removal irreversible, so the prompt was canceled pending owner confirmation. No listing image was deleted. Remaining first-permission/accessibility/rollout acceptance is in TASKS.md, not a second checklist here.

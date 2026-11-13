@@ -1,10 +1,10 @@
-# Current state — 2026-11-12
+# Current state — 2026-11-13
 
 ## Versions
 
 **Published Store: v0.7.8**, ID `bbhdbfdfidlfihbbohohdndpppibgogf`, used in Arc. **Prepared source: v0.7.11**, matching manifest/package/lock. Chrome’s separate unpacked ID `pfgmgihalnopfhgaodnopkeejgofenba` was reloaded from `~/Projects/zendesk-helper` and live-tested as v0.7.11. Editing source alone does not update either browser or Store users.
 
-The next update is being prepared through the version-tagged release workflow. No new permissions are added. The new full Settings page is declared with options_ui; there is no general tabs/history permission. The optional Harvest grant stays separate. Google submission/approval and a fresh Store-build check remain T62 until confirmed.
+Source commit **a1331b2** and tag **v0.7.11** are pushed. [Source CI](https://github.com/forest-jit/zendesk-helper/actions/runs/43389692281) and [tagged release build](https://github.com/forest-jit/zendesk-helper/actions/runs/43389694785) passed, including Linux packaged checks. The draft GitHub release contains Store/development ZIPs, checksums and matching notes. No new permissions are added. The new full Settings page is declared with options_ui; there is no general tabs/history permission. The optional Harvest grant stays separate. Google’s dashboard confirms **Draft 0.7.11 / Published 0.7.8**. The tagged Store ZIP was uploaded; updated generated description/changelog was saved and retained after reload. No review submission occurred. Three new customer-free listing images were reviewed locally; replacing the existing images needs owner confirmation because Google’s Remove Image dialog says “This cannot be undone.” The prompt was canceled and all three old images remain. T62 tracks replacement, release review, submission/approval and a fresh Store-build check.
 
 ## Live Chrome evidence
 
@@ -24,7 +24,7 @@ Private backups, earlier matrix JSON/captures and PRIVATE-DEMO-NOTES.md are outs
 
 ## Local checks and documentation
 
-Aggregate syntax/lint/resources/behavior checks pass, including draft failure/timeout/navigation/reload races, delayed/distinct mode transfers, Closed guards, image cleanup, title rules, downloads, theme validation/lifecycle and Harvest registration/consent sender guards. Fourteen packaged Chromium tests and twelve existing reviewed macOS snapshots pass. New cases cover native-indicator preservation, segmented switching, exact linked-number clipboard formats, optional in-scroll history and Settings/import/session/preview rollback. These do not simulate all of production Zendesk. Formatting and Store ZIP preflight pass; the prepared package has 37 runtime/icon files and no development dependencies or ticket data. Tagged CI evidence will be recorded after the run completes.
+Aggregate syntax/lint/resources/behavior checks pass, including draft failure/timeout/navigation/reload races, delayed/distinct mode transfers, Closed guards, image cleanup, title rules, downloads, theme validation/lifecycle and Harvest registration/consent sender guards. Fourteen packaged Chromium tests and twelve existing reviewed macOS snapshots pass. New cases cover native-indicator preservation, segmented switching, exact linked-number clipboard formats, optional in-scroll history and Settings/import/session/preview rollback. These do not simulate all of production Zendesk. Formatting and Store ZIP preflight pass; the prepared package has 37 runtime/icon files and no development dependencies or ticket data. The downloaded tagged ZIP also passes all 14 macOS browser checks and reviewed snapshots. Tagged Store ZIP SHA-256: `d91ea4af8e09dc540a82b71fabf89254d9d1be582614475487ad1e19e75f76ca`. The original approved build and prior tags/assets are unchanged.
 
 `docs/FEATURE_WALKTHROUGH.md` is the complete feature list and plain-English code explanation. `src/README.md` and `docs/CODE_TOUR.md` are the reading map. Packaged help, README, install/theme/reviewer/policy/Store source and Notion guides match the new interface and distinguish prepared v0.7.11 from published v0.7.8. The duplicate presence adapter/UI was removed at the user’s request; T35 is superseded, not a release gate.
 
